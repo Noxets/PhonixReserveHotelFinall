@@ -1,0 +1,25 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@inherits MudSelect<T>
+
+@if (OnRender)
+{
+    <HamkareSkeletonInput HaveHelper="!string.IsNullOrWhiteSpace(HelperText)"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter] public bool OnRender { get; set; } = true;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Margin = parameters.TryGetValue("Margin", out Margin margin) ? margin : Margin.Dense;
+        Variant = parameters.TryGetValue("Variant", out Variant variant) ? variant : Variant.Outlined;
+        AnchorOrigin = parameters.TryGetValue("AnchorOrigin", out Origin anchorOrigin) ? anchorOrigin : Origin.BottomCenter;
+
+        await base.SetParametersAsync(parameters);
+    }
+}

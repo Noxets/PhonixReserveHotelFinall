@@ -1,0 +1,356 @@
+@using MudBlazor.Utilities
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Resource
+@using Microsoft.AspNetCore.Components.Authorization
+@using Hamkare.Utility.Extensions
+@using Microsoft.AspNetCore.Http
+@using Hamkare.Component.Header
+@inject NavigationManager UriHelper;
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+@inject IHttpContextAccessor HttpContextAccessor
+@inherits LayoutComponentBase
+
+<HeadContent>
+    <HamkareHeader/>
+    <HamkareFooter/>
+</HeadContent>
+
+<MudRTLProvider RightToLeft="@(Thread.CurrentThread.CurrentUICulture.IsRtl())">
+
+<MudThemeProvider Theme="_userPanelTheme" @bind-IsDarkMode="@_isDarkMode"/>
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+
+<MudAppBar Elevation="0" Class="p-3 z-1" Gutters="false">
+    <MudPaper Class="w-100 h-100 d-flex align-items-center p-3 rounded-lg gap-3" Elevation="0">
+
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" OnClick="@ToggleDrawer" Class="rounded-lg pa-2"/>
+
+        <MudSpacer/>
+
+        <MudTooltip Text="@(_isDarkMode ? ViewResources.Light : ViewResources.Dark)" Color="Color.Default" Placement="Placement.Bottom" Arrow="true">
+            <MudToggleIconButton Toggled="@_isDarkMode"
+                                 Icon="@Icons.Material.Outlined.DarkMode"
+                                 Color="Color.Default"
+                                 ToggledChanged="ChangeDarkMode"
+                                 ToggledIcon="@Icons.Material.Outlined.LightMode" ToggledColor="Color.Default" Class="rounded-lg pa-2"/>
+        </MudTooltip>
+
+        <MudTooltip Text="@ViewResources.Exit" Color="Color.Default" Placement="Placement.Bottom" Arrow="true">
+            <MudIconButton Icon="@Icons.Material.Outlined.Logout" Class="rounded-lg pa-2" Href="/Api/Account/LogOut"/>
+        </MudTooltip>
+    </MudPaper>
+</MudAppBar>
+
+<MudDrawer @bind-Open="@_open" Elevation="0" Width="300px" Variant="@DrawerVariant.Responsive" Color="Color.Transparent" Class="p-3 pe-0">
+
+<MudPaper Class="rounded-lg h-100 d-flex flex-column" Elevation="0">
+<MudDrawerHeader>
+    <MudLink href="/" Class="w-100 d-flex justify-content-center">
+        <MudImage Src="/Images/Logo.svg" Class="p-3" Width="200" Fluid="true"></MudImage>
+    </MudLink>
+</MudDrawerHeader>
+<MudNavMenu Color="Color.Primary" Class="px-3 pb-3 overflow-auto" Margin="Margin.Normal" Rounded="true" Style="height: Calc(100% - 88px);">
+    
+    <AuthorizeView Roles="Administrator, System, News">
+
+        <MudNavGroup Title="@EntitiesResources.News" Expanded="false" ExpandIcon="@Icons.Material.Rounded.KeyboardArrowDown" Icon="@Icons.Material.Outlined.Newspaper">
+
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Newspaper" Href="/AdminPanel/News" Class="rounded-lg">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>
+                        @EntitiesResources.News
+                    </MudText>
+                </MudStack>
+            </MudNavLink>
+
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.DynamicFeed" Href="/AdminPanel/NewsGroup" Class="rounded-lg">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>
+                        @EntitiesResources.NewsGroup
+                    </MudText>
+                </MudStack>
+            </MudNavLink>
+
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Comment" Href="/AdminPanel/NewsComment" Class="rounded-lg">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>
+                        @EntitiesResources.NewsComment
+                    </MudText>
+                </MudStack>
+            </MudNavLink>
+
+        </MudNavGroup>
+    </AuthorizeView>
+    
+    <AuthorizeView Roles="Administrator, System, User">
+
+        <MudNavGroup Title="@EntitiesResources.Persons" Expanded="false" ExpandIcon="@Icons.Material.Rounded.KeyboardArrowDown" Icon="@Icons.Material.Outlined.Person">
+
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Person" Href="/AdminPanel/Person" Class="rounded-lg">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>
+                        @EntitiesResources.Persons
+                    </MudText>
+                </MudStack>
+            </MudNavLink>
+
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.PersonAdd" Href="/AdminPanel/PersonLegal" Class="rounded-lg">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>
+                        @EntitiesResources.PersonLegal
+                    </MudText>
+                </MudStack>
+            </MudNavLink>
+
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.AccountCircle" Href="/AdminPanel/User" Class="rounded-lg">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>
+                        @EntitiesResources.Users
+                    </MudText>
+                </MudStack>
+            </MudNavLink>
+            @* Todo: Hamid Icon *@
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.ViewQuilt"
+                        Href="/AdminPanel/UserGroup" Class="rounded-lg">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>
+                        @EntitiesResources.UserGroup
+                    </MudText>
+                </MudStack>
+            </MudNavLink>
+
+            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.HowToReg" Href="/AdminPanel/Role" Class="rounded-lg">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>
+                        @GlobalResources.Roles
+                    </MudText>
+                </MudStack>
+            </MudNavLink>
+        </MudNavGroup>
+    </AuthorizeView>
+    
+<AuthorizeView Roles="Administrator, System">
+
+    <MudNavGroup Title="@EntitiesResources.Settings" Expanded="false"
+                 ExpandIcon="@Icons.Material.Rounded.KeyboardArrowDown" Icon="@Icons.Material.Outlined.Settings">
+
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.BuildCircle"
+                    Href="/AdminPanel/GlobalSettings" Class="rounded-lg">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>
+                    @GlobalResources.General
+                </MudText>
+            </MudStack>
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.FeaturedPlayList"
+                    Href="/AdminPanel/Feature"
+                    Class="rounded-lg">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>
+                    @EntitiesResources.Features
+                </MudText>
+            </MudStack>
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Mail" Href="/AdminPanel/EmailSettings"
+                    Class="rounded-lg">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>
+                    @GlobalResources.Email
+                </MudText>
+            </MudStack>
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Sms" Href="/AdminPanel/SmsSettings"
+                    Class="rounded-lg">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>
+                    SMS
+                </MudText>
+            </MudStack>
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Computer" Href="/AdminPanel/Display"
+                    Class="rounded-lg">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>
+                    @ViewResources.Pages
+                </MudText>
+            </MudStack>
+        </MudNavLink>
+
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Discount" Href="/AdminPanel/Tag"
+                    Class="rounded-lg">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>
+                    @EntitiesResources.Tags
+                </MudText>
+            </MudStack>
+        </MudNavLink>
+
+    </MudNavGroup>
+
+    <MudNavGroup Title="@GlobalResources.Seo" Expanded="false"
+                 ExpandIcon="@Icons.Material.Rounded.KeyboardArrowDown" Icon="@Icons.Material.Outlined.Info">
+
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Info" Href="/AdminPanel/Redirect"
+                    Class="rounded-lg">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>
+                    @EntitiesResources.Redirect
+                </MudText>
+            </MudStack>
+        </MudNavLink>
+        
+    </MudNavGroup>
+
+</AuthorizeView>
+
+</MudNavMenu>
+
+</MudPaper>
+    
+</MudDrawer>
+    
+<MudMainContent>
+    
+    <MudContainer MaxWidth="MaxWidth.False" Class="mx-3 mb-4 p-0 w-auto">
+
+        @if (!OnRender)
+        {
+            <ErrorBoundary @ref="_errorBoundary">
+                <CascadingValue Value="CurrentUser">
+                    @Body
+                </CascadingValue>
+            </ErrorBoundary>
+        }
+
+    </MudContainer>
+    
+</MudMainContent>
+
+</MudLayout>
+
+</MudRTLProvider>
+
+<style>
+
+</style>
+
+
+@code {
+    private bool _isDarkMode;
+    private bool _open = true;
+    private bool OnRender { get; set; } = true;
+    [CascadingParameter] private User CurrentUser { get; set; }
+
+    private ErrorBoundary _errorBoundary;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var authState = await AuthenticationStateProvider
+            .GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        if (user.IsInRole("Administrator") || user.IsInRole("System"))
+            await base.SetParametersAsync(parameters);
+        else
+            UriHelper.NavigateTo("/Login", true);
+    }
+
+    protected override void OnParametersSet()
+    {
+        _errorBoundary?.Recover();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        try
+        {
+            _isDarkMode = HttpContextAccessor.HttpContext?.Request.Cookies["DarkMode"] == "dark";
+            OnRender = false;
+        }
+        catch (Exception)
+        {
+            UriHelper.NavigateTo("/Login");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            try
+            {
+            }
+            catch (Exception e)
+            {
+                //ignore
+            }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void ChangeDarkMode()
+    {
+        var queryString = HttpContextAccessor.HttpContext?.Request.QueryString;
+        var path = new Uri(UriHelper.Uri).GetComponents(UriComponents.Path, UriFormat.Unescaped);
+        var encodedPath = Uri.EscapeDataString(path);
+        var encodedPathAndQueryString = $"{encodedPath}{queryString}";
+
+        UriHelper.NavigateTo(
+            $"Home/DarkMode?isDarkMode={!_isDarkMode}&returnUrl=%2F{encodedPathAndQueryString}",
+            forceLoad: true);
+    }
+    
+    readonly MudTheme _userPanelTheme = new()
+    {
+        PaletteLight = new PaletteLight
+        {
+            Background = new MudColor("#f9fafc"),
+            AppbarBackground = new MudColor("#f9fafc")
+        },
+        PaletteDark = new PaletteDark
+        {
+            Background = new MudColor("#14222b"),
+            AppbarBackground = new MudColor("#14222b"),
+            Surface = new MudColor("#202c33")
+        },
+        Typography = new Typography
+        {
+            Default = new Default
+            {
+                FontFamily = FontFamily()
+            }
+        }
+    };
+
+    private void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+
+
+    private static string[] FontFamily()
+    {
+        var list = new List<string>();
+        switch (Thread.CurrentThread.CurrentUICulture.Name)
+        {
+            case "fa":
+                list.Add("panel-fa-Font");
+                break;
+        }
+
+        list.AddRange(["OpenSans", "Arial", "sans-serif"]);
+
+        return list.ToArray();
+    }
+
+}

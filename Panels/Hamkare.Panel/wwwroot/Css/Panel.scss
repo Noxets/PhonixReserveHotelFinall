@@ -1,0 +1,243 @@
+//#region Typo
+
+@font-face {
+  font-family: panel-fa-Font;
+  src: url(../fonts/Shabnam-FD-WOL.woff2) format('woff2'),
+  url(../fonts/Shabnam-FD-WOL.woff) format('woff'),
+  url(../fonts/Shabnam-FD-WOL.ttf) format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: panel-fa-Font;
+  src: url(../fonts/Shabnam-Bold-FD-WOL.woff2) format('woff2'),
+  url(../fonts/Shabnam-Bold-FD-WOL.woff) format('woff'),
+  url(../fonts/Shabnam-Bold-FD-WOL.ttf) format('truetype');
+  font-weight: bold;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url(../fonts/OpenSans-Medium.ttf) format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url(../fonts/OpenSans-Bold.ttf) format('truetype');
+  font-weight: bold;
+  font-display: swap;
+}
+
+*{
+  font-family: panel-fa-Font, OpenSans, Arial, sans-serif;
+}
+
+.mudBlazor-select-fit {
+  width: fit-content !important;
+  margin: 0 !important;
+
+  .mud-input-control-input-container {
+
+    width: fit-content !important;
+
+    .mud-input.mud-input-text.mud-input-adorned-end.mud-shrink.mud-select-input {
+      margin: 0 !important;
+    }
+  }
+}
+
+//#endregion
+
+.full-height {
+  overflow: auto;
+  height: calc(100vh - var(--mud-appbar-height) - 48px) !important;
+}
+
+//#region MudDrawer
+
+.mud-drawer--closed {
+  .mud-nav-link-expand-icon {
+    display: none;
+  }
+}
+
+.mud-appbar .mud-toolbar-appbar {
+  height: var(--mud-appbar-height) !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .operation-cell {
+    position: sticky !important;
+    border-bottom: 1px solid var(--mud-palette-table-lines) !important;
+    border-right: 1px solid var(--mud-palette-table-lines) !important;
+    border-left: 1px solid var(--mud-palette-table-lines) !important;
+    visibility: visible !important;
+  }
+  .mud-drawer.mud-drawer-temporary.mud-drawer-pos-left.mud-drawer--open {
+    width: 100% !important;
+  }
+  .mud-drawer.mud-drawer-temporary.mud-drawer-pos-right.mud-drawer--open {
+    width: 100% !important;
+  }
+}
+
+//#endregion
+
+//#region DataGrid Page
+
+.stack-title-table {
+  background: var(--mud-palette-primary-hover);
+  align-items: center;
+}
+
+.dataGrid {
+  //height: calc(100vh - 200px) !important;
+}
+
+.customDataDrawer-stack {
+  background: var(--mud-palette-primary-hover);
+}
+
+.MudTextFieldCustom {
+  .mud-input-control-input-container {
+    input {
+      margin-top: 8px;
+    }
+  }
+}
+
+.mud-data-grid {
+  width: 100%;
+  //height: Calc(100vh - 75px);
+}
+
+.mud-table-container {
+  //height: Calc(100% - 116px);
+}
+
+.mud-table-pagination {
+  justify-content: center !important;
+  display: flex !important;
+}
+
+.mud-table-pagination-toolbar {
+  border: 0 !important;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.input-mt-0 {
+  margin-top: 0 !important;
+
+  .mud-input {
+    margin-top: 0 !important;
+  }
+}
+
+.action-button-dataGrid {
+  width: 36px;
+  height: 36px;
+
+}
+
+.mud-table-bordered .mud-table-container .mud-table-root .mud-table-body .mud-table-row .mud-table-cell:not(:last-child) {
+  border-left: 1px solid var(--mud-palette-table-lines);
+}
+
+.mud-table-bordered .mud-table-container .mud-table-root .mud-table-body .mud-table-row .mud-table-cell:first-child {
+  border-right: 1px solid var(--mud-palette-table-lines);
+}
+
+.mud-table-sticky-header * .mud-table-root .mud-table-head:last-child {
+  display: none;
+}
+
+.mud-table-toolbar {
+  padding: 16px 0 !important;
+  height: unset !important;
+}
+
+.row-table:hover .operation-cell {
+  visibility: visible;
+}
+
+//#endregion
+
+//#region Form
+
+.form-fix-button {
+  padding-bottom: 48px;
+}
+
+.button-fix {
+  background-color: var(--mud-palette-surface);
+  bottom: 16px;
+}
+
+.ck-content {
+  color: black;
+}
+
+//#endregion
+
+//#region Layout
+
+.mud-main-content {
+  padding-top: Calc(var(--mud-appbar-height) + 32px) !important;
+  background: var(--mud-palette-appbar-background);
+}
+
+.mud-drawer--closed .mud-nav-link-expand-icon {
+  display: none;
+}
+
+.MudTextFieldCustom .mud-input-control-input-container input {
+  margin-top: 8px;
+}
+
+//#region User Panel Layout 
+
+.userPanelLayout {
+
+  .userPanelDrawer {
+    .userProfile {
+      background: var(--mud-palette-primary-hover);
+    }
+  }
+}
+
+//#endregion 
+
+//#endregion
+
+//#region Operation Cell
+
+.operation-cell {
+  visibility: hidden;
+  position: absolute !important;
+  padding: 7px !important;
+  border-bottom: unset !important;
+  margin-top: 1px;
+}
+
+.operation-cell:dir(ltr) {
+  right: 1px !important;
+  left: unset !important;
+}
+
+.operation-cell:dir(rtl) {
+  left: 1px !important;
+  right: unset !important;
+}
+
+//#endregion

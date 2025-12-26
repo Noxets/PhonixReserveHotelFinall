@@ -1,0 +1,50 @@
+@inherits MudIconButton
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+
+    [Parameter] public bool OnRender { get; set; } = true;
+
+    private bool FakeRender { get; set; } = true;
+
+    [Parameter] public PdfSetting PdfSetting { get; set; }
+
+    private HamkarePrintButtonViewModel ViewModel { get; set; } = new();
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        Icon = parameters.TryGetValue("Icon", out string icon) ? icon : Icons.Material.Rounded.Print;
+        return base.SetParametersAsync(parameters);
+    }
+
+    protected override async Task OnClickHandler(MouseEventArgs ev)
+    {
+        if (!Disabled)
+        {
+            Disabled = true;
+            StateHasChanged();
+            ViewModel.PdfSetting = PdfSetting;
+            ViewModel.DotNetObject = DotNetObjectReference.Create(this);
+            await JsRuntime.InvokeVoidAsync("Pdf.generatePDF", ViewModel);
+        }
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (!OnRender && FakeRender)
+        {
+            FakeRender = false;
+
+            await JsRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "/_content/Hamkare.Panel/Lib/Html2Pdf/html2pdf.bundle.min.js");
+            
+            await JsRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "/_content/Hamkare.Component/HamkareComponents/HamkarePrintButton.razor.js");
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+}

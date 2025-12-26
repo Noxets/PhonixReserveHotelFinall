@@ -1,0 +1,11 @@
+﻿@using Hamkare.Panel.Components.Layout
+@using Microsoft.AspNetCore.Components.Authorization
+
+<Router AppAssembly="@typeof(Program).Assembly"
+        AdditionalAssemblies="new[] {typeof(Hamkare.Panel.Components.Imports).Assembly, typeof(Hamkare.AdminPanel.Components._Imports).Assembly}">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)">
+        </AuthorizeRouteView>
+        <FocusOnNavigate RouteData="routeData" Selector="h1"/>
+    </Found>
+</Router>

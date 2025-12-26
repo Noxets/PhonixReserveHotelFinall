@@ -1,0 +1,333 @@
+﻿@page "/Account/Login"
+@page "/Login"
+@using Microsoft.AspNetCore.Identity
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Resource.Identity
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Utility.Sender.Sms
+@using Hamkare.Utility.Settings.CoreSettings
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Panel.Components.Layout
+@using Hamkare.Panel.ViewModels
+@using Hamkare.Service.Services.Orders
+@inject SignInManager<User> SignInManager;
+@inject UserManager<User> UserManager;
+@inject NavigationManager NavigationManager
+@inject UserService UserService
+@inject OrderService orderService
+@layout MainLayout
+
+<PageTitle>@IdentityResources.Login | @GlobalSettings.OwnerName</PageTitle>
+
+<MudGrid Justify="Justify.Center" Class="align-items-center h-100 overflow-y-scroll">
+
+    <MudItem xs="12" sm="10" md="6" lg="4">
+
+        <MudStack Row Class="@($"w-100 my-5 pt-5 z-0 position-relative {(Thread.CurrentThread.CurrentUICulture.IsRtl() ? "ltr" : "rtl")}")" Justify="Justify.Center">
+            <MudImage Src="/Images/Logo.svg" Fluid="true" Height="268" Width="268"/>
+        </MudStack>
+        
+        <MudCard Elevation="0" Class="p-3 rounded-xl">
+
+            <MudCardContent>
+
+                @if (IsConfirm)
+                {
+                    <MudForm Model="@_model" @ref="@_formConfirm" ValidationDelay="0">
+
+                        <MudGrid>
+
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">
+                                    <b>@IdentityResources.PhoneConfirm</b>
+                                </MudText>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                @* Todo:Hamid *@
+                                <MudTextField Margin="Margin.Dense" @bind-Value="_model.Token" For="@(() => _model.Token)" Label="کد تایید" Immediate="true" Variant="Variant.Text" Class="MudText-Center"/>
+                            </MudItem>
+
+                        </MudGrid>
+
+                    </MudForm>
+
+                    <MudCardActions Class="mt-3 d-flex flex-column justify-content-center align-items-center">
+                        <HamkareButton Variant="Variant.Filled" Color="Color.Success" Class="mx-auto rounded-lg" OnClick="@(async () => await SubmitConfirm())">@ViewResources.Submit</HamkareButton>
+                        @($"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}")
+                    </MudCardActions>
+                }
+                else
+                {
+                    <MudForm Model="@_model" @ref="@_form" ValidationDelay="0">
+
+                        <MudGrid>
+
+                            @if (IsPhone)
+                            {
+                                <MudItem xs="12">
+                                    <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">
+                                        <b>@IdentityResources.Login</b>
+                                    </MudText>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <HamkareTextField OnRender="false" @bind-Value="_model.PhoneNumber"
+                                                      For="@(() => _model.PhoneNumber)"
+                                                      Label="@GlobalResources.MobileNumber" class="MudText-Center"/>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudItem xs="12">
+                                    <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">
+                                        <b>@IdentityResources.Login</b>
+                                    </MudText>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <HamkareTextField OnRender="false" @bind-Value="_model.UserName"
+                                                      For="@(() => _model.UserName)" Label="@GlobalResources.Username"/>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <HamkareTextField OnRender="false" @bind-Value="_model.Password"
+                                                      InputType="InputType.Password" For="@(() => _model.Password)"
+                                                      Label="@GlobalResources.Password"/>
+                                </MudItem>
+                            }
+
+                        </MudGrid>
+
+                    </MudForm>
+
+                    <MudCardActions Class="mt-6 d-flex flex-column justify-content-center align-items-center">
+                        <HamkareButton Variant="Variant.Filled" DropShadow="true" Class="rounded-lg" Size="Size.Large" Color="Color.Primary" FullWidth="true" OnClick="@(async () => await Submit())">@ViewResources.Submit</HamkareButton>
+                        <MudLink OnClick="@(() => SwitchLogin(IsPhone))" Class="mt-3">
+                            <MudText Class="text-decoration-none" Color="Color.Primary">
+                                @(IsPhone ? IdentityResources.LoginWithEmail : IdentityResources.LoginWithPhone)
+                            </MudText>
+                        </MudLink>
+                    </MudCardActions>
+                }
+
+                <MudDivider Class="my-3"></MudDivider>
+
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    ثبت نام به معنای پذیرش قوانین
+                    <MudLink Typo="Typo.subtitle1" Href="/Faq"
+                             Color="Color.Primary">
+                        @GlobalSettings.OwnerName
+                    </MudLink>
+                    می باشد.
+                </MudText>
+
+            </MudCardContent>
+
+        </MudCard>
+
+    </MudItem>
+
+</MudGrid>
+
+@code {
+
+    [Parameter] [SupplyParameterFromQuery] public string ReturnUrl { get; set; }
+
+    private TimeSpan _remainingTime;
+    private System.Timers.Timer _timer;
+
+    private User _user;
+
+    MudForm _form;
+
+    MudForm _formConfirm;
+
+    private bool IsPhone { get; set; } = true;
+
+    private bool IsConfirm { get; set; }
+
+    readonly LoginViewModel _model = new();
+
+    protected override void OnInitialized()
+    {
+        _model.ReturnUrl = ReturnUrl;
+    }
+
+    private async Task Submit()
+    {
+        if (_remainingTime.TotalSeconds > 0)
+            return;
+
+        await _form.Validate();
+
+        if (_form.IsValid)
+        {
+            if (!string.IsNullOrEmpty(_model.PhoneNumber))
+            {
+                _user = await UserService.GetAsync(x => x.PhoneNumber == _model.PhoneNumber);
+
+                if (_user != null)
+                {
+                    if (!_user.Active)
+                    {
+                        Snackbar.Error(IdentityResources.ErrorUserIsNotActive);
+                        return;
+                    }
+                }
+                else
+                {
+                    if (GlobalSettings.CanRegister)
+                    {
+                        _user = new User
+                        {
+                            UserName = _model.PhoneNumber,
+                            PhoneNumber = _model.PhoneNumber,
+                            Email = "no@Email.com",
+                            Active = true,
+                            LockoutEnabled = false,
+                            Deleted = false,
+                            System = false,
+                            CreateDate = DateTime.Now
+                        };
+
+                        var result = await UserManager.CreateAsync(_user);
+
+                        if (!result.Succeeded)
+                        {
+                            foreach (var item in result.GetIdentityErrors())
+                                Snackbar.Error(item);
+
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        Snackbar.Warning(IdentityResources.WarningCanntRegister);
+                        return;
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(_user.PhoneNumber))
+                {
+                    var token = await UserManager.GenerateChangePhoneNumberTokenAsync(_user, _user.PhoneNumber);
+
+                    _ = SmsSender.SendVerifyCodeAsync(_user.PhoneNumber, token);
+
+                    InitializeTimer();
+
+                    IsConfirm = true;
+
+                    return;
+                }
+                else
+                {
+                    Snackbar.Error("شماره تماس کاربر ذخیره نشده است.");
+                    return;
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(_model.UserName))
+        {
+            if (string.IsNullOrEmpty(_model.Password))
+            {
+                Snackbar.Error(IdentityResources.ErrorNoPassword);
+                return;
+            }
+
+            _user = await UserManager.FindByNameAsync(_model.UserName);
+
+            if (_user != null)
+            {
+                if (!_user.Active)
+                {
+                    Snackbar.Error(IdentityResources.ErrorUserIsNotActive);
+                    return;
+                }
+
+                var result = await SignInManager.CheckPasswordSignInAsync(_user, _model.Password, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    await orderService.GetBasket(_user, await ProtectedSessionStorage.GetSessionShopCardItemsAsync());
+                    await ProtectedSessionStorage.RemoveSessionShopCardItemsCountAsync();
+
+                    NavigationManager.NavigateTo($"/Api/Account/LoginWithPassword?userName={_model.UserName}&password={_model.Password}&returnUrl={_model.ReturnUrl}", true);
+                    return;
+                }
+
+                Snackbar.Error(result.IsLockedOut ? IdentityResources.IsLockOut : IdentityResources.ErrorWrongPassword);
+            }
+            else
+                Snackbar.Warning(GlobalSettings.CanRegister ? IdentityResources.WarningCanRegister : IdentityResources.WarningCanntRegister);
+        }
+    }
+
+
+    private async Task SubmitConfirm()
+    {
+        await _formConfirm.Validate();
+
+        if (_formConfirm.IsValid)
+        {
+            if (_user != null)
+            {
+                var result = await UserManager.VerifyChangePhoneNumberTokenAsync(_user, _model.Token, _model.PhoneNumber);
+
+                if (result)
+                {
+                    _user.LockoutEnabled = false;
+                    _user.LockoutEnd = null;
+                    await UserManager.UpdateAsync(_user);
+
+                    await orderService.GetBasket(_user, await ProtectedSessionStorage.GetSessionShopCardItemsAsync());
+                    await ProtectedSessionStorage.RemoveSessionShopCardItemsCountAsync();
+
+                    NavigationManager.NavigateTo($"/Api/Account/PhoneConfirm?phoneNumber={_model.PhoneNumber}&token={_model.Token}&isPersistent={_model.IsPersistent}&returnUrl={_model.ReturnUrl}", true);
+                    return;
+                }
+
+                Snackbar.Error(IdentityResources.InvalidToken);
+            }
+        }
+    }
+
+    private void SwitchLogin(bool isPhone)
+    {
+        IsPhone = !isPhone;
+
+        if (isPhone)
+        {
+            _model.UserName = _model.PhoneNumber;
+            _model.PhoneNumber = null;
+        }
+        else
+        {
+            _model.PhoneNumber = _model.UserName;
+            _model.UserName = _model.Password = null;
+        }
+    }
+
+    private void InitializeTimer()
+    {
+        _timer = new System.Timers.Timer(1000);
+        _timer.Elapsed += TimerElapsed;
+        _timer.Enabled = true;
+        _remainingTime = TimeSpan.FromSeconds(90);
+    }
+
+    private void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        _remainingTime = _remainingTime.Subtract(TimeSpan.FromSeconds(1));
+
+        if (_remainingTime.TotalSeconds <= 0)
+        {
+            IsConfirm = false;
+            _timer.Stop();
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+
+}

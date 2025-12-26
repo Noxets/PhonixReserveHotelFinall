@@ -1,0 +1,95 @@
+@page "/AdminPanel/NewsGroup"
+@using Hamkare.Common.Entities.News
+@using Hamkare.Resource
+@using Hamkare.Service.Services.News
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject NewsCategoryService NewsCategoryService
+
+<HamkareGroupListView T="NewsCategory" Title="@EntitiesResources.NewsGroup" OnRender="OnRender" Element="_elements"
+                      ReturnLink="/adminPanel/">
+
+    <Columns>
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false" Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())" StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+                
+                <MudTooltip Text="@(context.Item.Active ? GlobalResources.Active : GlobalResources.Inactive)"
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudToggleIconButton Class="action-button-dataGrid rounded-lg" Toggled="@context.Item.Active"
+                                         Icon="@Icons.Material.TwoTone.CheckBoxOutlineBlank" Color="@Color.Error"
+                                         ToggledIcon="@Icons.Material.TwoTone.Check" ToggledColor="@Color.Success" ToggledChanged="@(e => HandleToggleChange(context.Item.Id, e))" Variant="Variant.Text"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Edit} {context.Item.Name}") Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Size="@Size.Small" Class="action-button-dataGrid rounded-lg" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Href="@($"/AdminPanel/NewsGroup/Upsert/{context.Item.Id}")"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Deleted} {context.Item.Name}") Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid rounded-lg" Size="@Size.Small" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="@(_ => HandleRemoveChange(context.Item.Id))"/>
+                </MudTooltip >
+
+            </CellTemplate >
+
+        </TemplateColumn >
+    </Columns>
+
+</HamkareGroupListView>
+
+@code{
+
+    private IEnumerable<NewsCategory> _elements = new List<NewsCategory>();
+    private bool OnRender { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _elements = await NewsCategoryService.GetAllActiveAsync();
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+    private async Task HandleToggleChange(long id, bool toggled)
+    {
+        try
+        {
+            await NewsCategoryService.ActiveOrDeactivateAsync(id);
+
+            toggled = !toggled;
+
+            if (toggled)
+                Snackbar.IsDeactivate(EntitiesResources.NewsGroup);
+            else
+                Snackbar.IsActive(EntitiesResources.NewsGroup);
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id)
+    {
+        var result = await DialogService.RemoveDialog();
+        try
+        {
+            if (result ?? false)
+            {
+                await NewsCategoryService.DeleteAsync(id);
+                var list = _elements.ToList();
+                list.Remove(_elements.Single(x => x.Id == id));
+                _elements = list;
+            }
+            Snackbar.Delete(EntitiesResources.NewsGroup);
+        }
+        catch (Exception ex)
+        {
+            ex.ShowErrorSnackbar(Snackbar, EntitiesResources.NewsGroup);
+            await JsRuntime.LogError(ex);
+        }
+    }
+}

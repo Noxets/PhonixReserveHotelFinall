@@ -1,0 +1,24 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@inherits MudSwitch<T>
+
+@if (OnRender)
+{
+    <HamkareSkeletonInput HaveHelper="false"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter] public bool OnRender { get; set; } = true;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Color = parameters.TryGetValue("Color", out Color color) ? color : Color;
+        LabelPosition = parameters.TryGetValue("LabelPosition", out LabelPosition labelPosition) ? labelPosition : LabelPosition.Start;
+        Class = parameters.TryGetValue("Class", out string classes) ? classes + " w-100" : "w-100";
+        await base.SetParametersAsync(parameters);
+    }
+}

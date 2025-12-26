@@ -1,0 +1,261 @@
+﻿@page "/UserPanel"
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Common.Entities.Orders
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Resource.General
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Service.Services.Orders
+@using Hamkare.Utility.Extensions
+@inject NavigationManager NavigationManager
+@inject UserService UserService
+@inject OrderService OrderService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>@GeneralResources.UserPanel</PageTitle>
+
+@if (OnRender)
+{
+    <HamkareLoading/>
+}
+else
+{
+    <MudGrid>
+
+    <MudItem xs="12" lg="8">
+
+    <MudPaper Elevation="0" Class="rounded-lg p-3 full-height">
+
+        @if (FirstLevel)
+        {
+            <BasketFirstCheck Basket="Basket" CurrentUser="CurrentUser" OnOrderItemChanged="() => {StateHasChanged();}"/>
+        }
+        else
+        {
+            <BasketFinalCheck Basket="Basket" Back="() => FirstLevel = true" BasketChange="() => {StateHasChanged();}"/>
+        }
+
+    </MudPaper>
+
+    <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="true">
+        <div style="margin-top: 78px">
+
+        </div>
+    </MudHidden>
+
+    </MudItem>
+
+    <MudHidden Breakpoint="Breakpoint.LgAndUp" Invert="true">
+
+        <MudItem lg="4" Class="full-height">
+
+            <MudPaper Elevation="0" Class="rounded-lg p-3 position-sticky">
+
+                <MudText Color="Color.Primary" Typo="Typo.h6" Class="pb-3">
+                    <b>اطلاعات پرداخت</b>
+                </MudText>
+
+                <MudStack Row="true" Class="py-3">
+
+                    <MudText>
+                        <b>مبلغ کالا‌ها</b>
+                    </MudText>
+
+                    <MudSpacer/>
+
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+
+                        <MudText Typo="Typo.h6">
+                            <b>@Basket.Price</b>
+                        </MudText>
+
+                        <MudText Typo="Typo.caption">تومان</MudText>
+
+                    </MudStack>
+
+                </MudStack>
+
+                @if (Basket.TotalDiscount != 0)
+                {
+                    <MudStack Row="true" Class="py-3">
+
+                        <MudText Color="Color.Error">
+                            <b>تخفیف کل</b>
+                        </MudText>
+
+                        <MudSpacer/>
+
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+
+                            <MudText Typo="Typo.h6" Color="Color.Error">
+                                <b>@Basket.TotalDiscount</b>
+                            </MudText>
+
+                            <MudText Typo="Typo.caption" Color="Color.Error">تومان</MudText>
+
+                        </MudStack>
+
+                    </MudStack>
+                }
+
+                @if (Basket.Tax != 0)
+                {
+                    <MudStack Row="true" Class="py-3">
+
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+
+                            <MudText>
+                                <b>مالیات</b>
+                            </MudText>
+
+                        </MudStack>
+
+                        <MudSpacer/>
+
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+
+                            <MudText Typo="Typo.h6">
+                                <b>@Basket.Tax</b>
+                            </MudText>
+
+                            <MudText Typo="Typo.caption">تومان</MudText>
+
+                        </MudStack>
+
+                    </MudStack>
+                }
+
+                <MudDivider/>
+
+                <MudDivider/>
+                
+                <MudStack Row="true" Class="py-3">
+
+                    <MudText>
+                        <b>مبلغ قابل پرداخت</b>
+                    </MudText>
+
+                    <MudSpacer/>
+
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                        
+                            <MudText Typo="Typo.h6">
+                                <b>@Basket.TotalPayableWithoutWallet</b>
+                            </MudText>
+
+                        <MudText Typo="Typo.caption">تومان</MudText>
+
+                    </MudStack>
+
+                </MudStack>
+
+                <MudStack Row="true" Spacing="3" Class="mt-auto">
+
+                    <MudIconButton Class="rounded-lg p-2" Icon="@Icons.Material.Outlined.Discount" Variant="Variant.Outlined" Color="Color.Default"></MudIconButton>
+
+                    @if (FirstLevel)
+                    {
+                        <MudButton Class="rounded-lg" DropShadow="false" Color="Color.Primary" Variant="Variant.Filled"
+                                   FullWidth="true" Size="Size.Large" OnClick="@(() => FirstLevel = !FirstLevel)">
+                            تایید و تکمیل
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Class="rounded-lg" DropShadow="false" Color="Color.Primary" Variant="Variant.Filled"
+                                   FullWidth="true" Size="Size.Large" OnClick="@(_ => Submit())">
+                            پرداخت
+                        </MudButton>
+                    }
+                    
+                </MudStack>
+
+            </MudPaper>
+
+        </MudItem>
+
+    </MudHidden>
+
+    <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="true">
+
+        <MudAppBar Bottom="true" Fixed="true" Color="Color.Transparent" Elevation="0" Class="p-3" Gutters="false">
+
+            <MudPaper Elevation="0" class="d-flex align-items-center w-100 px-3 rounded-lg h-100">
+
+                <MudIconButton Class="rounded-lg p-2 me-3" Icon="@Icons.Material.Outlined.Discount" Variant="Variant.Outlined" Color="Color.Default"></MudIconButton>
+
+                @if (FirstLevel)
+                {
+                    <MudButton Class="rounded-lg" DropShadow="false" Color="Color.Primary" Variant="Variant.Filled"
+                               Size="Size.Large" OnClick="@(() => FirstLevel = !FirstLevel)">
+                        تایید و تکمیل
+                    </MudButton>
+
+                }
+                else
+                {
+                    <MudButton Class="rounded-lg" DropShadow="false" Color="Color.Primary" Variant="Variant.Filled"
+                               Size="Size.Large" OnClick="@(_ => Submit())">
+                        پرداخت
+                    </MudButton>
+                }
+                
+                <MudSpacer/>
+
+                <MudStack Spacing="0" Justify="Justify.FlexStart">
+
+                    <MudText Typo="Typo.caption">
+                        <b>مبلغ قابل پرداخت</b>
+                    </MudText>
+
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+
+                        <MudText Typo="Typo.h6">
+                            <b>@Basket.TotalPayableWithoutWallet</b>
+                        </MudText>
+
+                        <MudText Typo="Typo.caption">تومان</MudText>
+
+                    </MudStack>
+
+                </MudStack>
+            </MudPaper>
+        </MudAppBar>
+    </MudHidden>
+
+    </MudGrid>
+}
+
+@code{
+    
+    public bool FirstLevel { get; set; } = true;
+    private Order Basket { get; set; }
+    private User CurrentUser { get; set; }
+    private bool OnRender { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = await UserService.GetAsync(await AuthenticationStateProvider.GetUser());
+
+        Basket = await OrderService.GetBasket(CurrentUser);
+        OnRender = false;
+    }
+
+    async Task Submit()
+    {
+        if(FirstLevel)
+            FirstLevel = false;
+        else
+        {
+            await OrderService.AddOrUpdateAsync(Basket);
+            
+            try
+            {
+                    NavigationManager.NavigateTo("/UserPanel", true);
+            }
+            catch (Exception e)
+            {
+                Snackbar.Error(e.Message);
+            }
+        }
+    }
+}

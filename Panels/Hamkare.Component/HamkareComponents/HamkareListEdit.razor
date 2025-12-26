@@ -1,0 +1,77 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+
+<PageTitle>@Title</PageTitle>
+
+<MudPaper Elevation="0" Class="h-100 p-3 rounded-lg CustomDataGrid">
+
+    <HamkareHeaderPage Title="@Title" OnRender="OnRender" ReturnLink="@ReturnLink"/>
+
+    <HamkareTable @ref="Table" Items="@Elements" Dense="true" T="T" CanCancelEdit="true" Filter="QuickFilter" CommitEditTooltip="@ViewResources.Submit" RowEditPreview="RowEditPreview" RowEditCancel="CancelEdit"
+                  Loading="OnRender" RowEditCommit="SubmitEdit" IsEditRowSwitchingBlocked="true" ApplyButtonPosition="TableApplyButtonPosition.Start" EditTrigger="TableEditTrigger.RowClick" HorizontalScrollbar="HorizontalScrollbar">
+
+        <ToolBarContent>
+
+            <HamkareTextField T="string" ValueChanged="Callback" Placeholder="@GlobalResources.Search"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.TwoTone.Search" IconSize="Size.Medium" Class="input-mt-0"
+                              OnRender="OnRender"/>
+
+            <MudSpacer/>
+
+            @if (!string.IsNullOrEmpty(AddLink))
+            {
+            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                <MudIconButton Href=@(AddLink) Color="Color.Primary"
+                               Variant="Variant.Outlined" Icon="@Icons.Material.Rounded.Add"
+                               Class="rounded-lg ms-3">
+                </MudIconButton>
+            </MudHidden>
+
+            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+
+                <MudButton Href=@(AddLink)
+                           Size="Size.Large" Color="Color.Primary"
+                           Variant="Variant.Outlined" EndIcon="@Icons.Material.Rounded.Add"
+                           Class="rounded-lg">
+                    @GlobalResources.Add
+                </MudButton>
+            </MudHidden>
+            }
+
+            @ButtonPlace
+
+        </ToolBarContent>
+
+        <HeaderContent>
+            @HeaderContent
+        </HeaderContent>
+
+        <RowTemplate>
+            @RowTemplate(context)
+        </RowTemplate>
+
+        <RowEditingTemplate>
+            @RowEditingTemplate(context)
+        </RowEditingTemplate>
+
+        <FooterContent>
+            @FooterContent
+        </FooterContent>
+
+        <PagerContent>
+
+            <MudTablePager T="T" InfoFormat="@GlobalResources.PagesCountOf"
+                           PageSizeOptions="@(Elements.Count() > 100 ? [10, 25, 50, 100, int.MaxValue] : [10, 25, 50, 100])"
+                           RowsPerPageString="@GlobalResources.PageCount"
+                           HidePagination="@HidePaging"
+                           HidePageNumber="@HidePaging"
+                           HideRowsPerPage="@HidePaging"
+                           AllItemsText="@GlobalResources.All"
+                           Class="d-flex justify-content-center align-items-center"/>
+
+        </PagerContent>
+
+    </HamkareTable>
+
+</MudPaper>

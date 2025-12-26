@@ -1,0 +1,122 @@
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Common.Entities.Orders
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Service.Services.Orders
+@using Hamkare.Utility.Settings.CoreSettings
+@inject OrderItemService OrderItemService
+@inject OrderService OrderService
+@inject UserService UserService
+
+<MudCard Elevation="1" Outlined="true" Class="rounded-lg p-3 mt-3">
+
+    <MudGrid>
+
+        <MudItem xs="12" md="8">
+
+            <MudStack Row="true">
+
+                <MudImage Class="rounded-lg" Width="100" Height="100" Src="@OrderItem.Iamges" ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center"/>
+
+                <MudStack>
+
+                    <MudText Typo="Typo.h6">
+                        <b>@OrderItem.Name</b>
+                    </MudText>
+
+                    <MudStack Row="true" Spacing="3" Class="flex-wrap mt-auto">
+                        
+                    </MudStack>
+
+                </MudStack>
+
+            </MudStack>
+
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+
+            <MudStack Row="true" Reverse="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.End"
+                      Class="w-100 h-100 flex-md-column" Spacing="1">
+
+                <MudStack Spacing="1">
+
+                    @if (OrderItem.Discount != 0)
+                    {
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                            <MudText Color="Color.Error">
+                                <b>@OrderItem.Discount</b>
+                            </MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Error">تومان</MudText>
+                        </MudStack>
+                    }
+
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                        <MudText Typo="Typo.h6">
+                            <b>@OrderItem.Price</b>
+                        </MudText>
+                        <MudText Typo="Typo.caption">تومان</MudText>
+                    </MudStack>
+
+                </MudStack>
+
+                <MudStack Row="true" Class="mt-auto">
+                    <HamkareButtonIcon Icon="@Icons.Material.Outlined.Add" Color="Color.Primary"
+                                       Variant="Variant.Outlined" Class="Rounded-lg" OnClick="() => Increase()"/>
+                    <MudText Color="Color.Primary"
+                             Class="d-flex justify-content-center align-items-center">
+                        @OrderItem.Count
+                    </MudText>
+                    <HamkareButtonIcon Icon="@Icons.Material.Outlined.Remove" Color="Color.Surface"
+                                       Variant="Variant.Outlined" Class="Rounded-lg" OnClick="() => Decrease()"/>
+                    <HamkareButtonIconToggle Class="Rounded-lg" Toggled="@GetFavorite()"
+                                             Icon="@Icons.Material.Outlined.FavoriteBorder" Color="@Color.Error"
+                                             ToggledIcon="@Icons.Material.Outlined.Favorite" ToggledColor="@Color.Error"
+                                             ToggledChanged="() => FavoriteToggle()"
+                                             Variant="Variant.Outlined"/>
+                </MudStack>
+
+            </MudStack>
+
+        </MudItem>
+    </MudGrid>
+</MudCard>
+
+@code{
+
+    [Parameter] public OrderItem OrderItem { get; set; }
+
+    [Parameter] public User User { get; set; }
+
+    [Parameter] public EventCallback OnOrderItemChanged { get; set; }
+
+    private bool InProgress { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private async Task Increase(CancellationToken cancellationToken = default)
+    {
+        await OrderItemService.AddOrUpdateAsync(OrderItem, cancellationToken);
+
+        await OnOrderItemChanged.InvokeAsync();
+    }
+
+    private async Task Decrease(CancellationToken cancellationToken = default)
+    {
+        await OnOrderItemChanged.InvokeAsync();
+    }
+
+    private Task FavoriteToggle()
+    {
+        throw new NotImplementedException();
+    }
+
+    private bool GetFavorite()
+    {
+        throw new NotImplementedException();
+    }
+
+}

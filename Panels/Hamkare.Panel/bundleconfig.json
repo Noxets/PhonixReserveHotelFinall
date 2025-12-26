@@ -1,0 +1,22 @@
+[
+  {
+    "outputFileName": "wwwroot/Js/Base.min.js",
+    "inputFiles": [
+      "wwwroot/Js/Base.js"
+    ],
+    "minify": {
+      "commentMode": "none",
+      "enabled": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/Css/Base.min.css",
+    "inputFiles": [
+      "wwwroot/Css/Base.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "none"
+    }
+  }
+]

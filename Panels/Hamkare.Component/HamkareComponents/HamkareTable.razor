@@ -1,0 +1,23 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@inherits MudTable<T>
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Class = parameters.TryGetValue("Class", out string classes) ? classes : "dataGrid";
+        Striped = !parameters.TryGetValue("Striped", out bool striped) || striped;
+        RowStyle = parameters.TryGetValue("RowStyle", out string rowStyle) ? rowStyle : "width: max-content;";
+        Bordered = !parameters.TryGetValue("Bordered", out bool bordered) || bordered;
+        Elevation = parameters.TryGetValue("Elevation", out int elevation) ? elevation : 0;
+        Hover = !parameters.TryGetValue("Hover", out bool hover) || hover;
+        FixedHeader = !parameters.TryGetValue("FixedHeader", out bool fixedHeader) || fixedHeader;
+        RowClass = parameters.TryGetValue("RowClass", out string rowClass) ? rowClass : "row-table";
+        await base.SetParametersAsync(parameters);
+    }
+}

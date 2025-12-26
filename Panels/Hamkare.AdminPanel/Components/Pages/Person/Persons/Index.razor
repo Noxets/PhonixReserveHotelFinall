@@ -1,0 +1,133 @@
+﻿@page "/AdminPanel/Person"
+@using Hamkare.Common.Entities.Persons
+@using Hamkare.Resource
+@using Hamkare.Resource.Persons
+@using Hamkare.Service.Services.Persons
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject PersonService PersonService
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="Person" AddLink="/AdminPanel/Person/Upsert"
+                 Title="@EntitiesResources.Persons" OnRender="OnRender"
+                 Element="_elements" QuickFilter="QuickFilter" ReturnLink="/adminPanel/" SearchString="@SearchString">
+
+    <Columns>
+
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+        <PropertyColumn Property="x => x.FirstName" Sortable="true" Filterable="false" Title="@PersonResources.FirstName"/>
+        <PropertyColumn Property="x => x.LastName" Sortable="true" Filterable="false" Title="@PersonResources.LastName"/>
+        <PropertyColumn Property="x => x.BirthDate" Sortable="true" Filterable="false" Title="@PersonResources.BirthDate"/>
+        <PropertyColumn Property="x => x.NationalCode" Sortable="true" Filterable="false" Title="@PersonResources.NationalCode"/>
+
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false" Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())" StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+
+                <MudTooltip Text="@(context.Item.Active ? GlobalResources.Active : GlobalResources.Inactive)"
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudToggleIconButton Class="action-button-dataGrid rounded-lg" Toggled="@context.Item.Active"
+                                         Icon="@Icons.Material.TwoTone.CheckBoxOutlineBlank" Color="@Color.Error"
+                                         ToggledIcon="@Icons.Material.TwoTone.Check" ToggledColor="@Color.Success" ToggledChanged="@(e => HandleToggleChange(context.Item.Id, e))" Variant="Variant.Text"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Edit} {context.Item.FullName}") Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Size="@Size.Small" Class="action-button-dataGrid rounded-lg" Variant="Variant.Text"
+                                   Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary"
+                                   Href="@($"/AdminPanel/Person/Upsert/{context.Item.Id}")"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Deleted} {context.Item.FullName}") Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid rounded-lg" Size="@Size.Small" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="@(_ => HandleRemoveChange(context.Item.Id))"/>
+                </MudTooltip >
+
+            </CellTemplate >
+
+        </TemplateColumn >
+
+    </Columns>
+
+</HamkareListView>
+
+
+@code{
+
+    private IEnumerable<Person> _elements = new List<Person>();
+    private string SearchString { get; set; }
+    private bool OnRender { get; set; } = true;
+    private Func<Person, bool> QuickFilter => x => {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.FullName) && x.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.NationalCode) && x.NationalCode.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.BirthDate.ToString().Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _elements = await PersonService.GetAllAsync();
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleToggleChange(long id, bool toggled)
+    {
+        try
+        {
+            await PersonService.ActiveOrDeactivateAsync(id);
+
+            toggled = !toggled;
+
+            if (toggled)
+                Snackbar.IsDeactivate(EntitiesResources.Person);
+            else
+                Snackbar.IsActive(EntitiesResources.Person);
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id)
+    {
+        var result = await DialogService.RemoveDialog();
+        try
+        {
+            if (result ?? false)
+            {
+                await PersonService.DeleteAsync(id);
+                var list = _elements.ToList();
+                list.Remove(_elements.Single(x => x.Id == id));
+                _elements = list;
+            }
+            Snackbar.Delete(EntitiesResources.Person);
+        }
+        catch (Exception ex)
+        {
+            ex.ShowErrorSnackbar(Snackbar, EntitiesResources.Person);
+            await JsRuntime.LogError(ex);
+        }
+    }
+}

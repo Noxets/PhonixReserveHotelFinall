@@ -1,0 +1,41 @@
+@using Hamkare.Common.Entities.Orders
+@inherits Hamkare.Component.ComponentRoot
+
+<style>
+    .limited-line{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+</style>
+
+<MudStack Row="true" Class="w-100 rounded-lg stack-title-table" AlignItems="AlignItems.Center">
+
+    <MudItem xs="2">
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowForward" Class="rounded-lg pa-1" OnClick="() => Back.InvokeAsync()"/>
+    </MudItem>
+
+    <MudItem xs="8">
+        <MudText Typo="Typo.h6" Align="Align.Center">مرحله نهایی</MudText>
+    </MudItem>
+
+    <MudItem xs="2">
+    </MudItem>
+
+</MudStack>
+
+@code {
+    [Parameter] [EditorRequired] public EventCallback Back { get; set; }
+
+    [Parameter] [EditorRequired] public EventCallback BasketChange { get; set; }
+
+    [Parameter] [EditorRequired] public Order Basket { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetContextAsync();
+        
+        await BasketChange.InvokeAsync();
+    }
+}

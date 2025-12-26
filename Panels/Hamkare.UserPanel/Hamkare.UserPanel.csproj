@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="Components\Layout\UserPanelLayout.razor"/>
+        <AdditionalFiles Include="Components\Pages\Comments\MyComments.razor"/>
+        <AdditionalFiles Include="Components\Pages\Comments\MyFavorites.razor"/>
+        <AdditionalFiles Include="Components\Pages\Orders\MyOrders.razor"/>
+        <AdditionalFiles Include="Components\Pages\Profile\Profile.razor"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\Hamkare.Common\Hamkare.Common.csproj"/>
+        <ProjectReference Include="..\..\Core\Hamkare.Component\Hamkare.Component.csproj"/>
+        <ProjectReference Include="..\..\Core\Hamkare.Service\Hamkare.Service.csproj"/>
+        <ProjectReference Include="..\..\Core\Hamkare.Utility\Hamkare.Utility.csproj"/>
+        <ProjectReference Include="..\Hamkare.Component\Hamkare.Component.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.8"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Components\Pages\Courses\MyCourse.razor" />
+      <UpToDateCheckInput Remove="Components\Pages\Courses\MyCourseShow.razor" />
+    </ItemGroup>
+
+
+</Project>

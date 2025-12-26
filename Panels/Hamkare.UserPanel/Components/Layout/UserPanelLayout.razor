@@ -1,0 +1,254 @@
+@using MudBlazor.Utilities
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Resource
+@using Hamkare.Resource.UserPanel
+@using Hamkare.Utility.Extensions
+@using Microsoft.AspNetCore.Http
+@inject NavigationManager UriHelper;
+@inject IHttpContextAccessor HttpContextAccessor
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserService UserService
+@inherits LayoutComponentBase
+
+<HeadContent>
+    <HamkareHeader/>
+    <HamkareFooter/>
+</HeadContent>
+
+<MudRTLProvider RightToLeft="@(Thread.CurrentThread.CurrentUICulture.IsRtl())">
+
+    <MudThemeProvider Theme="_userPanelTheme" @bind-IsDarkMode="@_isDarkMode"/>
+    <MudPopoverProvider/>
+    <MudDialogProvider/>
+    <MudSnackbarProvider/>
+
+    <MudLayout Class="userPanelLayout">
+
+        <MudAppBar Elevation="0" Class="p-3 z-1" Gutters="false">
+
+            <MudPaper Class="w-100 h-100 d-flex align-items-center p-3 rounded-lg gap-3" Elevation="0">
+
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" OnClick="@ToggleDrawer" Class="rounded-lg pa-2"/>
+
+                <MudSpacer/>
+                
+                <MudTooltip Text="@(_isDarkMode ? ViewResources.Light : ViewResources.Dark)" Color="Color.Default" Placement="Placement.Bottom" Arrow="true">
+
+                    <MudToggleIconButton Toggled="@_isDarkMode"
+                                         Icon="@Icons.Material.Outlined.DarkMode"
+                                         Color="Color.Default"
+                                         ToggledChanged="ChangeDarkMode"
+                                         ToggledIcon="@Icons.Material.Outlined.LightMode" ToggledColor="Color.Default" Class="rounded-lg pa-2"/>
+
+                </MudTooltip>
+
+                <MudTooltip Text="خروج" Color="Color.Default" Placement="Placement.Bottom" Arrow="true">
+
+                    <MudIconButton Icon="@Icons.Material.Outlined.Logout" Class="rounded-lg pa-2"
+                                   href="/Api/Account/LogOut"/>
+
+                </MudTooltip>
+
+            </MudPaper>
+
+        </MudAppBar>
+
+        <MudDrawer @bind-Open="@_open" Elevation="0" Width="300px" Variant="@DrawerVariant.Responsive" Color="Color.Transparent" Class="userPanelDrawer">
+
+            <MudPaper Class="rounded-lg m-3 me-0 h-100 d-flex flex-column" Elevation="0">
+
+                <MudDrawerHeader>
+
+                    <MudLink href="/" Class="w-100">
+                        <MudImage Src="/Images/Logo.svg" Class="p-3" Width="200" Fluid="true"></MudImage>
+                    </MudLink>
+
+                </MudDrawerHeader>
+
+                <MudNavMenu Color="Color.Primary" Class="p-3">
+
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.ShoppingBasket"
+                                Href="/UserPanel" Class="rounded-lg mb-2">
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudText>سبد خرید</MudText>
+                        </MudStack>
+                    </MudNavLink>
+
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Wallet" Href="/UserPanel/MyPayments" Class="rounded-lg mb-2">
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudText>@UserPanelResources.Wallet</MudText>
+                            <MudSpacer/>
+                            <MudText Color="Color.Primary">
+                                <b>
+                                    @CurrentUser?.Wallet.ToString("#,##0")
+                                </b>
+                            </MudText>
+                        </MudStack>
+                    </MudNavLink>
+
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.LocalMall" Href="/UserPanel/MyOrders" Class="rounded-lg mb-2">
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudText>@UserPanelResources.Orders</MudText>
+                        </MudStack>
+                    </MudNavLink>
+
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.FavoriteBorder" Href="/UserPanel/MyFavorites" Class="rounded-lg mb-2">
+                        <MudText>@UserPanelResources.Favorites</MudText>
+                    </MudNavLink>
+
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.ModeComment" Href="/UserPanel/MyComments" Class="rounded-lg mb-2">
+                        <MudText>@UserPanelResources.Comment</MudText>
+                    </MudNavLink>
+
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.MenuBook" Href="/UserPanel/MyCourses"
+                                    Class="rounded-lg mb-2">
+                        <MudText>@GlobalResources.MyCourses</MudText>
+                    </MudNavLink>
+                    
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.LocationOn" Href="/UserPanel/MyAddress" Class="rounded-lg mb-2">
+                        <MudText>@UserPanelResources.Address</MudText>
+                    </MudNavLink>
+
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.PersonOutline" Href="/UserPanel/MyProfile" Class="rounded-lg mb-2">
+                        <MudText>@UserPanelResources.Information</MudText>
+                    </MudNavLink>
+
+                </MudNavMenu>
+
+                <MudSpacer/>
+
+                <MudCard Elevation="0" Class="m-3 rounded-lg userProfile">
+
+                    <MudCardHeader>
+
+                        <CardHeaderAvatar>
+
+                            <MudAvatar Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Large">
+                                @if (string.IsNullOrWhiteSpace(CurrentUser?.Image))
+                                {
+                                    <MudText>
+                                        @CurrentUser?.Name[0].ToString().ToUpper()
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <MudImage Fluid="true" Src="@($"/Upload/Person/{CurrentUser.Image}")"></MudImage>
+                                }
+                            </MudAvatar>
+
+                        </CardHeaderAvatar>
+
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@CurrentUser?.Name</MudText>
+                            <MudText>@CurrentUser?.UserName</MudText>
+                        </CardHeaderContent>
+
+                    </MudCardHeader>
+
+                </MudCard>
+
+            </MudPaper>
+
+        </MudDrawer>
+
+        <MudMainContent>
+            <MudContainer MaxWidth="MaxWidth.False" Class="mx-4 mb-4 p-0 w-auto">
+                <ErrorBoundary @ref="_errorBoundary">
+                    @Body
+                </ErrorBoundary>
+            </MudContainer>
+        </MudMainContent>
+
+    </MudLayout>
+</MudRTLProvider>
+
+@code{
+
+    private ErrorBoundary _errorBoundary;
+
+    protected override void OnParametersSet()
+    {
+        _errorBoundary?.Recover();
+    }
+
+    private readonly MudTheme _userPanelTheme = new MudTheme
+    {
+        PaletteLight = new PaletteLight
+        {
+            Background = new MudColor("#f9fafc"),
+            AppbarBackground = new MudColor("#f9fafc")
+        },
+        PaletteDark = new PaletteDark
+        {
+            Background = new MudColor("#14222b"),
+            AppbarBackground = new MudColor("#14222b"),
+            Surface = new MudColor("#202c33")
+        },
+        Typography = new Typography
+        {
+            Default = new Default
+            {
+                FontFamily = FontFamily()
+            }
+        }
+    };
+
+    private bool _isDarkMode;
+    private bool _open = true;
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    private User CurrentUser { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            CurrentUser = await UserService.GetAsync(await AuthenticationStateProvider.GetUser());
+        }
+        catch (Exception)
+        {
+            UriHelper.NavigateTo("/Login");
+        }
+
+        try
+        {
+            _isDarkMode = HttpContextAccessor.HttpContext?.Request.Cookies["DarkMode"] == "dark";
+        }
+        catch (Exception e)
+        {
+            Snackbar.Error(e.Message);
+        }
+    }
+
+    private void ChangeDarkMode()
+    {
+        var queryString = HttpContextAccessor.HttpContext?.Request.QueryString;
+        var path = new Uri(UriHelper.Uri).GetComponents(UriComponents.Path, UriFormat.Unescaped);
+        var encodedPath = Uri.EscapeDataString(path);
+        var encodedPathAndQueryString = $"{encodedPath}{queryString}";
+
+        UriHelper.NavigateTo(
+            $"Home/DarkMode?isDarkMode={!_isDarkMode}&returnUrl=%2F{encodedPathAndQueryString}",
+            forceLoad: true);
+    }
+    
+    private void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+
+    private static string[] FontFamily()
+    {
+        var list = new List<string>();
+        switch (Thread.CurrentThread.CurrentUICulture.Name)
+        {
+            case "fa":
+                list.Add("panel-fa-Font");
+                break;
+        }
+
+        list.AddRange(["OpenSans", "Arial", "sans-serif"]);
+
+        return list.ToArray();
+    }
+}

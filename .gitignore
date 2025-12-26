@@ -1,0 +1,12 @@
+.vs
+
+bin/
+obj/
+/WebApp/bin/
+/WebApp/obj/
+/WebApp/appsettings.json
+WebApp/.idea/
+.idea/
+/.idea/
+CMS.sln.DotSettings.user
+!/CMS.sln.DotSettings.user

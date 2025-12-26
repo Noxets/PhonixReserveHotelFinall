@@ -1,0 +1,86 @@
+﻿@page "/UserPanel/MyOrders"
+@using Hamkare.Common.Entities.Orders
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Resource
+@using Hamkare.Resource.Orders
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Service.Services.Orders
+@using Hamkare.Utility.Extensions
+@inject OrderService OrderService
+@inject UserService UserService 
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="Order"
+                 Title="@EntitiesResources.Orders" OnRender="OnRender"
+                 Element="_elements"
+                 QuickFilter="QuickFilter" ReturnLink="/userPanel/" SearchString="@SearchString">
+
+    <Columns>
+
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+
+        <PropertyColumn Property="x => x.State.GetEnumDisplayName()" Sortable="true" Filterable="false" Title="@OrdersResources.OrderState"/>
+
+        <PropertyColumn Property="x => x.TotalPayableWithoutWallet" Sortable="true" Filterable="false"
+                        Title="@OrdersResources.TotalPayable"/>
+
+        <PropertyColumn Property="@(x => x.OrderDate.ToString(true))" Sortable="true" Filterable="false"
+                        Title="@OrdersResources.OrderDate"/>
+
+    </Columns>
+
+</HamkareListView>
+
+@code{
+    private IEnumerable<Order> _elements = new List<Order>();
+    private string SearchString { get; set; }
+    private bool OnRender { get; set; } = true;
+
+    private Func<Order, bool> QuickFilter => x =>
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.User.Name) && x.User.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase) || !string.IsNullOrEmpty(x.User.UserName) && x.User.UserName.Contains(SearchString, StringComparison.OrdinalIgnoreCase) || !string.IsNullOrEmpty(x.User.PhoneNumber) && x.User.PhoneNumber.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.State.ToString().Contains(SearchString, StringComparison.OrdinalIgnoreCase) || x.State.GetEnumDisplayName().Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.OrderDate.ToString(Thread.CurrentThread.CurrentUICulture).Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.TotalPrice.ToString(CultureInfo.InvariantCulture).Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.TotalDiscount.ToString(CultureInfo.InvariantCulture).Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.TotalPayableWithoutWallet.ToString(CultureInfo.InvariantCulture).Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var user = await UserService.GetAsync(await AuthenticationStateProvider.GetUser());
+            _elements = await OrderService.GetAllActiveAsync(x => x.UserId == user.Id);
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+}

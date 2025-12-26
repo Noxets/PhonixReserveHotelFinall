@@ -1,0 +1,73 @@
+@page "/AdminPanel/Redirect/Upsert"
+@page "/AdminPanel/Redirect/Upsert/{Id:long}"
+@using System.Net
+@using Hamkare.Common.Entities.General
+@using Hamkare.Resource
+@using Hamkare.Service.Services.General
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Resource.General
+@inject RedirectService RedirectService
+
+<HamkareUpsertForm T="Redirect" OnRender="OnRender" OnSubmit="Submit" ReturnUrl="/adminPanel/Redirect" Model="_model" Title="@(Id == 0 ? $"{GlobalResources.Add} {EntitiesResources.Redirect}" : $"{GlobalResources.Edit} {EntitiesResources.Redirect}")">
+
+    <Body>
+
+    @* Todo Source *@
+    <MudItem xs="12" md="6" lg="3">
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Source" For="@(() => _model.Source)"
+                          Label="مبدا" HelperText="/Source"/>
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+        <HamkareSelect OnRender="OnRender" @bind-Value="_model.Code" Label="@GlobalResources.Code" T="HttpStatusCode" ToStringFunc="code => code.GetEnumDisplayName()">
+            @foreach (HttpStatusCode item in Enum.GetValues(typeof(HttpStatusCode)))
+            {
+                <MudSelectItem Value="@item">@item.GetEnumDisplayName()</MudSelectItem>
+            }
+
+        </HamkareSelect>
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Destination" For="@(() => _model.Destination)"
+                          Label="@GeneralResources.Destination" HelperText="/Destination"/>
+    </MudItem>
+
+    </Body>
+
+</HamkareUpsertForm>
+
+@code{
+
+    private Redirect _model = new();
+
+    [Parameter] public long Id { get; set; }
+    public bool OnRender { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != 0)
+            _model = await RedirectService.FindAsync(Id);
+
+        OnRender = false;
+    }
+
+    private async Task<bool> Submit()
+    {
+        try
+        {
+            await RedirectService.AddOrUpdateAsync(_model);
+            Snackbar.SuccessAddOrUpdate(EntitiesResources.Redirect);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.LogError(e);
+            Snackbar.ErrorAddOrUpdate(EntitiesResources.Redirect);
+        }
+
+        return false;
+    }
+}

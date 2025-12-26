@@ -1,0 +1,22 @@
+[
+  {
+    "outputFileName": "wwwroot/_content/css/Layout.min.css",
+    "inputFiles": [
+      "wwwroot/_content/css/Layout.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "none"
+    }
+  },
+  {
+    "outputFileName": "wwwroot/_content/js/Layout.min.js",
+    "inputFiles": [
+      "wwwroot/_content/js/Layout.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "none"
+    }
+  }
+]

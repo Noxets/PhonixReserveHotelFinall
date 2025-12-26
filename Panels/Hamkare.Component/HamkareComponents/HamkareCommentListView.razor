@@ -1,0 +1,167 @@
+@typeparam T where T : Hamkare.Common.Interface.Entities.ICommentEntity
+@attribute [CascadingTypeParameter("T")]
+@inherits ComponentBase
+
+<PageTitle>@Title</PageTitle>
+
+<MudPaper Elevation="0" Class="h-100 p-3 rounded-lg CustomDataGrid">
+
+    <MudStack Row="true" Class="w-100 rounded-lg mb-2 stack-title-table" AlignItems="AlignItems.Center">
+
+        <MudItem xs="2">
+            <MudTooltip Text="@GlobalResources.Return" Placement="Placement.Bottom" Arrow="true">
+                <MudIconButton Href="@ReturnLink" Class="rounded-lg"
+                               Icon="@(Thread.CurrentThread.CurrentUICulture.IsRtl() ? Icons.Material.TwoTone.ArrowForward : Icons.Material.TwoTone.ArrowBack)">
+                </MudIconButton>
+            </MudTooltip>
+        </MudItem>
+
+        <MudItem xs="8">
+            <MudText Typo="Typo.h6" Align="Align.Center">@Title</MudText>
+        </MudItem>
+
+    </MudStack>
+
+    <HamkareDataGrid @ref="@Grid" T="T" Items="@Element" QuickFilter="@QuickFilter" Loading="OnRender">
+
+        <ToolBarContent >
+
+            <MudTextField Margin="Margin.Dense" T="string" @bind-Value="SearchString" Placeholder="@GlobalResources.Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.TwoTone.Search" Variant="Variant.Outlined" IconSize="Size.Medium" Class="input-mt-0">
+            </MudTextField>
+
+            <MudSpacer/>
+
+        </ToolBarContent>
+
+        <Columns>
+
+            <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+            <PropertyColumn Property="x => x.Creator.Name" Sortable="true" Filterable="false" Title="@EntitiesResources.Person"/>
+            <PropertyColumn Property="x => x.Text" Sortable="true" Filterable="false" Title="@CommentResources.Text"/>
+            <PropertyColumn Property="x => x.Rating" Sortable="true" Filterable="false" Title="@CommentResources.Rating"/>
+            <TemplateColumn Title="@GlobalResources.Active" Sortable="true" Filterable="false">
+
+                <CellTemplate>
+                    <MudSwitch @bind-Value="context.Item.Active" Color="Color.Success" ReadOnly="true"/>
+                </CellTemplate>
+
+            </TemplateColumn>
+            @Columns
+
+        </Columns >
+
+        <PagerContent>
+            <HamkareDataGridPager T="T" InfoFormat="@GlobalResources.PagesCountOf"
+                                  PageSizeOptions="@(Element.Count() > 100 ? [10, 25, 50, 100, int.MaxValue] : [10, 25, 50, 100])"
+                                  RowsPerPageString="@GlobalResources.PageCount"
+                                  Class="d-flex justify-content-center align-items-center"/>
+        </PagerContent >
+
+    </HamkareDataGrid>
+</MudPaper>
+
+<MudDialog @bind-Visible="_visible" Options="_dialogOptions" Class="rounded-lg">
+
+    <TitleContent>
+        <MudText Typo="Typo.h6" Color="Color.Primary">
+            @GlobalResources.Detail
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+
+        <HamkareListItemDialog T="T" Model="DialogModel"/>
+
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Text" Color="Color.Default" DropShadow="true" OnClick="@(CloseDialog)" Class="px-10 m-1">@GlobalResources.Return</MudButton>
+    </DialogActions>
+
+</MudDialog>
+
+@code{
+
+    private HamkareDataGrid<T> Grid { get; set; }
+
+    #region Paging
+
+    private void RowsPerPageChanged(int rowsPerPage)
+    {
+        if (!OnRender)
+            ProtectedLocalStorage.SetAsync("HamkareRowsPerPage", rowsPerPage);
+    }
+
+    #endregion
+
+    #region Filter
+
+    private Func<T, bool> QuickFilter => x => {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (x.Text.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.Creator.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+        _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+
+    #endregion
+
+    #region Parameter
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string ReturnLink { get; set; }
+
+    [Parameter]
+    public string AddLink { get; set; }
+
+    [Parameter]
+    public IEnumerable<T> Element { get; set; } = new List<T>();
+
+    [Parameter]
+    public bool OnRender { get; set; } = true;
+
+    public string SearchString { get; set; }
+
+    [Parameter]
+    public RenderFragment Columns { get; set; }
+
+    #endregion
+
+    #region Dialog
+
+    private T DialogModel { get; set; }
+
+    private bool _visible;
+
+    private void OpenDialog(T item)
+    {
+        DialogModel = item;
+        _visible = true;
+    }
+
+    void CloseDialog() => _visible = false;
+
+    private readonly DialogOptions _dialogOptions = new()
+    {
+        FullWidth = true
+    };
+
+    #endregion
+}

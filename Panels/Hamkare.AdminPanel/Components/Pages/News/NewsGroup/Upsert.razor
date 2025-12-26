@@ -1,0 +1,98 @@
+@page "/AdminPanel/NewsGroup/Upsert"
+@page "/AdminPanel/NewsGroup/Upsert/{Id:long}"
+@using Hamkare.Common.Entities.News
+@using Hamkare.Resource
+@using Hamkare.Resource.News
+@using Hamkare.Service.Services.News
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject NewsCategoryService NewsCategoryService
+
+<HamkareUpsertForm T="NewsCategory" OnRender="OnRender" OnSubmit="Submit" ReturnUrl="/adminPanel/NewsGroup" Model="_model" Title="@(Id==0 ? $"{GlobalResources.Add} {EntitiesResources.NewsGroup}" : $"{GlobalResources.Edit} {EntitiesResources.NewsGroup}")">
+
+    <Body>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Name" For="@(() => _model.Name)" Label="Name"
+                          HelperText="@GlobalResources.URLHelper" Counter="2000" MaxLength="2000"/>
+
+    </MudItem>
+    
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Description" For="@(() => _model.Description)" Label="Url"
+                          HelperText="@GlobalResources.URLHelper" Counter="2000" MaxLength="2000"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3" Class="d-flex align-items-center">
+        <HamkareSwitch OnRender="OnRender" @bind-Value="@_model.ShowInMenu" Label="@GlobalResources.ShowInMenu"/>
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareSelectMain OnRender="OnRender" @bind-Value="@_model.ParentId" List="_newsGroupList"
+                           Label="@GlobalResources.Parent" Clearable HelperText="@NewsResources.ParentHelper"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareNumericField OnRender="OnRender" @bind-Value="_model.Order" For="@(() => _model.Order)"
+                             Label="@GlobalResources.Order" HelperText="@GlobalResources.OrderHelper"/>
+
+    </MudItem>
+
+    </Body>
+
+</HamkareUpsertForm>
+
+@code{
+    private NewsCategory _model = new();
+    private IReadOnlyList<NewsCategory> _newsGroupList = new List<NewsCategory>();
+
+    [Parameter]
+    public long Id { get; set; }
+
+    public bool OnRender { get; set; } = true;
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id == 0)
+        {
+            var parent = await NewsCategoryService.GetAllActiveAsync(x => x.Active && x.Id != _model.Id);
+            _newsGroupList = parent;
+        }
+        else
+        {
+            _model = await NewsCategoryService.FindAsync(Id);
+            var parent = await NewsCategoryService.AvailableParent(_model.Id);
+            _newsGroupList = parent.Where(x => x.Active).ToList();
+        }
+
+        OnRender = false;
+    }
+
+    private async Task<bool> Submit()
+    {
+        try
+        {
+            if (_model.Validate(out var errors))
+            {
+                Snackbar.Error(errors);
+                return false;
+            }
+
+            await NewsCategoryService.AddOrUpdateAsync(_model);
+            Snackbar.SuccessAddOrUpdate(EntitiesResources.NewsGroup);
+            return true;
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.LogError(e);
+            e.ShowErrorSnackbar(Snackbar, EntitiesResources.NewsGroup);
+        }
+
+        return false;
+    }
+}

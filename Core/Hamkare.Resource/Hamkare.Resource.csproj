@@ -1,0 +1,334 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="GlobalResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>GlobalResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="ErrorResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="CommentResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CommentResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="IdentityResources.resx">
+            <LastGenOutput>IdentityResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="IdentityResources.ar.resx">
+            <LastGenOutput>IdentityResources.ar.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Addresses\AddressResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AddressResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Addresses\AddressResources.ar.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AddressResources.ar.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Addresses\AddressResources.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AddressResources.en.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Addresses\AddressResources.tr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AddressResources.tr.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Identity\IdentityResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>IdentityResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Jobs\JobResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>JobResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Jobs\JobResources.ar.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>JobResources.ar.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Jobs\JobResources.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>JobResources.en.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Jobs\JobResources.tr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>JobResources.tr.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="News\NewsResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>NewsResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Order\OrdersResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrdersResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Order\OrdersResources.ar.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrdersResources.ar.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Order\OrdersResources.tr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrdersResources.tr.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Order\OrdersResources.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrdersResources.en.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Payment\PaymentsResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>PaymentsResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Payment\PaymentsResources.tr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>PaymentsResources.tr.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Payment\PaymentsResources.ar.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>PaymentsResources.ar.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Payment\PaymentsResources.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>PaymentsResources.en.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Persons\PersonResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>PersonResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="EntitiesResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>EntitiesResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Payments\PaymentsResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Payments\PaymentsResources.ar.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Payments\PaymentsResources.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Payments\PaymentsResources.tr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="ViewResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Download\DownloadResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>DownloadResource.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Download\DownloadResources.ar.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>DownloadResources.ar.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Download\DownloadResources.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>DownloadResources.en.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Download\DownloadResources.tr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>DownloadResources.tr.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="UserPanel\UserPanelResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>UserPanelResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="General\GeneralResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>GeneralResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Services\ServiceResources.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>ServiceResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Services\ServiceResources.ar.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>ServiceResources.ar.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Services\ServiceResources.en.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>ServiceResources.en.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Services\ServiceResources.tr.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>ServiceResources.tr.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="GlobalResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>GlobalResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="ErrorResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ErrorResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="CommentResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CommentResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Addresses\AddressResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AddressResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Addresses\AddressResources.ar.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AddressResources.ar.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Addresses\AddressResources.en.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AddressResources.en.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Addresses\AddressResources.tr.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AddressResources.tr.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Identity\IdentityResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>IdentityResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Jobs\JobResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JobResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Jobs\JobResources.ar.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JobResources.ar.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Jobs\JobResources.en.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JobResources.en.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Jobs\JobResources.tr.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JobResources.tr.resx</DependentUpon>
+        </Compile>
+        <Compile Update="News\NewsResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>NewsResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Order\OrdersResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrdersResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Order\OrdersResources.ar.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrdersResources.ar.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Order\OrdersResources.tr.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrdersResources.tr.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Order\OrdersResources.en.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrdersResources.en.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Payment\PaymentsResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>PaymentsResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Payment\PaymentsResources.tr.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>PaymentsResources.tr.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Payment\PaymentsResources.ar.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>PaymentsResources.ar.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Payment\PaymentsResources.en.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>PaymentsResources.en.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Persons\PersonResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>PersonResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="EntitiesResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>EntitiesResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Download\DownloadResources.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>DownloadResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Download\DownloadResources.ar.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>DownloadResources.ar.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Download\DownloadResources.en.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>DownloadResources.en.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Download\DownloadResources.tr.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>DownloadResources.tr.resx</DependentUpon>
+        </Compile>
+        <Compile Update="UserPanel\UserPanelResources.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>UserPanelResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="General\GeneralResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>GeneralResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Services\ServiceResources.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>ServiceResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Services\ServiceResources.ar.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>ServiceResources.ar.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Services\ServiceResources.en.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>ServiceResources.en.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Services\ServiceResources.tr.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>ServiceResources.tr.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+</Project>

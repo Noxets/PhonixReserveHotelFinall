@@ -1,0 +1,118 @@
+﻿@page "/UserPanel/MyFavorites"
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Service.Services.News
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Common.Entities.News
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Resource
+@using Hamkare.Resource.UserPanel
+@using Hamkare.UserPanel.ViewModels
+@using Hamkare.Utility.Extensions
+@inject NewsService NewsService
+@inject UserService UserService
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="MyFavoriteViewModel" OnRender="OnRender"
+                 Title="@UserPanelResources.Favorites" QuickFilter="QuickFilter" ReturnLink="/UserPanel/"
+                 Element="_elements" SearchString="@SearchString">
+
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+        <PropertyColumn Property="x => x.Name" Sortable="true" Filterable="false" Title="@GlobalResources.Name"/>
+
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false"
+                        Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())"
+                        StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+
+                <MudTooltip Text="@(GlobalResources.Deleted)" Color="Color.Error" Placement="Placement.Bottom"
+                            Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid mx-2" Size="@Size.Small" Variant="Variant.Outlined"
+                                   Icon="@Icons.Material.Outlined.Delete" Color="Color.Error"
+                                   OnClick="@(_ => HandleRemoveChange(context.Item.Id, context.Item.Type))"/>
+                </MudTooltip>
+
+            </CellTemplate>
+
+        </TemplateColumn>
+
+    </Columns>
+
+</HamkareListView>
+
+@code{
+
+    private List<MyFavoriteViewModel> _elements = [];
+    private string SearchString { get; set; }
+    private bool OnRender { get; set; } = true;
+
+    private IReadOnlyList<News> NewsList { get; set; }
+    private User User { get; set; }
+
+
+    private Func<MyFavoriteViewModel, bool> QuickFilter => x =>
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (x.Type.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            User = await UserService.GetAsync(await AuthenticationStateProvider.GetUser());
+            NewsList = await NewsService.GetAllActiveAsync(x => User.FavoriteNews.Contains(x.Id));
+
+            _elements.AddRange(NewsList.Select(x => new MyFavoriteViewModel
+            {
+                Id = x.Id,
+                Type = nameof(News),
+                Name = x.Name
+            }));
+
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id, string itemType)
+    {
+        var result = await DialogService.RemoveDialog();
+
+        if (result ?? false)
+        {
+            switch (itemType)
+            {
+                case nameof(News):
+                    User.FavoriteNews.Remove(id);
+                    break;
+            }
+
+            await UserService.AddOrUpdateAsync(User);
+
+            var list = _elements.ToList();
+            list.Remove(_elements.Single(x => x.Id == id && x.Type == itemType));
+            _elements = list;
+        }
+    }
+
+}

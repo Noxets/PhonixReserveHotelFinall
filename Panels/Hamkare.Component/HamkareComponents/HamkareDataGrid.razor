@@ -1,0 +1,29 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@inherits MudDataGrid<T>
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Culture = parameters.TryGetValue("Culture", out CultureInfo culture) ? culture : Thread.CurrentThread.CurrentUICulture;
+        MultiSelection = !parameters.TryGetValue("MultiSelection", out bool multiSelection) || multiSelection;
+        Class = parameters.TryGetValue("Class", out string classes) ? classes : "dataGrid";
+        Striped = !parameters.TryGetValue("Striped", out bool striped) || striped;
+        SortMode = parameters.TryGetValue("SortMode", out SortMode sortMode) ? sortMode : SortMode.Multiple;
+        Filterable = !parameters.TryGetValue("Filterable", out bool filterable) || filterable;
+        RowStyle = parameters.TryGetValue("RowStyle", out string rowStyle) ? rowStyle : "width: max-content;";
+        Bordered = !parameters.TryGetValue("Bordered", out bool bordered) || bordered;
+        ColumnResizeMode = parameters.TryGetValue("ColumnResizeMode", out ResizeMode columnResizeMode) ? columnResizeMode : ResizeMode.Column;
+        Elevation = parameters.TryGetValue("Elevation", out int elevation) ? elevation : 0;
+        Hover = !parameters.TryGetValue("Hover", out bool hover) || hover;
+        FixedHeader = !parameters.TryGetValue("FixedHeader", out bool fixedHeader) || fixedHeader;
+        RowClass = parameters.TryGetValue("RowClass", out string rowClass) ? rowClass : "row-table";
+
+        await base.SetParametersAsync(parameters);
+    }
+}

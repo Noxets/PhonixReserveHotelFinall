@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'fa-Font';
+    src: url(../fonts/Webfonts/woff2/YekanBakh-Regular.woff2) format('woff2'),
+    url(../fonts/Webfonts/woff/YekanBakh-Regular.woff) format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'fa-Font';
+    src: url(../fonts/Webfonts/woff2/YekanBakh-Regular.woff2) format('woff2'),
+    url(../fonts/Webfonts/woff/YekanBakh-Regular.woff) format('woff');
+    font-weight: bold;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'OpenSans-medium';
+    src: url(../fonts/OpenSans-Medium.ttf) format('truetype');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url(../fonts/OpenSans-Bold.ttf) format('truetype');
+    font-weight: bold;
+    font-display: swap;
+}

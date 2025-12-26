@@ -1,0 +1,135 @@
+﻿@page "/AdminPanel/News"
+@using Hamkare.Common.Entities.News
+@using Hamkare.Resource
+@using Hamkare.Resource.News
+@using Hamkare.Service.Services.News
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject NewsService NewsService
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="News" AddLink="/AdminPanel/News/Upsert"
+                 Title="@EntitiesResources.News" OnRender="OnRender"
+                 Element="_elements" QuickFilter="QuickFilter" ReturnLink="/adminPanel/" SearchString="@SearchString">
+
+    <Columns>
+
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+        <PropertyColumn Property="x => x.Name" Sortable="true" Filterable="false" Title="@GlobalResources.Title"/>
+        <PropertyColumn Property="x => x.Views" Sortable="true" Filterable="false" Title="@NewsResources.Views"/>
+        <PropertyColumn Property="x => x.Like" Sortable="true" Filterable="false" Title="@CommentResources.Like"/>
+        <PropertyColumn Property="x => x.ReleaseDate" Sortable="true" Filterable="false" Title="@NewsResources.ReleaseDate"/>
+
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false" Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())" StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+
+                <MudTooltip Text=@($"{GlobalResources.Comment} {context.Item.Name}")
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Size="@Size.Small" Class="action-button-dataGrid rounded-lg" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Comment" Color="Color.Default" href="@($"/AdminPanel/NewsComment/{context.Item.Id}")"/>
+                </MudTooltip >
+
+                <MudTooltip Text="@(context.Item.Active ? GlobalResources.Active : GlobalResources.Inactive)"
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudToggleIconButton Class="action-button-dataGrid rounded-lg" Toggled="@context.Item.Active"
+                                         Icon="@Icons.Material.TwoTone.CheckBoxOutlineBlank" Color="@Color.Error"
+                                         ToggledIcon="@Icons.Material.TwoTone.Check" ToggledColor="@Color.Success" ToggledChanged="@(e => HandleToggleChange(context.Item.Id, e))" Variant="Variant.Text"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Edit} {context.Item.Name}")
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Size="@Size.Small" Class="action-button-dataGrid rounded-lg" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Href="@($"/AdminPanel/News/Upsert/{context.Item.Id}")"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Deleted} {context.Item.Name}")
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid rounded-lg" Size="@Size.Small" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="@(_ => HandleRemoveChange(context.Item.Id))"/>
+                </MudTooltip >
+
+            </CellTemplate >
+
+        </TemplateColumn >
+
+    </Columns>
+
+</HamkareListView>
+
+@code{
+
+    private IEnumerable<News> _elements = new List<News>();
+    private string SearchString { get; set; }
+    private bool OnRender { get; set; } = true;
+    private Func<News, bool> QuickFilter => x => {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.Name) && x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.Description) && x.Description.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            
+            if (x.ReleaseDate.ToString(Thread.CurrentThread.CurrentUICulture).Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _elements = await NewsService.GetAllAsync();
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+    private async Task HandleToggleChange(long id, bool toggled)
+    {
+        try
+        {
+            await NewsService.ActiveOrDeactivateAsync(id);
+
+            toggled = !toggled;
+
+            if (toggled)
+                Snackbar.IsDeactivate(EntitiesResources.News);
+            else
+                Snackbar.IsActive(EntitiesResources.News);
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id)
+    {
+        var result = await DialogService.RemoveDialog();
+        try
+        {
+            if (result ?? false)
+            {
+                await NewsService.DeleteAsync(id);
+                var list = _elements.ToList();
+                list.Remove(_elements.Single(x => x.Id == id));
+                _elements = list;
+            }
+            Snackbar.Delete(EntitiesResources.News);
+        }
+        catch (Exception ex)
+        {
+            ex.ShowErrorSnackbar(Snackbar, EntitiesResources.News);
+            await JsRuntime.LogError(ex);
+        }
+    }
+}

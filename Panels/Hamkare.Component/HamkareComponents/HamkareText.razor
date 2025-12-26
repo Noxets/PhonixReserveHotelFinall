@@ -1,0 +1,18 @@
+@inherits MudText
+
+@{
+    if (OnRender)
+    {
+        <MudSkeleton Animation="Animation.Wave" SkeletonType="SkeletonType.Text"/>
+    }
+    else
+    {
+        base.BuildRenderTree(__builder);
+    }
+}
+
+
+@code {
+    [Parameter]
+    public bool OnRender { get; set; } = true;
+}

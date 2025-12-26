@@ -1,0 +1,40 @@
+<MudStack Row="true" Class="w-100 rounded-lg mb-2 stack-title-table" AlignItems="AlignItems.Center">
+
+    <MudItem xs="2">
+        <MudTooltip Text="@GlobalResources.Return" Placement="Placement.Bottom" Arrow="true">
+            <MudIconButton Href="@ReturnLink" Class="rounded-lg"
+                           Icon="@(Thread.CurrentThread.CurrentUICulture.IsRtl() ? Icons.Material.TwoTone.ArrowForward : Icons.Material.TwoTone.ArrowBack)">
+            </MudIconButton>
+        </MudTooltip>
+    </MudItem>
+
+    <MudItem xs="8">
+
+        @if (OnRender)
+        {
+            <MudSkeleton Animation="Animation.Pulse" SkeletonType="SkeletonType.Text"/>
+        }
+        else
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center">@Title</MudText>
+        }
+
+    </MudItem>
+
+    <MudItem xs="2"></MudItem>
+
+</MudStack>
+
+@code {
+    [Parameter]
+    public bool OnRender { get; set; } = true;
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string ReturnLink { get; set; }
+
+    [Parameter]
+    public RenderFragment Buttons { get; set; }
+}

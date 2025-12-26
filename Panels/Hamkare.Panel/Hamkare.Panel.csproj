@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BuildBundlerMinifier" Version="3.2.449"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.8" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+        <AdditionalFiles Include="Components\Pages\AccessDenied.razor"/>
+        <AdditionalFiles Include="Components\Pages\Error.razor"/>
+        <AdditionalFiles Include="Components\Pages\Login.razor"/>
+        <AdditionalFiles Include="Components\Pages\NotFound.razor"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="bundleconfig.json" CopyToPublishDirectory="Never"/>
+        <Content Update="wwwroot\Images\Flags" CopyToPublishDirectory="Never"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <TypeScriptCompile Include="wwwroot\Lib\TinyMCE\tinymce.d.ts"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="wwwroot\Lib\Select2\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\Hamkare.Common\Hamkare.Common.csproj" />
+      <ProjectReference Include="..\..\Core\Hamkare.Infrastructure\Hamkare.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\Core\Hamkare.Service\Hamkare.Service.csproj" />
+      <ProjectReference Include="..\Hamkare.Component\Hamkare.Component.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Print\AdminDelivererReceipt.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Print\AdminInvoice.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\_PrintLayout.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Print\Deliverer.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Print\Invoice.razor" />
+    </ItemGroup>
+    
+</Project>

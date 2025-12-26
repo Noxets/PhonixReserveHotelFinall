@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="OrderDate" xml:space="preserve">
+        <value>تاریخ سفارش</value>
+    </data>
+    <data name="OrderState" xml:space="preserve">
+        <value>وضعیت سفارش</value>
+    </data>
+    <data name="PreOrderDate" xml:space="preserve">
+        <value>تاریخ پیش سفارش</value>
+    </data>
+    <data name="DeliveryDate" xml:space="preserve">
+        <value>تاریخ تحویل</value>
+    </data>
+    <data name="TotalDiscount" xml:space="preserve">
+        <value>مبلغ کل تخفیف</value>
+    </data>
+    <data name="TotalPrice" xml:space="preserve">
+        <value>قیمت کل</value>
+    </data>
+    <data name="TotalPayable" xml:space="preserve">
+        <value>مبلغ قابل پرداخت</value>
+    </data>
+    <data name="orderDateHelper" xml:space="preserve">
+        <value>تاریخ پرداخت سفارش و نهایی شدن آن</value>
+    </data>
+    <data name="OrderStateHelper" xml:space="preserve">
+        <value>وضعیت سفارش</value>
+    </data>
+    <data name="TransportationHelper" xml:space="preserve">
+        <value>نحوه ارسال سفارش</value>
+    </data>
+    <data name="DeliveryDateHelper" xml:space="preserve">
+        <value>تاریخ ارسال سفارش</value>
+    </data>
+    <data name="DiscountHelper" xml:space="preserve">
+        <value>تخفیف روی کل فاکتور</value>
+    </data>
+    <data name="NameHelper" xml:space="preserve">
+        <value>نام کالا یا خدمات</value>
+    </data>
+    <data name="PriceHelper" xml:space="preserve">
+        <value>قیمت کالا</value>
+    </data>
+    <data name="TaxHelper" xml:space="preserve">
+        <value>تخفیف روی کل فاکتور</value>
+    </data>
+    <data name="BoxingCostHelper" xml:space="preserve">
+        <value>تخفیف روی کل فاکتور</value>
+    </data>
+    <data name="CountHelper" xml:space="preserve">
+        <value>تخفیف روی کل فاکتور</value>
+    </data>
+    <data name="OrderStateError" xml:space="preserve">
+        <value>در این مرحله امکان ویرایش اقلام فاکتور وجود ندارد</value>
+    </data>
+    <data name="MyOrders" xml:space="preserve">
+        <value>سفارشات من</value>
+    </data>
+    <data name="DatePaymentOrder" xml:space="preserve">
+        <value>تاریخ پرداخت سفارش و نهایی شدن آن</value>
+    </data>
+</root>

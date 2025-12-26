@@ -1,0 +1,10 @@
+<MudExpansionPanel Text="@Title" HideIcon="true" Expanded="true" Gutters="false">
+    <MudGrid Spacing="3">
+        @ChildContent
+    </MudGrid>
+</MudExpansionPanel>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

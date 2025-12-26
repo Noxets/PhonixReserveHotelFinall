@@ -1,0 +1,192 @@
+@typeparam T where T : Hamkare.Common.Interface.Entities.ICategoryEntity<T>
+@attribute [CascadingTypeParameter("T")]
+@using Hamkare.Common.Entities.Generics
+@inherits ComponentBase
+
+<PageTitle>@Title</PageTitle>
+
+<MudPaper Elevation="0" Class="h-100 p-3 rounded-lg CustomDataGrid">
+
+    <MudStack Row="true" Class="w-100 rounded-lg mb-2 stack-title-table" AlignItems="AlignItems.Center">
+
+        <MudItem xs="2">
+            <MudTooltip Text="@GlobalResources.Return" Placement="Placement.Bottom" Arrow="true">
+                <MudIconButton Href="@ReturnLink" Class="rounded-lg"
+                               Icon="@(Thread.CurrentThread.CurrentUICulture.IsRtl() ? Icons.Material.TwoTone.ArrowForward : Icons.Material.TwoTone.ArrowBack)">
+                </MudIconButton>
+            </MudTooltip>
+        </MudItem>
+
+        <MudItem xs="8">
+            <MudText Typo="Typo.h6" Align="Align.Center">@Title</MudText>
+        </MudItem>
+
+    </MudStack>
+
+    <HamkareDataGrid @ref="@Grid" T="T" QuickFilter="@QuickFilter" Loading="OnRender" Items="Element">
+
+        <ToolBarContent >
+
+            <MudTextField Margin="Margin.Dense" T="string" @bind-value="SearchString" Placeholder="@GlobalResources.Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.TwoTone.Search" Variant="Variant.Outlined" IconSize="Size.Medium" Class="input-mt-0">
+            </MudTextField>
+
+            <MudSpacer/>
+
+            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                <MudIconButton Href=@($"/AdminPanel/{typeof(T).Name}/Upsert") Color="Color.Primary"
+                               Variant="Variant.Outlined" Icon="@Icons.Material.Rounded.Add"
+                               Class="rounded-lg ms-3">
+                </MudIconButton>
+            </MudHidden>
+
+            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+
+                <MudButton Href=@(string.IsNullOrEmpty(AddLink) ? $"/AdminPanel/{typeof(T).Name}/Upsert" : AddLink) Size="Size.Large" Color="Color.Primary"
+                           Variant="Variant.Outlined" EndIcon="@Icons.Material.Rounded.Add"
+                           Class="rounded-lg">
+                    @GlobalResources.Add
+                </MudButton>
+            </MudHidden>
+
+        </ToolBarContent>
+
+        <Columns>
+
+            <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+            <PropertyColumn Property="x => x.Name" Sortable="true" Filterable="false" Title="@GlobalResources.Title"/>
+            <PropertyColumn Property="@(x => x.Parent != null ? x.Parent.Name : GlobalResources.Unknown)" Sortable="true" Filterable="false" Title="@GlobalResources.Parent"/>
+
+            <TemplateColumn Title="@GlobalResources.ShowInMenu" Sortable="true" Filterable="false">
+
+                <CellTemplate>
+                    <MudSwitch @bind-Value="context.Item.ShowInMenu" Color="Color.Success" ReadOnly="true"/>
+                </CellTemplate>
+
+            </TemplateColumn>
+
+            @Columns
+
+        </Columns >
+
+        <PagerContent>
+            <HamkareDataGridPager T="T" InfoFormat="@GlobalResources.PagesCountOf"
+                                  PageSizeOptions="@(Element.Count() > 100 ? [10, 25, 50, 100, int.MaxValue] : [10, 25, 50, 100])"
+                                  RowsPerPageString="@GlobalResources.PageCount"
+                                  Class="d-flex justify-content-center align-items-center"/>
+        </PagerContent >
+
+    </HamkareDataGrid>
+</MudPaper>
+
+<MudDialog @bind-Visible="_visible" Options="_dialogOptions" Class="rounded-lg">
+
+    <TitleContent>
+        <MudText Typo="Typo.h6" Color="Color.Primary">
+            @GlobalResources.Detail
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+
+        <HamkareListItemDialog T="T" Model="DialogModel"/>
+
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Text" Color="Color.Default" DropShadow="true" OnClick="@(CloseDialog)" Class="px-10 m-1">@GlobalResources.Return</MudButton>
+    </DialogActions>
+
+</MudDialog>
+
+@code{
+
+    private MudDataGrid<T> Grid { get; set; }
+
+    private string SearchString { get; set; }
+
+    #region Paging
+
+    private void RowsPerPageChanged(int rowsPerPage)
+    {
+        if (!OnRender)
+            ProtectedLocalStorage.SetAsync("HamkareRowsPerPage", rowsPerPage);
+    }
+
+    #endregion
+
+    #region Filter
+
+    private Func<T, bool> QuickFilter => x => {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+
+            if (!string.IsNullOrEmpty(x.Name) && x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.Parent != null && !string.IsNullOrEmpty(x.Parent.Name) && x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+
+    private bool MainEntityFilter(T item)
+    {
+        var mainItem = item as MainEntity;
+        return mainItem is {Description: not null} && (mainItem.Description.Contains(SearchString));
+    }
+
+    #endregion
+
+    #region Parameter
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string ReturnLink { get; set; }
+
+    [Parameter]
+    public string AddLink { get; set; }
+
+    [Parameter]
+    public IEnumerable<T> Element { get; set; } = new List<T>();
+
+    [Parameter]
+    public bool OnRender { get; set; } = true;
+
+    [Parameter]
+    public RenderFragment Columns { get; set; }
+
+    #endregion
+
+    #region Dialog
+
+    private T DialogModel { get; set; }
+
+    private bool _visible;
+
+    private void OpenDialog(T item)
+    {
+        DialogModel = item;
+        _visible = true;
+    }
+
+    void CloseDialog() => _visible = false;
+
+    private readonly DialogOptions _dialogOptions = new()
+    {
+        FullWidth = true
+    };
+
+    #endregion
+}

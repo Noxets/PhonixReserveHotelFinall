@@ -1,0 +1,144 @@
+﻿@inherits MudDateRangePicker
+
+@if (OnRender)
+{
+    <HamkareSkeletonInput HaveHelper="!string.IsNullOrWhiteSpace(HelperText)"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter] public bool OnRender { get; set; } = true;
+
+    [Parameter] public int MinuteSelectionStep { get; set; }
+
+    private bool FirstOpen { get; set; }
+    private bool SecondOpen { get; set; }
+    private bool FirstDate { get; set; } = true;
+    private TimeSpan? TimeOne { get; set; }
+    private TimeSpan? TimeTwo { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Culture = parameters.TryGetValue("Culture", out CultureInfo culture) ? culture : Thread.CurrentThread.CurrentUICulture;
+        Margin = parameters.TryGetValue("Margin", out Margin margin) ? margin : Margin.Dense;
+        Variant = parameters.TryGetValue("Variant", out Variant variant) ? variant : Variant.Outlined;
+        AnchorOrigin = parameters.TryGetValue("AnchorOrigin", out Origin anchorOrigin) ? anchorOrigin : Origin.CenterCenter;
+        TransformOrigin = parameters.TryGetValue("TransformOrigin", out Origin transformOrigin) ? transformOrigin : Origin.CenterCenter;
+        PickerVariant = parameters.TryGetValue("PickerVariant", out PickerVariant pickerVariant) ? pickerVariant : PickerVariant.Dialog;
+        DateFormat = parameters.TryGetValue("DateFormat", out string dateFormat) ? dateFormat : Thread.CurrentThread.CurrentUICulture.IsRtl() ? "HH:mm yyyy/MM/dd" : "HH:mm MM/dd/yyyy";
+        TitleDateFormat = parameters.TryGetValue("TitleDateFormat", out string titleDateFormat) ? titleDateFormat : Thread.CurrentThread.CurrentUICulture.IsRtl() ? "HH:mm yyyy/MM/dd" : "HH:mm MM/dd/yyyy";
+        MinuteSelectionStep = parameters.TryGetValue("MinuteSelectionStep", out int minuteSelectionStep) ? minuteSelectionStep : 5;
+        AutoClose = false;
+        Editable = false;
+        var dateRange = parameters.TryGetValue("DateRange", out DateRange date) ? DateRangeInit(date) : new DateRange(DateTime.Now, DateTime.Now.AddDays(1));
+        TimeOne = dateRange.Start?.TimeOfDay;
+        TimeTwo = dateRange.End?.TimeOfDay;
+        PickerActions = value => @<div class="d-flex w-100 flex-column justify-content-between">
+
+                                     <div class="d-flex align-items-center justify-content-center">
+                                         <HamkareButton OnClick="() => FirstOpen = true" Class="d-flex justify-content-between">
+                                             <HamkareText OnRender="OnRender">
+                                                 @($"زمان شروع: {(DateRange.Start.HasValue ? DateRange.Start.Value.ToString("HH:mm") : "")}")
+                                             </HamkareText>
+                                         </HamkareButton>
+
+                                         <HamkareText OnRender="OnRender" Color="Color.Primary" Class="d-flex align-items-center" Typo="Typo.h5"> - </HamkareText>
+
+                                         <HamkareButton OnClick="() => SecondOpen = true" Class="d-flex justify-content-between">
+                                             <HamkareText OnRender="OnRender">
+                                                 @($"زمان پایان: {(DateRange.End.HasValue ? DateRange.End.Value.ToString("HH:mm") : "")}")
+                                             </HamkareText>
+                                         </HamkareButton>
+
+                                         <MudIcon Icon="@Icons.Material.Outlined.Alarm"/>
+                                     </div>
+
+                                     <HamkareTimePicker Class="@(FirstOpen ? "" : "d-none")" Open="FirstOpen" AutoClose="true" Time="TimeOne" TimeChanged="ChangeTimeOne" Editable="false" PickerClosed="() => FirstOpen = false" OnRender="false" OpenTo="OpenTo.Hours" MinuteSelectionStep="MinuteSelectionStep"/>
+
+                                     <HamkareTimePicker Class="@(SecondOpen ? "" : "d-none")" Open="SecondOpen" AutoClose="true" Time="TimeTwo" TimeChanged="ChangeTimeTwo" Editable="false" PickerClosed="() => SecondOpen = false" OnRender="false" OpenTo="OpenTo.Hours" MinuteSelectionStep="MinuteSelectionStep"/>
+
+                                     <div class="d-flex w-100 justify-content-center">
+                                         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => CloseAsync())" FullWidth="false" style="max-width: 100px;">ثبت</MudButton>
+                                     </div>
+                                 </div>;
+
+        await base.SetParametersAsync(parameters);
+    }
+
+    protected override async Task OnPickerClosedAsync()
+    {
+        if (!FirstOpen && !SecondOpen)
+        {
+            if (DateRange.Start.HasValue && TimeOne.HasValue)
+                DateRange.Start = DateRange.Start.Value.Date.AddMinutes(TimeOne.Value.TotalMinutes);
+
+            if (DateRange.End.HasValue && TimeTwo.HasValue)
+                DateRange.End = DateRange.End.Value.Date.AddMinutes(TimeTwo.Value.TotalMinutes);
+
+            await DateRangeChanged.InvokeAsync(DateRange);
+            await base.OnPickerClosedAsync();
+        }
+    }
+
+    private void ChangeTimeOne(TimeSpan? obj)
+    {
+        if (FirstOpen)
+        {
+            TimeOne = obj;
+
+            if (DateRange.Start.HasValue && obj.HasValue)
+                DateRange.Start = DateRange.Start.Value.Date.AddMinutes(obj.Value.TotalMinutes);
+        }
+    }
+
+    private DateRange DateRangeInit(DateRange dateRange)
+    {
+        if (dateRange == null)
+            return new DateRange
+            {
+                Start = DateTime.Now,
+                End = DateTime.Now.AddDays(1)
+            };
+
+        var start = dateRange.Start ?? DateTime.Now;
+
+        return new DateRange
+        {
+            Start = start,
+            End = dateRange.End.HasValue && dateRange.End.Value > start ? dateRange.End : DateTime.Now.AddDays(1)
+        };
+    }
+
+    private void ChangeTimeTwo(TimeSpan? obj)
+    {
+        if (SecondOpen)
+        {
+            TimeTwo = obj;
+
+            if (DateRange.End.HasValue && obj.HasValue)
+                DateRange.End = DateRange.End.Value.Date.AddMinutes(obj.Value.TotalMinutes);
+
+            SecondOpen = false;
+        }
+    }
+
+    protected override Task OnDayClickedAsync(DateTime dateTime)
+    {
+        if (FirstDate || dateTime < DateRange.Start.Value.Date)
+        {
+            dateTime = dateTime.Date.AddMinutes(TimeOne.Value.TotalMinutes);
+            FirstDate = false;
+        }
+        else
+        {
+            dateTime = dateTime.Date.AddMinutes(TimeTwo.Value.TotalMinutes);
+            FirstDate = true;
+        }
+
+        return base.OnDayClickedAsync(dateTime);
+    }
+
+}

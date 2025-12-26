@@ -1,0 +1,17 @@
+﻿@inherits MudStack
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+
+@code {
+    [Parameter] public bool Background { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Background = parameters.TryGetValue("Background", out bool background) && background;
+        Class = Background ? parameters.TryGetValue("Class", out string classes1) ? classes1 + " rounded-lg stack-title-table p-4" : "rounded-lg stack-title-table p-4" : parameters.TryGetValue("Class", out string classes2) ? classes2 : "";
+        await base.SetParametersAsync(parameters);
+    }
+}

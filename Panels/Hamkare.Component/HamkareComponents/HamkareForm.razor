@@ -1,0 +1,14 @@
+@inherits MudForm
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+
+@code {
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        ValidationDelay = parameters.TryGetValue("ValidationDelay", out int validationDelay) ? validationDelay : 500;
+        await base.SetParametersAsync(parameters);
+    }
+}

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AboutUs" xml:space="preserve">
+    <value>درباره ما</value>
+  </data>
+    <data name="Loading" xml:space="preserve">
+        <value>لطفاً منتظر بمانید...</value>
+    </data>
+    <data name="CallUs" xml:space="preserve">
+      <value>تماس با ما</value>
+    </data>
+    <data name="BlackFriday" xml:space="preserve">
+      <value>Black Friday</value>
+    </data>
+    <data name="Alborz" xml:space="preserve">
+    <value>البرز</value>
+  </data>
+    <data name="Along" xml:space="preserve">
+    <value>همراه</value>
+  </data>
+    <data name="Company" xml:space="preserve">
+    <value>شرکتی</value>
+  </data>
+    <data name="Consistency" xml:space="preserve">
+    <value>پیگیری</value>
+  </data>
+    <data name="ConsultationRequestSuccess" xml:space="preserve">
+    <value>درخواست شما به موفقیت ثبت شد</value>
+  </data>
+    <data name="ContactUs" xml:space="preserve">
+    <value>تماس با ما</value>
+  </data>
+  <data name="CopyRight" xml:space="preserve">
+    <value>کلیه حقوق این سایت مربوط به تیم همکاره می باشد</value>
+  </data>
+  <data name="Creative" xml:space="preserve">
+    <value>خلاق و هنرمند
+
+</value>
+  </data>
+  <data name="Demo" xml:space="preserve">
+      <value>پیش نمایش</value>
+    </data>
+  <data name="Fair" xml:space="preserve">
+    <value>منصف</value>
+  </data>
+  <data name="FAQ" xml:space="preserve">
+    <value>سوالات متداول</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>از</value>
+  </data>
+  <data name="GoogleAds" xml:space="preserve">
+    <value>گوگل ادز</value>
+  </data>
+  <data name="Guarantee" xml:space="preserve">
+    <value>تعهد</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>خانه</value>
+  </data>
+  <data name="Iran" xml:space="preserve">
+    <value>ایران</value>
+  </data>
+  <data name="Karaj" xml:space="preserve">
+    <value>کرج</value>
+  </data>
+  <data name="MillionTomans" xml:space="preserve">
+    <value>میلیون تومان</value>
+  </data>
+  <data name="OurCharacteristics" xml:space="preserve">
+    <value>خصوصیات ما</value>
+  </data>
+  <data name="OurServices" xml:space="preserve">
+    <value>خدمات ما</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>شماره همراه</value>
+  </data>
+  <data name="PhoneNumberError" xml:space="preserve">
+    <value>خطا در ثبت درخواست</value>
+  </data>
+  <data name="PhoneNumberInvalid" xml:space="preserve">
+    <value>تلفن وارد شده نامعتبر است</value>
+  </data>
+  <data name="PhoneNumberRequired" xml:space="preserve">
+    <value>لطفا تلفن خود را وارد کنید</value>
+  </data>
+  <data name="Portfolio" xml:space="preserve">
+    <value>تجربیات ما</value>
+  </data>
+  <data name="Pricing" xml:space="preserve">
+    <value>قیمت ها</value>
+  </data>
+  <data name="Progressive" xml:space="preserve">
+    <value>پیشرو</value>
+  </data>
+  <data name="Safe" xml:space="preserve">
+    <value>مطمئن</value>
+  </data>
+  <data name="QuickAccess" xml:space="preserve">
+    <value>دسترسی سریع</value>
+  </data>
+  <data name="ReadyTheme" xml:space="preserve">
+      <value>قالب آماده</value>
+    </data>
+  <data name="Seo" xml:space="preserve">
+    <value>سئو و محتوا</value>
+  </data>
+  <data name="Specialty" xml:space="preserve">
+    <value>تخصص</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>ثبت</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>پشتیبانی</value>
+  </data>
+  <data name="ThousandTomans" xml:space="preserve">
+    <value>هزار تومان</value>
+  </data>
+  <data name="TimeToRead" xml:space="preserve">
+    <value>زمان تقریبی خواندن</value>
+  </data>
+  <data name="Toman" xml:space="preserve">
+    <value>تومان</value>
+  </data>
+  <data name="Trusteeship" xml:space="preserve">
+    <value>امانت داری</value>
+  </data>
+  <data name="Understanding" xml:space="preserve">
+    <value>درک متقابل</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>بروز</value>
+  </data>
+  <data name="Economic" xml:space="preserve">
+    <value>اقتصادی</value>
+  </data>
+  <data name="Exclusive" xml:space="preserve">
+    <value>اختصاصی</value>
+  </data>
+  <data name="Ecommrce" xml:space="preserve">
+    <value>فروشگاهی</value>
+  </data>
+  <data name="WorkWithUs" xml:space="preserve">
+    <value>همکاری با ما</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>مقاله</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>زبان</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>لوگو</value>
+  </data>
+  <data name="DeliveryDate" xml:space="preserve">
+    <value>تاریخ تحویل</value>
+  </data>
+  <data name="ReturnDate" xml:space="preserve">
+    <value>تاریخ استرداد</value>
+  </data>
+  <data name="AccessRestricted" xml:space="preserve">
+    <value>دسترسی به این صفحه محدود شده است</value>
+  </data>
+  <data name="CheckAdmin" xml:space="preserve">
+    <value>اگر فکر می کنید اشتباه است، لطفا با مدیر سایت چک کنید</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>خطای غیرمنتظره</value>
+  </data>
+  <data name="Luxury" xml:space="preserve">
+    <value>لوکس</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>متوسط</value>
+  </data>
+  <data name="Daily" xml:space="preserve">
+    <value>روزانه</value>
+  </data>
+  <data name="RecentArticles" xml:space="preserve">
+    <value>مقاله های اخیر</value>
+  </data>
+    <data name="CooperationWithUs" xml:space="preserve">
+    <value>همکاری با ما</value>
+  </data>
+    <data name="ReadMore" xml:space="preserve">
+    <value>بیشتر بخوانید</value>
+  </data>
+    <data name="Category" xml:space="preserve">
+    <value>دسته بندی</value>
+  </data>
+    <data name="RequestError" xml:space="preserve">
+        <value>درخواست شما با خطا مواجه شده است</value>
+    </data>
+    <data name="RequestSuccess" xml:space="preserve">
+        <value>درخواست شما با موفقیت ثبت شد</value>
+    </data>
+    <data name="DesignedBy" xml:space="preserve">
+    <value>طراحی و تولید</value>
+  </data>
+    <data name="CallBy" xml:space="preserve">
+    <value>تماس با</value>
+  </data>
+  <data name="Creation" xml:space="preserve">
+    <value>ایجاد</value>
+  </data>
+  <data name="WillBeDisplayed" xml:space="preserve">
+    <value>این مورد نمایش داده شود</value>
+  </data>
+  <data name="Light" xml:space="preserve">
+    <value>روشن</value>
+  </data>
+  <data name="Dark" xml:space="preserve">
+    <value>تیره</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>خروج</value>
+  </data>
+    <data name="SubmitAndNew" xml:space="preserve">
+    <value>ثبت و جدید</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value>صفحات</value>
+  </data>
+</root>

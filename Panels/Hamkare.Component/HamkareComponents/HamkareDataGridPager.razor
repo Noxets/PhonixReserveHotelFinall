@@ -1,0 +1,19 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@inherits MudDataGridPager<T>
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter] public int Count { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        InfoFormat = parameters.TryGetValue("InfoFormat", out string infoFormat) ? infoFormat : GlobalResources.PagesCountOf;
+        RowsPerPageString = parameters.TryGetValue("RowsPerPageString", out string rowsPerPageString) ? rowsPerPageString : GlobalResources.PageCount;
+        Class = parameters.TryGetValue("Class", out string classes) ? classes : "d-flex justify-content-center align-items-center";
+        await base.SetParametersAsync(parameters);
+    }
+}

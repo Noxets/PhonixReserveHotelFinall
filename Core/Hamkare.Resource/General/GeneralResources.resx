@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="ColorCode" xml:space="preserve">
+        <value>کد رنگ</value>
+    </data>
+    <data name="IsColor" xml:space="preserve">
+        <value>رنگ</value>
+    </data>
+    <data name="PageName" xml:space="preserve">
+        <value>نام صفحه</value>
+    </data>
+    <data name="SectionName" xml:space="preserve">
+        <value>نام بخش</value>
+    </data>
+    <data name="ContactPoint" xml:space="preserve">
+        <value>نقطه تماس</value>
+    </data>
+    <data name="Country" xml:space="preserve">
+        <value>کشور</value>
+    </data>
+    <data name="Domain" xml:space="preserve">
+        <value>دامنه</value>
+    </data>
+    <data name="EmailSettings" xml:space="preserve">
+        <value>تنظیمات ایمیل</value>
+    </data>
+    <data name="FoundingDate" xml:space="preserve">
+        <value>تاریخ تاسیس</value>
+    </data>
+    <data name="GlobalSettings" xml:space="preserve">
+        <value>تنظیمات</value>
+    </data>
+    <data name="Latitude" xml:space="preserve">
+        <value>عرض جغرافیایی</value>
+    </data>
+    <data name="Locality" xml:space="preserve">
+        <value>محل</value>
+    </data>
+    <data name="Longitude" xml:space="preserve">
+        <value>طول جغرافیایی</value>
+    </data>
+    <data name="MapLink" xml:space="preserve">
+        <value>لینک نقشه</value>
+    </data>
+    <data name="Motto" xml:space="preserve">
+        <value>شعار</value>
+    </data>
+    <data name="OpeningHours" xml:space="preserve">
+        <value>ساعات کار</value>
+    </data>
+    <data name="OwnerName" xml:space="preserve">
+        <value>نام مالک</value>
+    </data>
+    <data name="PathFav" xml:space="preserve">
+        <value>میسر آیکون</value>
+    </data>
+    <data name="PathLogo" xml:space="preserve">
+        <value>مسیر لوگو</value>
+    </data>
+    <data name="PostalCode" xml:space="preserve">
+        <value>کد پستی</value>
+    </data>
+    <data name="SameAs" xml:space="preserve">
+        <value>مثل</value>
+    </data>
+    <data name="ThemeColor" xml:space="preserve">
+        <value>رنگ اصلی</value>
+    </data>
+    <data name="WarningCanRegister" xml:space="preserve">
+        <value>امکان ثبت نام در سایت نمی باشد!</value>
+    </data>
+    <data name="WarningTitleCanRegister" xml:space="preserve">
+        <value>محدودیت در ثبت نام</value>
+    </data>
+    <data name="UserPanel" xml:space="preserve">
+        <value>پنل کاربری</value>
+    </data>
+    <data name="ThemeBackgroundHelper" xml:space="preserve">
+        <value>رنگ پس زمینه</value>
+    </data>
+    <data name="CurrencyUnit" xml:space="preserve">
+        <value>نوع واحد پولی</value>
+    </data>
+    <data name="CommissionAmount" xml:space="preserve">
+        <value>مبلغ کمیسیون</value>
+    </data>
+    <data name="CommissionPercentage" xml:space="preserve">
+        <value>درصد کمیسیون</value>
+    </data>
+    <data name="Location" xml:space="preserve">
+        <value>موقعیت</value>
+    </data>
+    <data name="Source" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Destination" xml:space="preserve">
+        <value>مقصد</value>
+    </data>
+    <data name="SourceName" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Guarantee" xml:space="preserve">
+        <value>گارانتی</value>
+    </data>
+    <data name="productAuthenticity" xml:space="preserve">
+        <value>ضمانت اصالت کالا</value>
+    </data>
+    <data name="AvailableInStock" xml:space="preserve">
+        <value>موجود در انبار</value>
+    </data>
+    <data name="Price" xml:space="preserve">
+        <value>قیمت</value>
+    </data>
+    <data name="TelephoneInquiry" xml:space="preserve">
+        <value>استعلام تلفنی</value>
+    </data>
+    <data name="Call" xml:space="preserve">
+        <value>تماس بگیرید</value>
+    </data>
+    <data name="AddToCart" xml:space="preserve">
+        <value>افزودن به سبد خرید</value>
+    </data>
+    <data name="Comments" xml:space="preserve">
+        <value>نظرات</value>
+    </data>
+    <data name="CommentText" xml:space="preserve">
+        <value>متن نظر</value>
+    </data>
+    <data name="Rating" xml:space="preserve">
+        <value>امتیاز</value>
+    </data>
+    <data name="RegisterComment" xml:space="preserve">
+        <value>ثبت نظر</value>
+    </data>
+    <data name="SimilarGoods" xml:space="preserve">
+        <value>کالاهای مشابه</value>
+    </data>
+    <data name="productIntroduction" xml:space="preserve">
+        <value>معرفی کالا</value>
+    </data>
+    <data name="ProductSpecifications" xml:space="preserve">
+        <value>مشخصات کالا</value>
+    </data>
+    <data name="Faq" xml:space="preserve">
+        <value>سوالات متداول</value>
+    </data>
+    <data name="CategoriesOfArticles " xml:space="preserve">
+        <value>دسته بندی مقالات</value>
+    </data>
+    <data name="Filters" xml:space="preserve">
+        <value>فیلترها</value>
+    </data>
+    <data name="Category" xml:space="preserve">
+        <value>دسته بندی</value>
+    </data>
+    <data name="RecentArticles" xml:space="preserve">
+        <value />
+    </data>
+    <data name="EmptyComment" xml:space="preserve">
+        <value>نظری ثبت نشده است</value>
+    </data>
+    <data name="UnknownPerson" xml:space="preserve">
+        <value>ناشناس</value>
+    </data>
+</root>

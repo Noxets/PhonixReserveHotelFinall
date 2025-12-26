@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="Address" xml:space="preserve">
+        <value>آدرس</value>
+    </data>
+    <data name="Addresses" xml:space="preserve">
+        <value>آدرس‌ها</value>
+    </data>
+    <data name="Branch" xml:space="preserve">
+        <value>شعبه</value>
+    </data>
+    <data name="BranchCalendar" xml:space="preserve">
+        <value>وضعیت شعبه</value>
+    </data>
+    <data name="Branches" xml:space="preserve">
+        <value>شعبه‌ها</value>
+    </data>
+    <data name="Payment" xml:space="preserve">
+        <value>پرداخت</value>
+    </data>
+    <data name="Transaction" xml:space="preserve">
+        <value>تراکنش</value>
+    </data>
+    <data name="Transactions" xml:space="preserve">
+        <value>تراکنش‌ها</value>
+    </data>
+    <data name="TransportationCost" xml:space="preserve">
+        <value>هزینه ارسال</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>شهر</value>
+    </data>
+    <data name="Cities" xml:space="preserve">
+        <value>شهر‌ها</value>
+    </data>
+    <data name="Countries" xml:space="preserve">
+        <value>کشور‌ها</value>
+    </data>
+    <data name="Country" xml:space="preserve">
+        <value>کشور</value>
+    </data>
+    <data name="Region" xml:space="preserve">
+        <value>منطقه</value>
+    </data>
+    <data name="Regions" xml:space="preserve">
+        <value>مناطق</value>
+    </data>
+    <data name="State" xml:space="preserve">
+        <value>استان</value>
+    </data>
+    <data name="States" xml:space="preserve">
+        <value>استان‌ها</value>
+    </data>
+    <data name="BranchCalendars" xml:space="preserve">
+        <value>وضعیت‌های شعبه</value>
+    </data>
+    <data name="BranchComment" xml:space="preserve">
+        <value>نظرات شعبه</value>
+    </data>
+    <data name="BranchComments" xml:space="preserve">
+        <value>نظرات شعبه‌ها</value>
+    </data>
+    <data name="Coupon" xml:space="preserve">
+        <value>تخفیف</value>
+    </data>
+    <data name="Coupons" xml:space="preserve">
+        <value>تخفیف‌ها</value>
+    </data>
+    <data name="Display" xml:space="preserve">
+        <value>نمایش</value>
+    </data>
+    <data name="Statistic" xml:space="preserve">
+        <value>آمار</value>
+    </data>
+    <data name="Tag" xml:space="preserve">
+        <value>برچسب</value>
+    </data>
+    <data name="Tags" xml:space="preserve">
+        <value>برچسب‌ها</value>
+    </data>
+    <data name="Job" xml:space="preserve">
+        <value>درخواست</value>
+    </data>
+    <data name="Jobs" xml:space="preserve">
+        <value>درخواست ها</value>
+    </data>
+    <data name="JobHistory" xml:space="preserve">
+        <value>تاریخچه فرآیند</value>
+    </data>
+    <data name="JobInfo" xml:space="preserve">
+        <value>اطلاعات فرآیند</value>
+    </data>
+    <data name="JobState" xml:space="preserve">
+        <value>وضعیت فرآیند</value>
+    </data>
+    <data name="JobType" xml:space="preserve">
+        <value>نوع درخواست</value>
+    </data>
+    <data name="News" xml:space="preserve">
+        <value>خبرنامه</value>
+    </data>
+    <data name="NewsComment" xml:space="preserve">
+        <value>نظرات خبرنامه</value>
+    </data>
+    <data name="NewsGroup" xml:space="preserve">
+        <value>دسته بندی خبر</value>
+    </data>
+    <data name="Order" xml:space="preserve">
+        <value>سفارش</value>
+    </data>
+    <data name="Orders" xml:space="preserve">
+        <value>سفارشات</value>
+    </data>
+    <data name="OrderComment" xml:space="preserve">
+        <value>نظرات سفارش</value>
+    </data>
+    <data name="OrderItem" xml:space="preserve">
+        <value>جزئیات سفارش</value>
+    </data>
+    <data name="Payments" xml:space="preserve">
+        <value>پرداخت‌ها</value>
+    </data>
+    <data name="PersonLegal" xml:space="preserve">
+        <value>شخص حقوقی</value>
+    </data>
+    <data name="Person" xml:space="preserve">
+        <value>شخص</value>
+    </data>
+    <data name="Download" xml:space="preserve">
+        <value>دوره</value>
+    </data>
+    <data name="Downloads" xml:space="preserve">
+        <value>دوره‌ها</value>
+    </data>
+    <data name="Feature" xml:space="preserve">
+        <value>ویژگی</value>
+    </data>
+    <data name="Features" xml:space="preserve">
+        <value>ویژگی‌ها</value>
+    </data>
+    <data name="Good" xml:space="preserve">
+        <value>کالا</value>
+    </data>
+    <data name="Goods" xml:space="preserve">
+        <value>کالا‌ها</value>
+    </data>
+    <data name="Product" xml:space="preserve">
+        <value>محصول</value>
+    </data>
+    <data name="Products" xml:space="preserve">
+        <value>محصولات</value>
+    </data>
+    <data name="ProductComment" xml:space="preserve">
+        <value>نظرات محصول</value>
+    </data>
+    <data name="ProductGroup" xml:space="preserve">
+        <value>دسته‌بندی محصولات</value>
+    </data>
+    <data name="Services" xml:space="preserve">
+        <value>خدمات</value>
+    </data>
+    <data name="ServiceCalendar" xml:space="preserve">
+        <value>تقویم خدمات</value>
+    </data>
+    <data name="Transportation" xml:space="preserve">
+        <value>ارسال مرسوله</value>
+    </data>
+    <data name="Transportations" xml:space="preserve">
+        <value>انواع ارسال</value>
+    </data>
+    <data name="TransportationsCalendar" xml:space="preserve">
+        <value>تقویم ارسال</value>
+    </data>
+    <data name="TransportationComments" xml:space="preserve">
+        <value>نظرات ارسال</value>
+    </data>
+    <data name="Persons" xml:space="preserve">
+        <value>اشخاص</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>تنظیمات</value>
+    </data>
+    <data name="Service" xml:space="preserve">
+        <value>خدمت</value>
+    </data>
+    <data name="ServiceComment" xml:space="preserve">
+        <value>نظرات خدمات</value>
+    </data>
+    <data name="ServiceGroup" xml:space="preserve">
+        <value>دسته بندی خدمات</value>
+    </data>
+    <data name="User" xml:space="preserve">
+        <value>کاربر</value>
+    </data>
+    <data name="Users" xml:space="preserve">
+        <value>کاربران</value>
+    </data>
+    <data name="BranchProductService" xml:space="preserve">
+        <value>خدمات محصول شعبه</value>
+    </data>
+    <data name="CouponUserIncluded" xml:space="preserve">
+        <value>شامل کاربر</value>
+    </data>
+    <data name="CouponUserNotIncluded" xml:space="preserve">
+        <value>غیر شامل کاربر</value>
+    </data>
+    <data name="CouponBranchIncluded" xml:space="preserve">
+        <value>شامل شعبه</value>
+    </data>
+    <data name="CouponBranchNotIncluded" xml:space="preserve">
+        <value>غیر شامل شعبه</value>
+    </data>
+    <data name="CouponProductIncluded" xml:space="preserve">
+        <value>شامل محصول</value>
+    </data>
+    <data name="CouponProductNotIncluded" xml:space="preserve">
+        <value>غیر شامل محصول</value>
+    </data>
+    <data name="CouponProductGroupIncluded" xml:space="preserve">
+        <value>شامل گروه محصول</value>
+    </data>
+    <data name="CouponProductGroupNotIncluded" xml:space="preserve">
+        <value>غیر شامل گروه محصول</value>
+    </data>
+    <data name="CouponServiceIncluded" xml:space="preserve">
+        <value>شامل سرویس</value>
+    </data>
+    <data name="CouponServiceNotIncluded" xml:space="preserve">
+        <value>غیر شامل سرویس</value>
+    </data>
+    <data name="CouponServiceGroupIncluded" xml:space="preserve">
+        <value>شامل گروه سرویس</value>
+    </data>
+    <data name="CouponServiceGroupNotIncluded" xml:space="preserve">
+        <value>غیر شامل گروه سرویس</value>
+    </data>
+    <data name="NotificationSubscription" xml:space="preserve">
+        <value>عضویت اعلانات</value>
+    </data>
+    <data name="Credit" xml:space="preserve">
+        <value>اعتباری</value>
+    </data>
+    <data name="ServiceSkill" xml:space="preserve">
+        <value>مهارت</value>
+    </data>
+    <data name="UserGroup" xml:space="preserve">
+        <value>گروه کاربران</value>
+    </data>
+    <data name="Basket" xml:space="preserve">
+        <value>سبد</value>
+    </data>
+    <data name="ApprovalOrder" xml:space="preserve">
+        <value>دستور تایید</value>
+    </data>
+    <data name="Inprogress" xml:space="preserve">
+        <value>در حال پیش رفت</value>
+    </data>
+    <data name="InShipping" xml:space="preserve">
+        <value>در حمل و نقل</value>
+    </data>
+    <data name="Close" xml:space="preserve">
+        <value>بستن</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>لغو</value>
+    </data>
+    <data name="Return" xml:space="preserve">
+        <value>برگشت</value>
+    </data>
+    <data name="AcceptReturn" xml:space="preserve">
+        <value>پذیرش بازگشت</value>
+    </data>
+    <data name="Redirect" xml:space="preserve">
+        <value>تغییر URL</value>
+    </data>
+    <data name="Redirects" xml:space="preserve">
+        <value>تغییرات URL</value>
+    </data>
+    <data name="ApprovalReturn" xml:space="preserve">
+        <value>تایید بازگشت</value>
+    </data>
+    <data name="RejectReturn" xml:space="preserve">
+        <value>رد بازگشت</value>
+    </data>
+    <data name="DownloadGroup" xml:space="preserve">
+        <value>گروه دوره‌ها</value>
+    </data>
+</root>

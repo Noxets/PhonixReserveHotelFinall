@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="Components\Layout\AdminPanelLayout.razor"/>
+        <AdditionalFiles Include="Components\Pages\Identity\Role\Index.razor"/>
+        <AdditionalFiles Include="Components\Pages\Identity\User\Index.razor"/>
+        <AdditionalFiles Include="Components\Pages\Identity\User\Upsert.razor"/>
+        <AdditionalFiles Include="Components\Pages\News\NewsComment\Index.razor"/>
+        <AdditionalFiles Include="Components\Pages\News\NewsGroup\Index.razor"/>
+        <AdditionalFiles Include="Components\Pages\News\NewsGroup\Upsert.razor"/>
+        <AdditionalFiles Include="Components\Pages\News\NewsList\Index.razor"/>
+        <AdditionalFiles Include="Components\Pages\News\NewsList\Upsert.razor"/>
+        <AdditionalFiles Include="Components\Pages\News\_Imports.razor"/>
+        <AdditionalFiles Include="Components\Pages\Person\Persons\Index.razor"/>
+        <AdditionalFiles Include="Components\Pages\Person\Persons\Upsert.razor"/>
+        <AdditionalFiles Include="Components\Pages\Person\_Imports.razor"/>
+        <AdditionalFiles Include="Components\Pages\Settings\GlobalSettings.razor"/>
+        <AdditionalFiles Include="Components\Pages\Settings\SMSSettings.razor"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\Hamkare.Common\Hamkare.Common.csproj" />
+      <ProjectReference Include="..\..\Core\Hamkare.Resource\Hamkare.Resource.csproj" />
+      <ProjectReference Include="..\..\Core\Hamkare.Service\Hamkare.Service.csproj" />
+      <ProjectReference Include="..\..\Core\Hamkare.Utility\Hamkare.Utility.csproj" />
+      <ProjectReference Include="..\Hamkare.Component\Hamkare.Component.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Components\Pages\Downloads\DownloadGroup\Content.razor" />
+      <UpToDateCheckInput Remove="Components\Pages\Downloads\DownloadGroup\Index.razor" />
+      <UpToDateCheckInput Remove="Components\Pages\Downloads\DownloadGroup\Upsert.razor" />
+      <UpToDateCheckInput Remove="Components\Pages\Downloads\Download\Content.razor" />
+      <UpToDateCheckInput Remove="Components\Pages\Downloads\Download\Index.razor" />
+      <UpToDateCheckInput Remove="Components\Pages\Downloads\Download\Upsert.razor" />
+      <UpToDateCheckInput Remove="Components\Pages\Settings\Tag\Index.razor" />
+      <UpToDateCheckInput Remove="Components\Pages\Settings\Tag\Upsert.razor" />
+    </ItemGroup>
+
+</Project>

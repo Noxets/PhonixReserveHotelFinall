@@ -1,0 +1,274 @@
+@page "/UserPanel/MyProfile"
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Common.Entities.Persons
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Resource
+@using Hamkare.Resource.Identity
+@using Hamkare.Resource.Persons
+@using Hamkare.Utility.Attributes.Core
+@using Microsoft.AspNetCore.Hosting
+@using Hamkare.Utility.Extensions
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Service.Services.Persons
+@inject UserService UserService
+@inject PersonService PersonService
+@inject IWebHostEnvironment WebHostEnvironment
+
+<HamkareUpsertForm T="User" OnRender="OnRender" OnSubmit="Submit" ReturnUrl="/UserPanel" Model="_model" Title="پروفایل من">
+
+    <Body>
+
+    <HamkareGroups>
+
+        <HamkareGroup Title="اطلاعات کاربری">
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="Username" For="@(() => Username)"
+                                  Label="@GlobalResources.Username"
+                                  HelperText="@IdentityResources.UsernameHelper"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="Email" For="@(() => Email)" Label="@GlobalResources.Email"
+                                  HelperText="@IdentityResources.EmailHelper"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="PhoneNumber" For="@(() => PhoneNumber)"
+                                  Label="@GlobalResources.MobileNumber"
+                                  HelperText="@IdentityResources.PhoneNumberHelper" ReadOnly="true"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="Password" For="@(() => Password)"
+                                  Label="@GlobalResources.Password"
+                                  HelperText="@IdentityResources.PasswordHelper"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6">
+
+                <MudItem xs="6">
+
+                    <MudFileUpload T="IBrowserFile" FilesChanged="@(e => UploadFileImage(e))" Accept="@FileExtension.ImageFormatString">
+                        <ActivatorContent>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.TwoTone.CloudUpload">
+                                @GlobalResources.Images
+                            </MudButton>
+                        </ActivatorContent>
+                    </MudFileUpload>
+
+                    <MudText>78*78</MudText>
+
+                </MudItem>
+
+                @if (!string.IsNullOrWhiteSpace(_model.Image))
+                {
+                    <MudItem xs="6">
+
+                        <div class="p-2">
+                            <MudIconButton Icon="@Icons.Material.TwoTone.Remove" Variant="Variant.Filled" OnClick="@(() => RemoveImage(_model))" Color="Color.Error" Size="Size.Medium" Class="DisplayImages-Remove-Button"></MudIconButton>
+                            <MudImage Src="@($"/Upload/Person/{_model.Image}")" Elevation="25" Class="img-fluid"></MudImage>
+                            <MudText>@($"/Upload/Person/{_model.Image}")</MudText>
+                        </div>
+                    </MudItem>
+                }
+
+            </MudItem>
+
+        </HamkareGroup>
+
+        <HamkareGroup Title="اطلاعات شخص">
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="_person.FirstName" For="@(() => _person.FirstName)"
+                                  Label="@PersonResources.FirstName"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="_person.LastName" For="@(() => _person.LastName)"
+                                  Label="@PersonResources.LastName"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="_person.FatherName" For="@(() => _person.FatherName)"
+                                  Label="@PersonResources.FatherName"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="_person.NationalCode" For="@(() => _person.NationalCode)"
+                                  Label="@PersonResources.NationalCode" HelperText="@PersonResources.NationalCodeHelper"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+                <HamkareDatePicker OnRender="OnRender" Label="@PersonResources.BirthDate" @bind-Date="_date"
+                                   HelperText="@PersonResources.BirthDateHelper"/>
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareSelect OnRender="OnRender" T="bool" @bind-Value="@_person.Gender" Label="@PersonResources.Gender"
+                               HelperText="@PersonResources.Gender" ToStringFunc="@(b => b ? GlobalResources.Man : GlobalResources.Woman)">
+
+                    <MudSelectItem Value="true">
+                        @GlobalResources.Man
+                    </MudSelectItem>
+
+                    <MudSelectItem Value="false">
+                        @GlobalResources.Woman
+                    </MudSelectItem>
+
+                </HamkareSelect>
+
+            </MudItem>
+
+        </HamkareGroup>
+
+    </HamkareGroups>
+
+    </Body>
+
+</HamkareUpsertForm>
+
+@code {
+
+    private User _model = new();
+    private Person _person = new();
+    private DateTime? _date = DateTime.Today;
+    private string Username { get; set; }
+    private string Email { get; set; } = "no@email.com";
+    private string Password { get; set; }
+
+    [CorePhoneNumber] private string PhoneNumber { get; set; }
+
+    public bool OnRender { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _model = await UserService.GetAsync(await AuthenticationStateProvider.GetUser());
+
+        if (_model == null)
+        {
+            Snackbar.Error(IdentityResources.ErrorUserNotFind);
+            NavigationManager.NavigateTo("/UserPanel");
+            return;
+        }
+
+        Username = _model.UserName;
+        Email = _model.Email;
+        PhoneNumber = _model.PhoneNumber;
+
+        #region Person
+
+        if (_model.PersonId != null)
+            _person = await PersonService.FindAsync((long)_model.PersonId);
+
+        _person ??= new Person()
+        {
+            Active = true,
+            BirthDate = default,
+            UserId = _model.Id
+        };
+
+        _date = _person.BirthDate.ToDateTime(new TimeOnly());
+
+        #endregion
+
+        OnRender = false;
+    }
+
+    private async Task<bool> Submit()
+    {
+        try
+        {
+            await UpdateUser();
+
+            if (!string.IsNullOrWhiteSpace(Password))
+            {
+                var token = await UserManager.GeneratePasswordResetTokenAsync(_model);
+
+                var result = await UserManager.ResetPasswordAsync(_model, token, Password);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                        Snackbar.Error(error.Code + ": " + error.Description);
+
+                    return false;
+                }
+            }
+
+            _person.BirthDate = DateOnly.FromDateTime(_date ?? DateTime.Now);
+            _person.UserId = _model.Id;
+            _person.Active = true;
+            await PersonService.AddOrUpdateAsync(_person);
+            _model.PersonId ??= _person.Id;
+
+            await UserService.AddOrUpdateAsync(_model);
+
+            Snackbar.SuccessAddOrUpdate(EntitiesResources.User);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.LogError(e);
+            e.ShowErrorSnackbar(Snackbar, EntitiesResources.User);
+        }
+
+        return false;
+    }
+
+    private async Task UpdateUser()
+    {
+        if (!string.IsNullOrEmpty(Username) && _model.UserName != Username)
+            await UserManager.SetUserNameAsync(_model, Username);
+
+        if (!string.IsNullOrEmpty(Email) && _model.Email != Email)
+            await UserManager.SetEmailAsync(_model, Email);
+
+        if (!string.IsNullOrEmpty(PhoneNumber) && _model.PhoneNumber != PhoneNumber)
+            await UserManager.SetPhoneNumberAsync(_model, PhoneNumber);
+    }
+
+    private async Task UploadFileImage(IBrowserFile uploadedFiles)
+    {
+        try
+        {
+            var last = _model.Image;
+            _model.Image = await uploadedFiles.AddFile(WebHostEnvironment, "Person");
+            if (!string.IsNullOrEmpty(last))
+                FileExtension.RemoveFile(last, WebHostEnvironment, "Person");
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.LogError(e);
+            e.ShowErrorSnackbar(Snackbar, GlobalResources.Image);
+        }
+    }
+
+    private void RemoveImage(User user)
+    {
+        FileExtension.RemoveFile(user.Image, WebHostEnvironment, "Person");
+        user.Image = null;
+    }
+
+}

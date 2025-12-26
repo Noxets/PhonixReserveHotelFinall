@@ -1,0 +1,8 @@
+<MudExpansionPanels Elevation="0" Outlined="false" Class="mud-width-full pa-3 Group-section" Gutters="false"
+                    MultiExpansion="true">
+    @ChildContent
+</MudExpansionPanels>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

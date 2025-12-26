@@ -1,0 +1,26 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@inherits MudAutocomplete<T>
+
+@if (OnRender)
+{
+    <HamkareSkeletonInput HaveHelper="!string.IsNullOrWhiteSpace(HelperText)"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter]
+    public bool OnRender { get; set; } = true;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Margin = parameters.TryGetValue("Margin", out Margin margin) ? margin : Margin.Dense;
+        Variant = parameters.TryGetValue("Variant", out Variant variant) ? variant : Variant.Outlined;
+        ShowProgressIndicator = !parameters.TryGetValue("ShowProgressIndicator", out bool showProgressIndicator) || showProgressIndicator;
+
+        await base.SetParametersAsync(parameters);
+    }
+}

@@ -1,0 +1,68 @@
+﻿@using Hamkare.Utility.Extensions
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html dir=@(Thread.CurrentThread.CurrentUICulture.IsRtl() ? "rtl" : "ltr")
+      lang="@Thread.CurrentThread.CurrentUICulture.Name" data-bs-theme=@(_isDarkMode ? "dark" : "light")>
+
+<head>
+    <base href="/"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=5.0">
+
+    <link href="/Images/Fav.Icon" rel="shortcut icon" type="image/png"/>
+    <link href="/Images/Fav.Icon" rel="icon" type="image/png"/>
+    <link href="/Images/Fav.Icon" rel="apple-touch-icon">
+
+    <link rel="manifest" href="/manifest.json"/>
+
+    @if (Thread.CurrentThread.CurrentUICulture.IsRtl())
+    {
+    <link href="/_content/Hamkare.Panel/Lib/Bootstrap/Css/bootstrap.rtl.min.css" rel="stylesheet">
+    }
+    else
+    {
+    <link href="/_content/Hamkare.Panel/Lib/Bootstrap/Css/bootstrap.min.css" rel="stylesheet">
+    }
+    <link href="/_content/Hamkare.Panel/Css/Base.css" rel="stylesheet">
+
+    <script src="/_content/Hamkare.Panel/Lib/Jquery/jquery.min.js"></script>
+    <script src="/_content/Hamkare.Panel/Lib/Bootstrap/Js/bootstrap.bundle.min.js" defer></script>
+
+    <HeadOutlet @rendermode="new InteractiveServerRenderMode(false)"/>
+
+    <link href="/_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="Hamkare.Demo.styles.css"/>
+    
+</head>
+
+<body>
+
+<ErrorBoundary @ref="_errorBoundary">
+    <HeadOutlet @rendermode="new InteractiveServerRenderMode(false)"/>
+</ErrorBoundary>
+
+<script src="_framework/blazor.web.js" autostart="false"></script>
+<script src="/_content/MudBlazor/MudBlazor.min.js"></script>
+<script src="/_content/Hamkare.Panel/Js/Base.js"></script>
+
+</body>
+
+</html>
+
+@code {
+
+    private ErrorBoundary _errorBoundary;
+    private bool _isDarkMode;
+
+    protected override void OnInitialized()
+    {
+        _isDarkMode = HttpContextAccessor.HttpContext?.Request.Cookies["DarkMode"] == "dark";
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        _errorBoundary?.Recover();
+    }
+}

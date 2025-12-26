@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="wwwroot\Upload\Address\"/>
+        <Folder Include="wwwroot\Upload\Branch\"/>
+        <Folder Include="wwwroot\Upload\FreeZone\" />
+        <Folder Include="wwwroot\Upload\NewsGroup\"/>
+        <Folder Include="wwwroot\Upload\News\"/>
+        <Folder Include="wwwroot\Upload\Page\"/>
+        <Folder Include="wwwroot\Upload\ProductGroup\"/>
+        <Folder Include="wwwroot\Upload\Product\"/>
+        <Folder Include="wwwroot\Upload\ServiceGroup\"/>
+        <Folder Include="wwwroot\Upload\Service\"/>
+        <Folder Include="wwwroot\Upload\Transportation\"/>
+        <Folder Include="wwwroot\Upload\User\"/>
+        <Folder Include="wwwroot\_content\Fonts\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BuildBundlerMinifier" Version="3.2.449"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Hamkare.Common\Hamkare.Common.csproj" />
+      <ProjectReference Include="..\Core\Hamkare.Infrastructure\Hamkare.Infrastructure.csproj" />
+      <ProjectReference Include="..\Core\Hamkare.Resource\Hamkare.Resource.csproj" />
+      <ProjectReference Include="..\Core\Hamkare.Service\Hamkare.Service.csproj" />
+      <ProjectReference Include="..\Core\Hamkare.Utility\Hamkare.Utility.csproj" />
+      <ProjectReference Include="..\Panels\Hamkare.AdminPanel\Hamkare.AdminPanel.csproj" />
+      <ProjectReference Include="..\Panels\Hamkare.Component\Hamkare.Component.csproj" />
+      <ProjectReference Include="..\Panels\Hamkare.Panel\Hamkare.Panel.csproj" />
+      <ProjectReference Include="..\Panels\Hamkare.UserPanel\Hamkare.UserPanel.csproj" />
+    </ItemGroup>
+
+</Project>

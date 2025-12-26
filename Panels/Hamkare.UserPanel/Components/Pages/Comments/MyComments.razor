@@ -1,0 +1,123 @@
+﻿@page "/UserPanel/MyComments"
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Service.Services.News
+@using Hamkare.Common.Entities.News
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Resource
+@using Hamkare.Resource.UserPanel
+@using Hamkare.UserPanel.ViewModels
+@using Hamkare.Utility.Extensions
+@inject NewsCommentService NewsCommentService
+@inject UserService UserService
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="MyCommentViewModel" OnRender="OnRender"
+                 Title="@UserPanelResources.MyComments" QuickFilter="QuickFilter" ReturnLink="/UserPanel/"
+                 Element="_elements" SearchString="@SearchString">
+
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+        <PropertyColumn Property="x => x.Name" Sortable="true" Filterable="false" Title="@GlobalResources.Name"/>
+        @* Todo : Hamid *@
+        <PropertyColumn Property="x => x.Text" Sortable="true" Filterable="false" Title="متن"/>
+        <PropertyColumn Property="x => x.Like" Sortable="true" Filterable="false" Title="@CommentResources.Like"/>
+        <PropertyColumn Property="x => x.Rating" Sortable="true" Filterable="false" Title="@CommentResources.Rating"/>
+
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false"
+                        Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())"
+                        StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+
+                <MudTooltip Text="@(GlobalResources.Deleted)" Color="Color.Error" Placement="Placement.Bottom"
+                            Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid mx-2" Size="@Size.Small" Variant="Variant.Outlined"
+                                   Icon="@Icons.Material.Outlined.Delete" Color="Color.Error"
+                                   OnClick="@(_ => HandleRemoveChange(context.Item.Id, context.Item.Type))"/>
+                </MudTooltip>
+
+            </CellTemplate>
+
+        </TemplateColumn>
+
+    </Columns>
+
+</HamkareListView>
+
+@code{
+    private List<MyCommentViewModel> _elements = [];
+    private string SearchString { get; set; }
+    private bool OnRender { get; set; } = true;
+    
+    private IReadOnlyList<NewsComment> News { get; set; }
+
+    private Func<MyCommentViewModel, bool> QuickFilter => x =>
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (x.Text.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var user = await UserService.GetAsync(await AuthenticationStateProvider.GetUser());
+            News = await NewsCommentService.GetAllAsync(x => x.CreatorId == user.Id);
+
+            _elements.AddRange(News.Select(x => new MyCommentViewModel
+            {
+                Id = x.Id,
+                Type = nameof(NewsComment),
+                Active = x.Active,
+                Name = x.News.Name,
+                Text = x.Text,
+                IsRead = x.IsRead,
+                Anonymous = x.Anonymous,
+                Like = x.Like,
+                Dislike = x.Dislike,
+                Rating = x.Rating
+            }));
+
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id, string itemType)
+    {
+        var result = await DialogService.RemoveDialog();
+
+        if (result ?? false)
+        {
+            switch (itemType)
+            {
+                case nameof(NewsComment):
+                    await NewsCommentService.DeleteAsync(id);
+                    break;
+            }
+
+            var list = _elements.ToList();
+            list.Remove(_elements.Single(x => x.Id == id && x.Type == itemType));
+            _elements = list;
+        }
+    }
+
+}

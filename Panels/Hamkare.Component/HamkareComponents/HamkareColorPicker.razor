@@ -1,0 +1,30 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@inherits MudColorPicker
+
+@if (OnRender)
+{
+    <HamkareSkeletonInput HaveHelper="!string.IsNullOrWhiteSpace(HelperText)"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter]
+    public bool OnRender { get; set; } = true;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        AnchorOrigin = parameters.TryGetValue("AnchorOrigin", out Origin anchorOrigin) ? anchorOrigin : Origin.CenterCenter;
+        ShowToolbar = !parameters.TryGetValue("ShowToolbar", out bool showToolbar) || showToolbar;
+        TransformOrigin = parameters.TryGetValue("TransformOrigin", out Origin transformOrigin) ? transformOrigin : Origin.CenterCenter;
+        Margin = parameters.TryGetValue("Margin", out Margin margin) ? margin : Margin.Dense;
+        Variant = parameters.TryGetValue("Variant", out Variant variant) ? variant : Variant.Outlined;
+        PickerVariant = parameters.TryGetValue("PickerVariant", out PickerVariant pickerVariant) ? pickerVariant : PickerVariant.Dialog;
+        Style = parameters.TryGetValue("Style", out string style) ? style + $" color: {Value};" : $"color: {Value};";
+
+        await base.SetParametersAsync(parameters);
+    }
+}

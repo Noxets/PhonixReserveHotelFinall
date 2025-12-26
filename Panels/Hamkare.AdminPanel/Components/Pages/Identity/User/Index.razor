@@ -1,0 +1,150 @@
+﻿@page "/AdminPanel/User"
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Resource
+@using Hamkare.Resource.Identity
+@using Microsoft.AspNetCore.Identity
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject UserService UserService
+@inject UserManager<User> UserManager
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="User" AddLink="/AdminPanel/User/Upsert"
+                 Title="@EntitiesResources.Users" OnRender="OnRender"
+                 Element="_elements"
+                 QuickFilter="QuickFilter" ReturnLink="/adminPanel/" SearchString="@SearchString">
+
+    <Columns>
+
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+
+        <PropertyColumn Property="x => x.Name" Sortable="true" Filterable="false" Title="@GlobalResources.Name"/>
+
+        <PropertyColumn Property="x => x.PhoneNumber" Sortable="true" Filterable="false"
+                        Title="@GlobalResources.MobileNumber"/>
+
+        <PropertyColumn Property="x => x.Wallet" Sortable="true" Filterable="false" Title="@IdentityResources.Wallet"/>
+
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false"
+                        Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())"
+                        StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+
+                <MudTooltip Text="@(context.Item.Active ? GlobalResources.Active : GlobalResources.Inactive)"
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudToggleIconButton Class="action-button-dataGrid rounded-lg" Toggled="@context.Item.Active"
+                                         Icon="@Icons.Material.TwoTone.CheckBoxOutlineBlank" Color="@Color.Error"
+                                        
+                                         ToggledIcon="@Icons.Material.TwoTone.Check" ToggledColor="@Color.Success"
+
+                                         ToggledChanged="@(e => HandleToggleChange(context.Item.Id, e))"
+                                         Variant="Variant.Text"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Edit} {context.Item.Name}") Placement="Placement.Bottom"
+                            Arrow="true">
+                    <MudIconButton Size="@Size.Small" Class="action-button-dataGrid rounded-lg" Variant="Variant.Text"
+                                   Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary"
+                                   Href="@($"/AdminPanel/User/Upsert/{context.Item.Id}")"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Deleted} {context.Item.Name}") Placement="Placement.Bottom"
+                            Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid rounded-lg" Size="@Size.Small" Variant="Variant.Text"
+                                   Icon="@Icons.Material.Outlined.Delete" Color="Color.Error"
+                                   OnClick="@(_ => HandleRemoveChange(context.Item.Id))"/>
+                </MudTooltip>
+
+            </CellTemplate>
+
+        </TemplateColumn>
+    </Columns>
+
+</HamkareListView>
+
+@code{
+
+    private IEnumerable<User> _elements = new List<User>();
+    private string SearchString { get; set; }
+    private bool OnRender { get; set; } = true;
+    private Func<User, bool> QuickFilter => x => {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.Name) && x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.Email) && x.Email.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.PhoneNumber) && x.PhoneNumber.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.LockoutEnd.ToString().Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _elements = await UserService.GetAllAsync(x => x.Id != 1);
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+    private async Task HandleToggleChange(long id, bool toggled)
+    {
+        try
+        {
+            await UserService.ActiveOrDeactivateAsync(id);
+
+            await UserManager.SetLockoutEnabledAsync((await UserManager.FindByIdAsync(id.ToString()))!, !toggled);
+
+            toggled = !toggled;
+
+            if (toggled)
+                Snackbar.IsDeactivate(EntitiesResources.User);
+            else
+                Snackbar.IsActive(EntitiesResources.User);
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id)
+    {
+        var result = await DialogService.RemoveDialog();
+        try
+        {
+            if (result ?? false)
+            {
+                await UserService.DeleteAsync(id);
+                var list = _elements.ToList();
+                list.Remove(_elements.Single(x => x.Id == id));
+                _elements = list;
+            }
+            Snackbar.Delete(EntitiesResources.User);
+        }
+        catch (Exception ex)
+        {
+            ex.ShowErrorSnackbar(Snackbar, EntitiesResources.User);
+            await JsRuntime.LogError(ex);
+        }
+    }
+}

@@ -1,0 +1,12 @@
+:root {
+    --bs-primary: #FBC704;
+    --bs-primary-rgb: rgb(249, 175, 28);
+    --bs-secondary: #1C2136;
+    --bs-third: #5D44F8;
+    --bs-fourth: #EEF0F5;
+    --bs-text: #1C2136;
+    --bs-divider: #1C2136;
+    --bs-box-shadow: rgba(154, 186, 189, 0.12);
+    --bs-border-radius: 50px;
+    --bs-sale: #EF394E;
+}

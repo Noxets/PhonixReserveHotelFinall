@@ -1,0 +1,66 @@
+﻿@page "/AdminPanel/Role"
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Resource
+@using Hamkare.Resource.Identity
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject RoleService RoleService
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="Role" Title="@GlobalResources.Roles"
+                 OnRender="OnRender" Element="_elements"
+                 QuickFilter="QuickFilter" ReturnLink="/adminPanel/" SearchString="@SearchString">
+
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+        <PropertyColumn Property="x => x.Name" Sortable="true" Filterable="false" Title="@GlobalResources.Name"/>
+        <PropertyColumn Property="x => x.NormalizedName" Sortable="true" Filterable="false"
+                        Title="@GlobalResources.Name"/>
+        <PropertyColumn Property="x => x.ReturnUrl" Sortable="true" Filterable="false"
+                        Title="@IdentityResources.ReturnUrl"/>
+
+    </Columns>
+
+</HamkareListView>
+
+@code{
+
+    private IEnumerable<Role> _elements = new List<Role>();
+    private string SearchString { get; set; }
+    private bool OnRender { get; set; } = true;
+    private Func<Role, bool> QuickFilter => x => {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.Name) && x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.NormalizedName) && x.NormalizedName.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (!string.IsNullOrEmpty(x.ReturnUrl) && x.ReturnUrl.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _elements = await RoleService.GetAllAsync(x => x.Id != 1);
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+}

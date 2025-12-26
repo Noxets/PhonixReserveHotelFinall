@@ -1,0 +1,108 @@
+@page "/AdminPanel/News/Upsert"
+@page "/AdminPanel/News/Upsert/{Id:long}"
+@using Hamkare.Common.Entities.News
+@using Hamkare.Resource
+@using Hamkare.Resource.News
+@using Hamkare.Service.Services.News
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject NewsService NewsService
+@inject NewsCategoryService NewsCategoryService
+
+<HamkareUpsertForm T="News" OnRender="OnRender" OnSubmit="Submit" ReturnUrl="/adminPanel/News" Model="_model" Title="@(Id==0 ? $"{GlobalResources.Add} {EntitiesResources.News}" : $"{GlobalResources.Edit} {EntitiesResources.News}")">
+
+    <Body>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Name" For="@(() => _model.Name)" Label="Name"
+                          HelperText="@GlobalResources.URLHelper" Counter="2000" MaxLength="2000"/>
+
+    </MudItem>
+    
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Description" For="@(() => _model.Description)" Label="Description"
+                          HelperText="@GlobalResources.URLHelper" Counter="2000" MaxLength="2000"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3" Class="d-flex align-items-center">
+        <HamkareSwitch OnRender="OnRender" @bind-Value="@_model.CanComment" Label="@NewsResources.CanComment"/>
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareDatePicker OnRender="OnRender" Label="@NewsResources.ReleaseDate" @bind-Date="_date"
+                           HelperText="@NewsResources.ReleaseDateHelper"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareSelectMain OnRender="OnRender" @bind-Value="@_model.NewsGroupId"
+                           Label="@EntitiesResources.NewsGroup" Clearable
+                           HelperText="@NewsResources.NewsGroupHelper" List="_newsGroupList"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareNumericField OnRender="OnRender" @bind-Value="_model.Order" For="@(() => _model.Order)"
+                             Label="@GlobalResources.Order" HelperText="@GlobalResources.OrderHelper"/>
+
+    </MudItem>
+
+    </Body>
+
+</HamkareUpsertForm>
+
+@code{
+
+    private DateTime? _date = DateTime.Today;
+    private News _model = new();
+    private IReadOnlyList<NewsCategory> _newsGroupList = new List<NewsCategory>();
+    [Parameter]
+    public long Id { get; set; }
+
+    public bool OnRender { get; set; } = true;
+    protected override async Task OnInitializedAsync()
+    {
+        var newsGroups = await NewsCategoryService.GetAllActiveAsync();
+
+        _newsGroupList = newsGroups;
+
+        if (Id != 0)
+        {
+            _model = await NewsService.FindAsync(Id);
+            _date = _model.ReleaseDate;
+        }
+
+        OnRender = false;
+    }
+
+    private async Task<bool> Submit()
+    {
+        try
+        {
+            if (_model.Validate(out var errors))
+            {
+                Snackbar.Error(errors);
+                return false;
+            }
+
+            _model.ReleaseDate = _date ?? DateTime.Now;
+            await NewsService.AddOrUpdateAsync(_model);
+            Snackbar.SuccessAddOrUpdate(EntitiesResources.News);
+            return true;
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.LogError(e);
+            e.ShowErrorSnackbar(Snackbar, EntitiesResources.News);
+        }
+
+        return false;
+    }
+
+}

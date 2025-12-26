@@ -1,0 +1,27 @@
+@inherits MudTimePicker
+
+@if (OnRender)
+{
+    <HamkareSkeletonInput HaveHelper="!string.IsNullOrWhiteSpace(HelperText)"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter] public bool OnRender { get; set; } = true;
+    [Parameter] public new bool Open { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Culture = parameters.TryGetValue("Culture", out CultureInfo culture) ? culture : Thread.CurrentThread.CurrentUICulture;
+        Margin = parameters.TryGetValue("Margin", out Margin margin) ? margin : Margin.Dense;
+        Variant = parameters.TryGetValue("Variant", out Variant variant) ? variant : Variant.Outlined;
+        AnchorOrigin = parameters.TryGetValue("AnchorOrigin", out Origin anchorOrigin) ? anchorOrigin : Origin.CenterCenter;
+        TransformOrigin = parameters.TryGetValue("TransformOrigin", out Origin transformOrigin) ? transformOrigin : Origin.CenterCenter;
+        PickerVariant = parameters.TryGetValue("PickerVariant", out PickerVariant pickerVariant) ? pickerVariant : PickerVariant.Dialog;
+        base.Open = parameters.TryGetValue("Open", out bool open) && open;
+        await base.SetParametersAsync(parameters);
+    }
+}

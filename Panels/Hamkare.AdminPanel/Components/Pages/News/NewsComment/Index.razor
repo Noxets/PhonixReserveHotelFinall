@@ -1,0 +1,176 @@
+﻿@page "/AdminPanel/NewsComment/"
+@page "/AdminPanel/NewsComment/{Id:long}"
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Common.Entities.News
+@using Hamkare.Resource
+@using Hamkare.Service.Services.News
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject NewsCommentService NewsCommentService
+
+<HamkareCommentListView T="NewsComment" Title="@EntitiesResources.NewsComment" OnRender="OnRender" Element="_elements" ReturnLink="/adminPanel/News">
+
+    <Columns>
+
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false"
+                        Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())"
+                        StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+
+                @if (context.Item.CreatorId != CurrentUser?.Id)
+                {
+                <MudTooltip Text="پاسخ" Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid rounded-lg" Size="@Size.Small" Variant="Variant.Text"
+                                   Icon="@Icons.Material.Outlined.Replay" Color="Color.Primary"
+                                   OnClick="@(_ => OpenDialog(context.Item.NewsId,context.Item.Id))"/>
+                </MudTooltip>
+                }
+                
+                <MudTooltip Text="@(context.Item.Active ? GlobalResources.Active : GlobalResources.Inactive)"
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudToggleIconButton Class="action-button-dataGrid rounded-lg" Toggled="@context.Item.Active"
+                                         Icon="@Icons.Material.TwoTone.CheckBoxOutlineBlank" Color="@Color.Error"
+
+                                         ToggledIcon="@Icons.Material.TwoTone.Check" ToggledColor="@Color.Success"
+
+                                         ToggledChanged="@(e => HandleToggleChange(context.Item.Id, e))"
+                                         Variant="Variant.Text"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Deleted}") Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid rounded-lg" Size="@Size.Small" Variant="Variant.Text"
+                                   Icon="@Icons.Material.Outlined.Delete" Color="Color.Error"
+                                   OnClick="@(_ => HandleRemoveChange(context.Item.Id))"/>
+                </MudTooltip>
+
+            </CellTemplate>
+
+        </TemplateColumn>
+    </Columns>
+
+</HamkareCommentListView>
+
+<MudDialog @bind-Visible="_visible" Options="_dialogOptions" Class="rounded-lg">
+
+    <TitleContent>
+        <MudText Typo="Typo.h6" Color="Color.Primary">
+            @GlobalResources.Detail
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+
+        @* Todo Hamid  *@
+        <HamkareTextField @bind-Value="@DialogModel.Text" T="string" Label="پاسخ نظر" OnRender="false" Lines="3"/>
+
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" DropShadow="true" OnClick="@(SubmitComment)" Class="px-10 m-1">@ViewResources.Submit</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" DropShadow="true" OnClick="@(CloseDialog)" Class="px-10 m-1">@GlobalResources.Cancel</MudButton>
+    </DialogActions>
+
+</MudDialog>
+
+@code{
+    [Parameter] public long Id { get; set; }
+
+    [CascadingParameter]
+    public User CurrentUser { get; set; }
+
+    private IEnumerable<NewsComment> _elements = new List<NewsComment>();
+    private bool OnRender { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (Id == 0)
+                _elements = await NewsCommentService.GetAllAsync();
+            else
+                _elements = await NewsCommentService.GetAllAsync(x => x.NewsId == Id);
+
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleToggleChange(long id, bool toggled)
+    {
+        try
+        {
+            await NewsCommentService.ActiveOrDeactivateAsync(id);
+
+            toggled = !toggled;
+
+            if (toggled)
+                Snackbar.IsDeactivate(EntitiesResources.NewsComment);
+            else
+                Snackbar.IsActive(EntitiesResources.NewsComment);
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id)
+    {
+        var result = await DialogService.RemoveDialog();
+
+        if (result ?? false)
+        {
+            await NewsCommentService.DeleteAsync(id);
+            var list = _elements.ToList();
+            list.Remove(_elements.Single(x => x.Id == id));
+            _elements = list;
+        }
+    }
+
+    #region Dialog
+
+    private NewsComment DialogModel { get; set; }
+
+    private bool _visible;
+
+    private void OpenDialog(long entityId, long commentId)
+    {
+        DialogModel = new NewsComment
+        {
+            Active = true,
+            IsRead = false,
+            Anonymous = false,
+            ParentId = commentId,
+            NewsId = Id == 0 ? entityId : Id,
+        };
+
+        _visible = true;
+    }
+
+    private async void SubmitComment()
+    {
+        try
+        {
+            await NewsCommentService.AddOrUpdateAsync(DialogModel);
+            Snackbar.SuccessAddOrUpdate(EntitiesResources.NewsComment);
+            _visible = false;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    void CloseDialog() => _visible = false;
+
+    private readonly DialogOptions _dialogOptions = new()
+    {
+        FullWidth = true
+    };
+
+    #endregion
+}

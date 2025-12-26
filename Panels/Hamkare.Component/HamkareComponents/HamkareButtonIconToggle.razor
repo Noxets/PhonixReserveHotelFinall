@@ -1,0 +1,23 @@
+@inherits MudToggleIconButton
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+@code
+{
+    
+    public new async Task SetToggledAsync(bool toggled)
+    {
+        if (Disabled)
+            return;
+        if (Toggled != toggled)
+        {
+            Disabled = true;
+            Toggled = toggled;
+            await ToggledChanged.InvokeAsync(Toggled);
+            Disabled = false;
+            StateHasChanged();
+        }
+    }
+}

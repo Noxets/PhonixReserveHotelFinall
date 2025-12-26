@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /UserPanel/
+Disallow: /AdminPanel/
+disallow: *?*
+disallow: /search?q=*
+disallow: *utm_*
+Sitemap: https://www.hamkare.com/sitemap.xml

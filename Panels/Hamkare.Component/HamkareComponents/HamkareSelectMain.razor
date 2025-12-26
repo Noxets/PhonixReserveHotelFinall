@@ -1,0 +1,49 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@using Hamkare.Common.Interface.Entities
+@inherits MudSelect<T>
+
+@if (OnRender)
+{
+    <HamkareSkeletonInput HaveHelper="!string.IsNullOrWhiteSpace(HelperText)"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter]
+    public bool OnRender { get; set; }
+    [Parameter]
+    public IEnumerable<INameEntity> List { get; set; } = new List<INameEntity>();
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        AnchorOrigin = parameters.TryGetValue("AnchorOrigin", out Origin anchorOrigin) ? anchorOrigin : Origin.BottomCenter;
+        Variant = parameters.TryGetValue("Variant", out Variant variant) ? variant : Variant.Outlined;
+        Margin = parameters.TryGetValue("Margin", out Margin margin) ? margin : Margin.Dense;
+        ToStringFunc = parameters.TryGetValue("ToStringFunc", out Func<T,string> toStringFunc) ? toStringFunc : CustomToStringFunc;
+        ChildContent = parameters.TryGetValue("ChildContent", out RenderFragment childContent) ? childContent : typeof(T) == typeof(long)
+            ? @<div>
+                  @foreach (var item in List)
+                  {
+                      <MudSelectItem Value="@(item.Id)">@item.Name</MudSelectItem>
+                  }
+              </div>
+            : @<div>
+                  @foreach (var item in List)
+                  {
+                      <MudSelectItem Value="@((long?) item.Id)">@item.Name</MudSelectItem>
+                  }
+              </div>;
+        await base.SetParametersAsync(parameters);
+    }
+
+    private string CustomToStringFunc(T value)
+    {
+        var valueString = value.ToString() ?? string.Empty;
+
+        return string.IsNullOrEmpty(valueString) ? string.Empty : List.FirstOrDefault(z => z.Id == long.Parse(valueString))?.Name;
+    }
+}

@@ -1,0 +1,134 @@
+﻿@page "/AdminPanel/Redirect"
+@using Hamkare.Common.Entities.General
+@using Hamkare.Resource
+@using Hamkare.Service.Services.General
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Resource.General
+
+@inject RedirectService RedirectService
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="Redirect" AddLink="/AdminPanel/Redirect/Upsert"
+                 Title="@EntitiesResources.Redirects"
+                 OnRender="OnRender" Element="_elements" QuickFilter="QuickFilter" ReturnLink="/adminPanel/"
+                 SearchString="@SearchString">
+
+    <Columns>
+
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+
+        @* Todo: Hamid *@
+        <PropertyColumn Property="x => x.Source" Filterable="false" Sortable="true" Title="@GlobalResources.Title"/>
+        <PropertyColumn Property="x => x.Code.GetEnumDisplayName()" Filterable="false" Sortable="true" Title="@GlobalResources.Code"/>
+        <PropertyColumn Property="x => x.Destination" Filterable="false" Sortable="true" Title="@GeneralResources.Destination"/>
+
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false" Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())" StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+
+                <MudTooltip Text="@(context.Item.Active ? GlobalResources.Active : GlobalResources.Inactive)"
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudToggleIconButton Class="action-button-dataGrid rounded-lg" Toggled="@context.Item.Active"
+                                         Icon="@Icons.Material.TwoTone.CheckBoxOutlineBlank" Color="@Color.Error"
+                                         ToggledIcon="@Icons.Material.TwoTone.Check" ToggledColor="@Color.Success" ToggledChanged="@(e => HandleToggleChange(context.Item.Id, e))" Variant="Variant.Text"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Edit}") Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Size="@Size.Small" Class="action-button-dataGrid rounded-lg" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Href="@($"/AdminPanel/Redirect/Upsert/{context.Item.Id}")"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Deleted}") Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid rounded-lg" Size="@Size.Small" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="@(_ => HandleRemoveChange(context.Item.Id))"/>
+                </MudTooltip>
+
+            </CellTemplate >
+
+        </TemplateColumn >
+
+    </Columns>
+
+</HamkareListView>
+
+@code{
+    private IEnumerable<Redirect> _elements = new List<Redirect>();
+    private string SearchString { get; set; }
+    private bool OnRender { get; set; } = true;
+
+    private Func<Redirect, bool> QuickFilter => x => {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            if (x.Source.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            
+            if (x.Destination.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            
+            if (x.Code.GetEnumDisplayName().Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _elements = await RedirectService.GetAllAsync();
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleToggleChange(long id, bool toggled)
+    {
+        try
+        {
+            await RedirectService.ActiveOrDeactivateAsync(id);
+
+            toggled = !toggled;
+
+            if (toggled)
+                Snackbar.IsDeactivate(EntitiesResources.Redirect);
+            else
+                Snackbar.IsActive(EntitiesResources.Redirect);
+
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id)
+    {
+        var result = await DialogService.RemoveDialog();
+        try
+        {
+            if (result ?? false)
+            {
+                await RedirectService.DeleteAsync(id);
+                var list = _elements.ToList();
+                list.Remove(_elements.Single(x => x.Id == id));
+                _elements = list;
+            }
+            Snackbar.Delete(EntitiesResources.Redirect);
+        }
+        catch (Exception ex)
+        {
+            ex.ShowErrorSnackbar(Snackbar, EntitiesResources.Redirect);
+            await JsRuntime.LogError(ex);
+        }
+    }
+}

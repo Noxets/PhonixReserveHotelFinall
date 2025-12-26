@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="ExpireActivationCode" xml:space="preserve">
+        <value>تاریخ انقضا کد</value>
+    </data>
+    <data name="ActivationCode" xml:space="preserve">
+        <value>کد فعال‌سازی</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>ثبت نام</value>
+    </data>
+    <data name="ErrorFillEmailAndPhoneNumberSametime" xml:space="preserve">
+        <value>شماره همراه و یا ایمیل باید وارد گردد.</value>
+    </data>
+    <data name="ErrorPasswordIsNotValid" xml:space="preserve">
+        <value>رمز عبور باید شامل حروف بزرگ و حروف کوچک و اعداد باشد!</value>
+    </data>
+    <data name="ErrorPasswordCompare" xml:space="preserve">
+        <value>رمز عبور و تکرار رمز عبور باید برابر باشد!</value>
+    </data>
+    <data name="ConfirmPassword" xml:space="preserve">
+        <value>تایید رمز عبور</value>
+    </data>
+    <data name="ErrorDuplicateEmail" xml:space="preserve">
+        <value>ایمیل تکراری است لطفا ایمیل دیگری انتخاب کنید!</value>
+    </data>
+    <data name="ErrorDuplicatePhoneNumber" xml:space="preserve">
+        <value>شماره همراه تکراری است لطفا شماره همراه دیگری انتخاب کنید!</value>
+    </data>
+    <data name="ErrorDuplicateUsername" xml:space="preserve">
+        <value>نام کاربری تکراری است لطفا نام کاربری دیگری انتخاب کنید!</value>
+    </data>
+    <data name="InvalidToken" xml:space="preserve">
+        <value>توکن نامعتبر است.</value>
+    </data>
+    <data name="SmsOfLogin" xml:space="preserve">
+        <value>کاربر عزیز به {0} خوش آمدید 
+Code: {1}</value>
+    </data>
+    <data name="EmailConfirmSubject" xml:space="preserve">
+        <value>تایید ایمیل در {0}</value>
+    </data>
+    <data name="ErrorUserNotFind" xml:space="preserve">
+        <value>کاربری یافت نشد.</value>
+    </data>
+    <data name="EmailIsConfirmed" xml:space="preserve">
+        <value>ایمیل شما تایید شده است</value>
+    </data>
+    <data name="EmailConfirm" xml:space="preserve">
+        <value>تایید ایمیل</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>ورود</value>
+    </data>
+    <data name="ErrorNoPassword" xml:space="preserve">
+        <value>رمز عبور وارد نشده است!</value>
+    </data>
+    <data name="RememeberMe" xml:space="preserve">
+        <value>ذخیره بمان</value>
+    </data>
+    <data name="IsLockOut" xml:space="preserve">
+        <value>حساب کاربری شما قفل شده است.</value>
+    </data>
+    <data name="IsNotAllowed" xml:space="preserve">
+        <value>حساب کاربری شما غیرفعال شده است.</value>
+    </data>
+    <data name="RequiresTwoFactor" xml:space="preserve">
+        <value>برای ورود به تایید دو مرحله ای نیاز است!</value>
+    </data>
+    <data name="ErrorLoginFill" xml:space="preserve">
+        <value>لطفا شماره تماس خود را وارد کرده و یا از نام کاربری و رمز عبور استفاده کنید!</value>
+    </data>
+    <data name="RegisterWithPhone" xml:space="preserve">
+        <value>ثبت نام با موبایل</value>
+    </data>
+    <data name="RegisterWithEmail" xml:space="preserve">
+        <value>ثبت نام با ایمیل</value>
+    </data>
+    <data name="EmailIsSend" xml:space="preserve">
+        <value>ایمیل ارسال شد</value>
+    </data>
+    <data name="EmailIsSendDescription" xml:space="preserve">
+        <value>ایمیل شما به آدرس {0} ارسال شد</value>
+    </data>
+    <data name="PhoneConfirm" xml:space="preserve">
+        <value>تایید تلفن همراه</value>
+    </data>
+    <data name="LoginWithEmail" xml:space="preserve">
+        <value>ورود با نام کاربری</value>
+    </data>
+    <data name="LoginWithPhone" xml:space="preserve">
+        <value>ورود با پیامک</value>
+    </data>
+    <data name="PasswordRecovery" xml:space="preserve">
+        <value>بازیابی رمز عبور</value>
+    </data>
+    <data name="ChangePassword" xml:space="preserve">
+        <value>تغییر رمز عبور</value>
+    </data>
+    <data name="ClickOnLink" xml:space="preserve">
+        <value>برای {0} بر روی لینک کلیک کنید</value>
+    </data>
+    <data name="WarningCanRegister" xml:space="preserve">
+        <value>حساب کاربری شما یافت نشده ، شما می توانید از طریق تلفن همراه ثبت نام نمایید.</value>
+    </data>
+    <data name="ErrorUserIsNotActive" xml:space="preserve">
+        <value>حساب کاربری شما غیر فعال شده است.
+لطفا با مدیر سامانه تماس بگیرید.</value>
+    </data>
+    <data name="ErrorWrongPassword" xml:space="preserve">
+        <value>رمز عبور و نام کاربری اشتباه است.</value>
+    </data>
+    <data name="LockoutEnabled" xml:space="preserve">
+        <value>قفل کاربر</value>
+    </data>
+    <data name="AccessFailedCount" xml:space="preserve">
+        <value>تعداد ورود خطا</value>
+    </data>
+    <data name="LockoutEnd" xml:space="preserve">
+        <value>پایان مسدودی</value>
+    </data>
+    <data name="ReturnUrl" xml:space="preserve">
+        <value>آدرس پنل</value>
+    </data>
+    <data name="AccessLevel" xml:space="preserve">
+        <value>سطح دسترسی</value>
+    </data>
+    <data name="Wallet" xml:space="preserve">
+        <value>موجودی کیف پول</value>
+    </data>
+    <data name="UsernameHelper" xml:space="preserve">
+        <value>نام کاربری باید منحصر به فرد باشد</value>
+    </data>
+    <data name="EmailHelper" xml:space="preserve">
+        <value>مقدار ایمیل نمی‌تواند خالی باشد</value>
+    </data>
+    <data name="PhoneNumberHelper" xml:space="preserve">
+        <value>شماره همراه وارد شده برای ورود و احراز هویت استفاده می‌شود و باید منحصر به فرد باشد</value>
+    </data>
+    <data name="PasswordHelper" xml:space="preserve">
+        <value>در صورت نیاز به تغییر رمز عبور، آن را وارد کنید</value>
+    </data>
+    <data name="RolesHelper" xml:space="preserve">
+        <value>اگر نقشی به کاربر اختصاص داده نشود، به عنوان یک کاربر عادی در نظر گرفته خواهد شد</value>
+    </data>
+    <data name="CardNumber" xml:space="preserve">
+        <value>شماره کارت بانکی</value>
+    </data>
+    <data name="BankAccount" xml:space="preserve">
+        <value>شماره شبا</value>
+    </data>
+    <data name="Phone" xml:space="preserve">
+        <value/>
+    </data>
+    <data name="CardNumberHelper" xml:space="preserve">
+        <value>شماره کارت خود را برای برگشت وجه وارد کنید</value>
+    </data>
+    <data name="BankAccountHelper" xml:space="preserve">
+        <value>شماره شبا خود را برای برگشت وجه وارد کنید</value>
+    </data>
+    <data name="UserInformation" xml:space="preserve">
+        <value>اطلاعات کاربری</value>
+    </data>
+    <data name="Access" xml:space="preserve">
+        <value>دسترسی</value>
+    </data>
+    <data name="WarningCanntRegister" xml:space="preserve">
+        <value>امکان ثبت نام در سایت وجود ندارد</value>
+    </data>
+</root>

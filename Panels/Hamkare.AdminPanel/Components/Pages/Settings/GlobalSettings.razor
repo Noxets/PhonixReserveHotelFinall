@@ -1,0 +1,154 @@
+@page "/AdminPanel/GlobalSettings"
+@using Hamkare.Resource
+@using Hamkare.Service.Services.General
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Resource.General
+@inject SettingService SettingService
+
+<PageTitle>@GlobalResources.General</PageTitle>
+
+<MudPaper Outlined="false" Elevation="0" Class="pa-4">
+
+    <MudStack Row="true" Class="w-100 rounded-lg mb-2 stack-title-table" AlignItems="AlignItems.Center">
+
+        <MudItem xs="2">
+            <MudTooltip Text="@GlobalResources.Return" Placement="Placement.Bottom" Arrow="true">
+                <MudIconButton Href="/adminPanel/" Class="rounded-lg" Icon="@(Thread.CurrentThread.CurrentUICulture.IsRtl() ? Icons.Material.TwoTone.ArrowForward : Icons.Material.TwoTone.ArrowBack)"></MudIconButton>
+            </MudTooltip>
+        </MudItem>
+
+        <MudItem xs="8">
+            <MudText Typo="Typo.h6" Align="Align.Center">@GlobalResources.General</MudText>
+        </MudItem>
+
+        <MudItem xs="2"></MudItem>
+
+    </MudStack>
+
+    <HamkareForm @ref="@_form">
+
+        <HamkareGroups>
+            
+            <HamkareGroup Title="@GlobalResources.GeneralSettings">
+                
+                <MudItem xs="12" md="6" lg="3" Class="d-flex align-items-center">
+                    <HamkareSwitch OnRender="OnRender" @bind-Value="@CanRegister" Label="CanRegister"/>
+                </MudItem>
+                
+                <MudItem xs="12" md="6" lg="3">
+                    <HamkareNumericField OnRender="OnRender" @bind-Value="UploadLimit" For="@(() => UploadLimit)"
+                                         Label="UploadLimit"
+                                         HelperText="@GlobalResources.UploadLimitHelper"/>
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="3" Class="d-flex align-items-center">
+                    <HamkareSwitch OnRender="OnRender" @bind-Value="@InventoryDeduction" Label="کسر از موجودی"/>
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="3">
+                    <HamkareNumericField OnRender="OnRender" @bind-Value="Latitude" For="@(() => Latitude)" Required="true"
+                                         Label="@GeneralResources.Latitude" HelperText="@GlobalResources.AllPageSEOHelper"/>
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="3">
+                    <HamkareNumericField OnRender="OnRender" @bind-Value="Longitude" For="@(() => Longitude)" Required="true"
+                                         Label="@GeneralResources.Longitude" HelperText="@GlobalResources.AllPageSEOHelper"/>
+                </MudItem>
+                
+                <MudItem xs="12" md="6" lg="3" Class="d-flex align-items-center">
+                    <HamkareSwitch OnRender="OnRender" @bind-Value="@OrderConfirmation" Label="نیاز به تایید بعد از پرداخت"/>
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="3">
+                    <HamkareNumericField OnRender="OnRender" @bind-Value="OrderInProgressMin" For="@(() => OrderInProgressMin)"
+                                         Label="مدت زمان آماده سازی به دقیقه"/>
+                </MudItem>
+                
+                <MudItem xs="12" md="6" lg="3">
+
+                    <HamkareTextField OnRender="OnRender" @bind-Value="SpotPlayerCode" For="@(() => SpotPlayerCode)" Label="SpotPlayer" Counter="2000" MaxLength="2000"/>
+
+                </MudItem>
+                
+            </HamkareGroup>
+            
+        </HamkareGroups>
+
+    </HamkareForm>
+
+    <MudCardActions Class="mt-3">
+        <MudButton Variant="Variant.Filled" Class="rounded-lg" Color="Color.Primary"
+                   OnClick="@(async () => await Submit())" @onkeydown="@HandleKeyDown" Disabled="InProgress">
+            @ViewResources.Submit
+        </MudButton>
+    </MudCardActions>
+
+</MudPaper>
+
+@code{
+    private HamkareForm _form;
+    private string Header { get; set; }
+    private string Body { get; set; }
+    private string SpotPlayerCode { get; set; }
+    private bool CanRegister { get; set; }
+    private bool InventoryDeduction { get; set; }
+    private bool OrderConfirmation { get; set; }
+    private double Latitude { get; set; }
+    private double Longitude { get; set; }
+    private int UploadLimit { get; set; }
+    private int OrderInProgressMin { get; set; }
+    private bool OnRender { get; set; } = true;
+    private bool InProgress { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        CanRegister = Utility.Settings.CoreSettings.GlobalSettings.CanRegister;
+        UploadLimit = Utility.Settings.CoreSettings.GlobalSettings.UploadLimit;
+        Header = Utility.Settings.CoreSettings.GlobalSettings.Header;
+        Body = Utility.Settings.CoreSettings.GlobalSettings.Body;
+
+        OnRender = false;
+        return Task.CompletedTask;
+    }
+
+    private async Task Submit()
+    {
+        InProgress = true;
+        try
+        {
+            await _form.Validate();
+
+            if (_form.IsValid)
+            {
+                Utility.Settings.CoreSettings.GlobalSettings.CanRegister = CanRegister;
+                Utility.Settings.CoreSettings.GlobalSettings.UploadLimit = UploadLimit;
+                Utility.Settings.CoreSettings.GlobalSettings.Header = Header;
+                Utility.Settings.CoreSettings.GlobalSettings.Body = Body;
+                
+                await SettingService.UpdateDatabase(nameof(Utility.Settings.CoreSettings.GlobalSettings));
+
+                Snackbar.SuccessAddOrUpdate(EntitiesResources.Settings);
+            }
+            InProgress = false;
+        }
+        catch (Exception e)
+        {
+            InProgress = false;
+            await JsRuntime.LogError(e);
+            Snackbar.ErrorAddOrUpdate(EntitiesResources.Settings);
+        }
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !e.CtrlKey && !e.ShiftKey)
+        {
+            await Submit();
+        }
+    }
+    private string GetMultiSelectionText(List<string> selectedValues)
+    {
+        return string.Join(",", selectedValues);
+    }
+}

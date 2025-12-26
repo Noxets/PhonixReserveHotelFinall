@@ -1,0 +1,27 @@
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+@inherits MudNumericField<T>
+
+@if (OnRender)
+{
+    <HamkareSkeletonInput HaveHelper="!string.IsNullOrWhiteSpace(HelperText)"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    [Parameter]
+    public bool OnRender { get; set; } = true;
+    
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Culture = parameters.TryGetValue("Culture", out CultureInfo culture) ? culture : CultureInfo.CurrentCulture;
+        Margin = parameters.TryGetValue("Margin", out Margin margin) ? margin : Margin.Dense;
+        Variant = parameters.TryGetValue("Variant", out Variant variant) ? variant : Variant.Outlined;
+        Immediate = !parameters.TryGetValue("Immediate", out bool immediate) || immediate;
+
+        await base.SetParametersAsync(parameters);
+    }
+}

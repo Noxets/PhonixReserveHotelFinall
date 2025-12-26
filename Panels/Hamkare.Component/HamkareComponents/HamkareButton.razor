@@ -1,0 +1,32 @@
+@inherits MudButton
+
+@if (_processing)
+{
+    <MudProgressCircular Size="Size.Small" Indeterminate="true"/>
+}
+else
+{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+
+    private bool _processing = false;
+
+    protected override async Task OnClickHandler(MouseEventArgs ev)
+    {
+        if (!Disabled && !_processing)
+        {
+            Disabled = true;
+            _processing = true;
+            StateHasChanged();
+
+            await OnClick.InvokeAsync();
+
+            _processing = false;
+            Disabled = false;
+            StateHasChanged();
+        }
+    }
+
+}

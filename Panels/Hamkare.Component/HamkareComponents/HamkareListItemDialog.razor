@@ -1,0 +1,48 @@
+@using System.ComponentModel.DataAnnotations
+@using System.Reflection
+@typeparam T
+@attribute [CascadingTypeParameter("T")]
+<MudStack Spacing="1">
+
+    @foreach (var property in typeof(T).GetProperties())
+    {
+        var displayName = property.GetCustomAttribute<DisplayAttribute>();
+
+        if (displayName == null || @property.GetValue(Model) == null)
+            continue;
+
+        if (property.PropertyType == typeof(bool))
+        {
+            <MudCheckBox Value="@property.GetValue(Model)" LabelPosition="LabelPosition.Start" Label="@displayName.GetName()"
+                         Color="Color.Primary" ReadOnly="true">
+            </MudCheckBox>
+        }
+        else if (property.PropertyType == typeof(DateTime))
+        {
+            <MudText>
+                @displayName.GetName()
+                : @(((DateTime) property.GetValue(Model)).ToString(Thread.CurrentThread.CurrentUICulture))
+            </MudText>
+        }
+        else if (property.PropertyType == typeof(DateTime?))
+        {
+            <MudText>
+                @displayName.GetName()
+                : @(((DateTime?) property.GetValue(Model)).Value.ToString(Thread.CurrentThread.CurrentUICulture))
+            </MudText>
+        }
+        else
+        {
+            <MudText>@displayName.GetName(): @property.GetValue(Model)</MudText>
+        }
+
+    }
+
+    <MudDivider></MudDivider>
+
+</MudStack>
+
+@code{
+    [Parameter]
+    public T Model { get; set; }
+}

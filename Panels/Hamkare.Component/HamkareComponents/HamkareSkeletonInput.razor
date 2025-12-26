@@ -1,0 +1,13 @@
+<MudSkeleton Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" Height="40px" Style="margin-top: 4px;"/>
+
+@if (HaveHelper)
+{
+    <MudSkeleton Animation="Animation.Wave" SkeletonType="SkeletonType.Text"/>
+}
+
+@code{
+
+    [Parameter]
+    public bool HaveHelper { get; set; } = true;
+
+}

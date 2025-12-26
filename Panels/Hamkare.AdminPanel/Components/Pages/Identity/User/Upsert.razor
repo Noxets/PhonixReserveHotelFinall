@@ -1,0 +1,229 @@
+@page "/AdminPanel/User/Upsert"
+@page "/AdminPanel/User/Upsert/{Id}"
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Resource
+@using Hamkare.Resource.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Utility.Attributes.Core
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@inject UserManager<User> UserManager
+@inject RoleService RoleService
+@inject UserCategoryService UserCategoryService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<HamkareUpsertForm T="User" OnRender="OnRender" OnSubmit="Submit" ReturnUrl="/adminPanel/User" Model="_model" Title="@(string.IsNullOrEmpty(Id) ? $"{GlobalResources.Add} {EntitiesResources.User}" : $"{GlobalResources.Edit} {EntitiesResources.User}")">
+
+    <Body>
+
+    <HamkareGroups>
+
+        <HamkareGroup Title="@IdentityResources.UserInformation">
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="Username" For="@(() => Username)"
+                                  Label="@GlobalResources.Username"
+                                  HelperText="@IdentityResources.UsernameHelper"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="Email" For="@(() => Email)"
+                                  Label="@GlobalResources.Email"
+                                  HelperText="@IdentityResources.EmailHelper"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="PhoneNumber" For="@(() => PhoneNumber)"
+                                  Label="@GlobalResources.MobileNumber"
+                                  HelperText="@IdentityResources.PhoneNumberHelper"/>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareTextField OnRender="OnRender" @bind-Value="Password" For="@(() => Password)"
+                                  Label="@GlobalResources.Password"
+                                  HelperText="@IdentityResources.PasswordHelper"/>
+
+            </MudItem>
+
+        </HamkareGroup>
+
+        <HamkareGroup Title="@IdentityResources.Access">
+
+            <MudItem xs="12" md="6" lg="3">
+
+                <HamkareSelect OnRender="OnRender"
+                               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))"
+                               @bind-SelectedValues="_selectedRole" MultiSelection="true" T="string"
+                               Label="@GlobalResources.Roles" HelperText="@IdentityResources.RolesHelper" Clearable>
+
+                    @foreach (var item in _listRole)
+                    {
+                        <MudSelectItem Value="@(item.Name)"/>
+                    }
+
+                </HamkareSelect>
+
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="3">
+                <HamkareSelectMain OnRender="OnRender" @bind-Value="@_model.UserGroupId"
+                                   Label="@EntitiesResources.UserGroup" Clearable
+                                    List="_userList"/>
+            </MudItem>
+            
+        </HamkareGroup>
+
+    </HamkareGroups>
+
+    </Body>
+
+</HamkareUpsertForm>
+
+@code{
+    private IReadOnlyList<Role> _listRole = new List<Role>();
+
+    private User _model = new()
+    {
+        Id = 0,
+        Email = "no@email.com",
+        PhoneNumberConfirmed = true,
+        Active = true,
+        Deleted = false,
+        System = false
+    };
+
+    private IEnumerable<string> _selectedRole = new List<string>();
+    [Parameter] public string Id { get; set; }
+    private long IdAsInt => long.TryParse(Id, out var result) ? result : 0;
+    private string Username { get; set; }
+    private string Email { get; set; } = "no@email.com";
+    private string Password { get; set; }
+    private decimal Wallet { get; set; }
+    [CorePhoneNumber] private string PhoneNumber { get; set; }
+    public bool OnRender { get; set; } = true;
+    private IReadOnlyList<UserCategory> _userList = new List<UserCategory>();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var userGroups = await UserCategoryService.GetAllActiveAsync();
+
+        _userList = userGroups.ToList();
+        
+        _listRole = await RoleService.GetAllActiveAsync(x => x.NormalizedName != "SYSTEM");
+
+        if (IdAsInt != 0)
+        {
+            _model = await UserManager.FindByIdAsync(Id);
+
+            if (_model == null)
+            {
+                Snackbar.Error(IdentityResources.ErrorUserNotFind);
+                return;
+            }
+
+            Username = _model.UserName;
+            Email = _model.Email;
+            PhoneNumber = _model.PhoneNumber;
+            Wallet = _model.Wallet;
+            _selectedRole = await UserManager.GetRolesAsync(_model);
+        }
+
+        OnRender = false;
+    }
+
+    private async Task<bool> Submit()
+    {
+        try
+        {
+            if (_model.Id == 0)
+                if (!await CreateUser())
+                    return false;
+                else
+                    await UpdateUser();
+
+            var roles = await UserManager.GetRolesAsync(_model);
+
+            await UserManager.RemoveFromRolesAsync(_model, roles.Where(x => !_selectedRole.Contains(x)));
+            await UserManager.AddToRolesAsync(_model, _selectedRole.Where(x => !roles.Contains(x)));
+
+            if (!string.IsNullOrWhiteSpace(Password))
+            {
+                var token = await UserManager.GeneratePasswordResetTokenAsync(_model);
+
+                var result = await UserManager.ResetPasswordAsync(_model, token, Password);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                        Snackbar.Error(error.Code + ": " + error.Description);
+
+                    return false;
+                }
+            }
+
+            Snackbar.SuccessAddOrUpdate(EntitiesResources.User);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.LogError(e);
+            e.ShowErrorSnackbar(Snackbar, EntitiesResources.User);
+        }
+
+        return false;
+    }
+
+    private string GetMultiSelectionText(List<string> selectedValues)
+    {
+        return string.Join(",", selectedValues);
+    }
+
+    private async Task<bool> CreateUser()
+    {
+        _model.UserName = Username;
+        _model.Email = Email;
+        _model.PhoneNumber = PhoneNumber;
+        _model.CreateDate = DateTime.Now;
+        _model.Wallet = Wallet;
+        var user = await UserManager.FindByIdAsync(await AuthenticationStateProvider.GetUser());
+        _model.CreatorId = user?.Id ?? 1;
+
+        var result = await UserManager.CreateAsync(_model, Password);
+        if (result.Succeeded)
+            return true;
+
+        foreach (var item in result.Errors)
+            Snackbar.Error($"{item.Code} : {item.Description}");
+
+        return false;
+    }
+
+    private async Task UpdateUser()
+    {
+        if (!string.IsNullOrEmpty(Username) && _model.UserName != Username)
+            await UserManager.SetUserNameAsync(_model, Username);
+
+        if (!string.IsNullOrEmpty(Email) && _model.Email != Email)
+            await UserManager.SetEmailAsync(_model, Email);
+
+        if (!string.IsNullOrEmpty(PhoneNumber) && _model.PhoneNumber != PhoneNumber)
+            await UserManager.SetPhoneNumberAsync(_model, PhoneNumber);
+
+        if (Wallet != _model.Wallet)
+        {
+            _model.Wallet = Wallet;
+            await UserManager.UpdateAsync(_model);
+        }
+    }
+
+}

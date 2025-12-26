@@ -1,0 +1,57 @@
+@using Hamkare.Panel.Components.Layout
+@using Hamkare.Utility.Settings.CoreSettings
+@page "/AccessDenied"
+@layout MainLayout
+
+<PageTitle>Access Denied | @GlobalSettings.OwnerName</PageTitle>
+
+<section>
+    <div class="wrapper">
+        <div class="container">
+
+            <div id="404Error" class="scene" data-hover-only="false">
+
+
+                <div class="circle" data-depth="1.2"></div>
+
+                <div class="one" data-depth="0.9">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <div class="two" data-depth="0.60">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <div class="three" data-depth="0.40">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <p class="p404" data-depth="0.50">403</p>
+                <p class="p404" data-depth="0.10">403</p>
+
+            </div>
+
+            <div class="text">
+                <article>
+                    <p>شما به این صفحه دسترسی ندارید!<br>لطفا به صفحه اصلی برگردید.</p>
+                    <button>
+                        <a href="/">صفحه اصلی!</a>
+                    </button>
+                </article>
+            </div>
+
+        </div>
+    </div>
+</section>

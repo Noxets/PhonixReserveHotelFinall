@@ -1,0 +1,166 @@
+@page "/AdminPanel/Person/Upsert"
+@page "/AdminPanel/Person/Upsert/{Id:long}"
+@using Hamkare.Common.Entities.Persons
+@using Hamkare.Resource
+@using Hamkare.Resource.Persons
+@using Hamkare.Service.Services.Identity
+@using Hamkare.Service.Services.Persons
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Component.ViewModels.Panel
+@inject PersonService PersonService
+@inject UserService UserService
+
+<HamkareUpsertForm T="Person" OnRender="OnRender" OnSubmit="Submit" ReturnUrl="/adminPanel/Person" Model="_model" Title="@(Id==0 ? $"{GlobalResources.Add} {EntitiesResources.Person}" : $"{GlobalResources.Edit} {EntitiesResources.Person}")">
+
+    <Body>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.FirstName" For="@(() => _model.FirstName)"
+                          Label="@PersonResources.FirstName"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.LastName" For="@(() => _model.LastName)"
+                          Label="@PersonResources.LastName"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.FatherName" For="@(() => _model.FatherName)"
+                          Label="@PersonResources.FatherName"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.NationalCode" For="@(() => _model.NationalCode)"
+                          Label="@PersonResources.NationalCode" HelperText="@PersonResources.NationalCodeHelper"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+        <HamkareDatePicker OnRender="OnRender" Label="@PersonResources.BirthDate" @bind-Date="_date"
+                           HelperText="@PersonResources.BirthDateHelper"/>
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareSelect OnRender="OnRender" T="bool" @bind-Value="@_model.Gender" Label="@PersonResources.Gender"
+                       HelperText="@PersonResources.Gender"
+                       ToStringFunc="@(b => b ? GlobalResources.Man : GlobalResources.Woman)">
+
+            <MudSelectItem Value="true">
+                @GlobalResources.Man
+            </MudSelectItem>
+
+            <MudSelectItem Value="false">
+                @GlobalResources.Woman
+            </MudSelectItem>
+
+        </HamkareSelect>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareSelect OnRender="OnRender" T="DropdownViewModel" @bind-Value="@User" ToStringFunc="@_converter"
+                       Label="@EntitiesResources.User" HelperText="@PersonResources.UserHelper">
+            @foreach (var item in _userList)
+            {
+                <MudSelectItem Value="@(item)"/>
+            }
+        </HamkareSelect>
+
+    </MudItem>
+
+    </Body>
+
+</HamkareUpsertForm>
+
+@code{
+    private readonly Func<DropdownViewModel, string> _converter = p => p?.Name;
+    private DateTime? _date = DateTime.Today;
+    private Person _model = new();
+    private IReadOnlyList<DropdownViewModel> _userList = new List<DropdownViewModel>();
+    [Parameter]
+    public long Id { get; set; }
+ 
+
+    private DropdownViewModel User { get; set; }
+
+    public bool OnRender { get; set; } = true;
+    protected override async Task OnInitializedAsync()
+    {
+        var users = await UserService.GetAllActiveAsync();
+
+        if (!users.Any())
+        {
+            Snackbar.ErrorRequired(EntitiesResources.User);
+            return;
+        }
+
+        _userList = users.Select(x => new DropdownViewModel
+        {
+            Id = x.Id,
+            Name = x.UserName
+        }).ToList();
+
+        if (Id == 0)
+        {
+            User = new DropdownViewModel
+            {
+                Id = _userList.First().Id,
+                Name = _userList.First().Name
+            };
+        }
+        else
+        {
+            _model = await PersonService.FindAsync(Id);
+            _date = _model.BirthDate.ToDateTime(new TimeOnly());
+
+            User = new DropdownViewModel
+            {
+                Id = _model.User.Id,
+                Name = _model.User.UserName
+            };
+        }
+
+        OnRender = false;
+    }
+
+    private async Task<bool> Submit()
+    {
+        try
+        {
+            _model.BirthDate = DateOnly.FromDateTime(_date ?? DateTime.Now);
+
+            if (_model.Validate(out var errors))
+            {
+                Snackbar.Error(errors);
+                return false;
+            }
+
+            var user = await UserService.FindAsync(User.Id);
+            _model.UserId = User.Id;
+            await PersonService.AddOrUpdateAsync(_model);
+
+            user.PersonId = _model.Id;
+            await UserService.AddOrUpdateAsync(user);
+
+            Snackbar.SuccessAddOrUpdate(EntitiesResources.Person);
+            return true;
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.LogError(e);
+            e.ShowErrorSnackbar(Snackbar, EntitiesResources.Person);
+        }
+
+        return false;
+    }
+}

@@ -1,0 +1,33 @@
+@inherits MudBlazor.MudSkeleton
+
+@{
+
+base.BuildRenderTree(__builder);
+
+}
+
+@code {
+   
+    [Parameter] public string MaxWidth { get; set; }
+    [Parameter] public string MaxHeight { get; set; }
+    [Parameter] public string BorderRadius { get; set; }
+    
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Animation = parameters.TryGetValue("Animation", out Animation animation) ? animation : Animation.Wave;
+        SkeletonType = parameters.TryGetValue("SkeletonType", out SkeletonType skeletonType) ? skeletonType : SkeletonType.Rectangle;
+        var defaultStyle  = parameters.TryGetValue("Style", out string style) ? style : "";
+        if (!string.IsNullOrEmpty(MaxWidth))
+            defaultStyle = defaultStyle + " maxWidth: " + MaxWidth + ";";
+        
+        if (!string.IsNullOrEmpty(MaxHeight))
+            defaultStyle = defaultStyle + " maxHeight: " + MaxHeight + ";";
+        
+        if (!string.IsNullOrEmpty(BorderRadius))
+            defaultStyle = defaultStyle + " border-radius: " + BorderRadius + ";";
+
+        Style = defaultStyle;
+        
+        await base.SetParametersAsync(parameters);
+    }
+}

@@ -1,0 +1,99 @@
+@using Hamkare.Common.Entities
+@using Hamkare.Common.Entities.Identity
+@using Hamkare.Common.Entities.Orders
+@using Hamkare.Resource.UserPanel
+
+<MudStack Row="true" Class="w-100 rounded-lg stack-title-table" AlignItems="AlignItems.Center">
+
+    <MudItem xs="2">
+    </MudItem>
+
+    <MudItem xs="8">
+        <MudText Typo="Typo.h6" Align="Align.Center">@UserPanelResources.ShoppingCart</MudText>
+    </MudItem>
+
+</MudStack>
+
+<MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="true">
+
+    <MudGrid Class="mt-3" Spacing="3">
+
+        <MudItem xs="6">
+
+            <MudStack Class="border-solid border mud-border-primary rounded-lg p-3" Spacing="2" Justify="Justify.Center" AlignItems="AlignItems.Center">
+
+                <MudIcon Icon="@Icons.Material.Outlined.Inventory2" Color="Color.Primary" Size="Size.Large"/>
+
+                <MudText>
+                    <b>@Basket.OrderItems.GetActiveCount() کالا</b>
+                </MudText>
+
+            </MudStack>
+
+        </MudItem>
+
+        <MudItem xs="6">
+
+            <MudStack Class="border-solid border mud-border-primary rounded-lg p-3" Spacing="2" Justify="Justify.Center" AlignItems="AlignItems.Center">
+
+                <MudIcon Icon="@Icons.Material.Outlined.Payment" Color="Color.Primary" Size="Size.Large"/>
+
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+
+                    <MudText>
+                        <b>@Basket.Price</b>
+                    </MudText>
+
+                    <MudText Typo="Typo.caption">تومان</MudText>
+
+                </MudStack>
+
+            </MudStack>
+
+        </MudItem>
+
+        @if (Basket.TotalDiscount != 0)
+        {
+            <MudItem xs="6">
+
+                <MudStack Class="border-solid border mud-border-primary rounded-lg p-3" Spacing="2" Justify="Justify.Center" AlignItems="AlignItems.Center">
+
+                    <MudIcon Icon="@Icons.Material.Outlined.Discount" Color="Color.Primary" Size="Size.Large"/>
+
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+
+                        <MudText>
+                            <b>@Basket.TotalDiscount</b>
+                        </MudText>
+
+                        <MudText Typo="Typo.caption">تومان</MudText>
+
+                    </MudStack>
+
+                </MudStack>
+
+            </MudItem>
+        }
+        
+    </MudGrid>
+
+</MudHidden>
+
+@foreach (var item in Basket.OrderItems.GetAllActive(x => x.Count > 0))
+{
+    <HamkareOrderItemCard OrderItem="item" User="CurrentUser" OnOrderItemChanged="() => {OnOrderItemChanged.InvokeAsync(); StateHasChanged(); }"/>
+}
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Order Basket { get; set; }
+    
+    [Parameter]
+    [EditorRequired]
+    public User CurrentUser { get; set; }
+    
+    [Parameter] 
+    [EditorRequired]
+    public EventCallback OnOrderItemChanged { get; set; }
+}
