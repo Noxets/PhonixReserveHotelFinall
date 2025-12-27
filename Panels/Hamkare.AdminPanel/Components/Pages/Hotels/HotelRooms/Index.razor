@@ -1,0 +1,124 @@
+﻿@page "/AdminPanel/HotelRoom/{HotelId:long}"
+@using Hamkare.Common.Entities
+@using Hamkare.Resource
+@using Hamkare.Resource.News
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Infrastructure
+@using Hamkare.Service.Services.Generic
+@inject RootService<HotelRoom,ApplicationDbContext> HotelRoomService
+
+<HamkareListView SearchStringChange="s => { SearchString = s; }" T="HotelRoom" AddLink="@($"/AdminPanel/HotelRoom/Upsert/{HotelId}")"
+                 Title="HotelRoom" OnRender="OnRender"
+                 Element="_elements" QuickFilter="QuickFilter" ReturnLink="/adminPanel/Hotel" SearchString="@SearchString">
+
+    <Columns>
+
+        <PropertyColumn Property="x => x.Id" Sortable="true" Filterable="false" Title="@GlobalResources.Id"/>
+        <PropertyColumn Property="x => x.RoomNumber" Sortable="true" Filterable="false" Title="@GlobalResources.Title"/>
+        <PropertyColumn Property="x => x.Bed" Sortable="true" Filterable="false" Title="@NewsResources.Views"/>
+
+        <TemplateColumn CellClass="d-flex justify-center justify-sm-end operation-cell" Sortable="false" Filterable="false" StickyLeft="@(!Thread.CurrentThread.CurrentUICulture.IsRtl())" StickyRight="Thread.CurrentThread.CurrentUICulture.IsRtl()">
+
+            <CellTemplate>
+                
+                <MudTooltip Text="@(context.Item.Active ? GlobalResources.Active : GlobalResources.Inactive)"
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudToggleIconButton Class="action-button-dataGrid rounded-lg" Toggled="@context.Item.Active"
+                                         Icon="@Icons.Material.TwoTone.CheckBoxOutlineBlank" Color="@Color.Error"
+                                         ToggledIcon="@Icons.Material.TwoTone.Check" ToggledColor="@Color.Success" ToggledChanged="@(e => HandleToggleChange(context.Item.Id, e))" Variant="Variant.Text"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Edit} {context.Item.RoomNumber}")
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Size="@Size.Small" Class="action-button-dataGrid rounded-lg" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" Href="@($"/AdminPanel/HotelRoom/Upsert/{HotelId}/{context.Item.Id}")"/>
+                </MudTooltip>
+
+                <MudTooltip Text=@($"{GlobalResources.Deleted} {context.Item.RoomNumber}")
+                            Placement="Placement.Bottom" Arrow="true">
+                    <MudIconButton Class="action-button-dataGrid rounded-lg" Size="@Size.Small" Variant="Variant.Text" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="@(_ => HandleRemoveChange(context.Item.Id))"/>
+                </MudTooltip >
+
+            </CellTemplate >
+
+        </TemplateColumn >
+
+    </Columns>
+
+</HamkareListView>
+
+@code{
+
+    private IEnumerable<HotelRoom> _elements = new List<HotelRoom>();
+    private string SearchString { get; set; }
+    [Parameter]
+    private long HotelId { get; set; }
+    private bool OnRender { get; set; } = true;
+    private Func<HotelRoom, bool> QuickFilter => x => {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+                return true;
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _ = JsRuntime.LogError(ex);
+            return false;
+        }
+    };
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _elements = await HotelRoomService.GetAllAsync();
+            _elements = _elements.Where(x => x.HotelId == HotelId);
+            
+            OnRender = false;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+    private async Task HandleToggleChange(long id, bool toggled)
+    {
+        try
+        {
+            await HotelRoomService.ActiveOrDeactivateAsync(id);
+
+            toggled = !toggled;
+
+            if (toggled)
+                Snackbar.IsDeactivate("HotelRoom");
+            else
+                Snackbar.IsActive("HotelRoom");
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.LogError(ex);
+        }
+    }
+
+    private async Task HandleRemoveChange(long id)
+    {
+        var result = await DialogService.RemoveDialog();
+        try
+        {
+            if (result ?? false)
+            {
+                await HotelRoomService.DeleteAsync(id);
+                var list = _elements.ToList();
+                list.Remove(_elements.Single(x => x.Id == id));
+                _elements = list;
+            }
+            Snackbar.Delete("HotelRoom");
+        }
+        catch (Exception ex)
+        {
+            ex.ShowErrorSnackbar(Snackbar, "HotelRoom");
+            await JsRuntime.LogError(ex);
+        }
+    }
+}

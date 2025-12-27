@@ -1,0 +1,141 @@
+@page "/AdminPanel/Hotel/Upsert"
+@page "/AdminPanel/Hotel/Upsert/{Id:long}"
+@using Hamkare.Common.Entities
+@using Hamkare.Resource
+@using Hamkare.Utility.Extensions
+@using Hamkare.Component.HamkareComponents
+@using Hamkare.Infrastructure
+@using Hamkare.Service.Services.Generic
+@using Microsoft.AspNetCore.Hosting
+@inject RootService<Hotel, ApplicationDbContext> HotelService
+@inject IWebHostEnvironment WebHostEnvironment
+
+<HamkareUpsertForm T="Hotel" OnRender="OnRender" OnSubmit="Submit" ReturnUrl="/adminPanel/Hotel" Model="_model" Title="@(Id==0 ? $"{GlobalResources.Add} Hotel" : $"{GlobalResources.Edit} Hotel")">
+
+    <Body>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Name" For="@(() => _model.Name)" Label="Name"
+                          HelperText="@GlobalResources.URLHelper" Counter="2000" MaxLength="2000"/>
+
+    </MudItem>
+    
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Description" For="@(() => _model.Description)" Label="Description"
+                          HelperText="@GlobalResources.URLHelper" Counter="2000" MaxLength="2000"/>
+
+    </MudItem>
+    
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareNumericField OnRender="OnRender" @bind-Value="_model.Order" For="@(() => _model.Order)"
+                             Label="@GlobalResources.Order" HelperText="@GlobalResources.OrderHelper"/>
+
+    </MudItem>
+    
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareNumericField OnRender="OnRender" @bind-Value="_model.Rate" For="@(() => _model.Rate)"
+                             Label="Rate"/>
+
+    </MudItem>
+
+    <MudItem xs="12" md="6" lg="3">
+
+        <HamkareTextField OnRender="OnRender" @bind-Value="_model.Address" For="@(() => _model.Address)" Label="Address" Counter="2000" MaxLength="2000"/>
+
+    </MudItem>
+    
+      <MudItem xs="12">
+
+            <MudGrid Justify="Justify.Center">
+                
+                <MudItem xs="12">
+                    <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd">
+                        <MudFileUpload T="IBrowserFile" FilesChanged="@(e => UploadFileImage(e))" Accept="@FileExtension.ImageFormatString" Class="mt-0">
+                            <ActivatorContent>
+                                <MudButton HtmlTag="label"
+                                           Variant="Variant.Filled"
+                                           Class="rounded-lg"
+                                           DropShadow="true"
+                                           Color="Color.Primary"
+                                           StartIcon="@Icons.Material.TwoTone.CloudUpload">
+                                    @GlobalResources.Images
+                                </MudButton>
+                            </ActivatorContent>
+                        </MudFileUpload>
+                    </MudStack>
+
+                </MudItem>
+                
+                @foreach (var item in _model.Images)
+                {
+                        <MudItem xs="12" md="6" lg="3">
+                            <MudIconButton Icon="@Icons.Material.TwoTone.Delete" Variant="Variant.Outlined" OnClick="@(() => _model.Images.Remove(item))" Color="Color.Error" Size="Size.Medium" Class="DisplayImages-Remove-Button rounded-lg"></MudIconButton>
+                            <MudStack Class="p-2" Spacing="2">
+
+                                <MudImage Src="@($"/Upload/Hotel/{item}")" Elevation="25" Class="img-fluid rounnded-lg"></MudImage>
+                                <MudText>@($"/Upload/Hotel/{item}")</MudText>
+                            </MudStack>
+                        </MudItem>
+                }
+            </MudGrid>
+        </MudItem>
+    
+    </Body>
+
+</HamkareUpsertForm>
+
+@code{
+
+    private DateTime? _date = DateTime.Today;
+    private Hotel _model = new();
+    [Parameter]
+    public long Id { get; set; }
+
+    public bool OnRender { get; set; } = true;
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != 0)
+        {
+            _model = await HotelService.FindAsync(Id);
+        }
+
+        OnRender = false;
+    }
+
+    private async Task<bool> Submit()
+    {
+        try
+        {
+            if (_model.Validate(out var errors))
+            {
+                Snackbar.Error(errors);
+                return false;
+            }
+            
+            await HotelService.AddOrUpdateAsync(_model);
+            Snackbar.SuccessAddOrUpdate("Hotel");
+            return true;
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.LogError(e);
+            e.ShowErrorSnackbar(Snackbar, "Hotel");
+        }
+
+        return false;
+    }
+    
+    private async Task UploadFileImage(IBrowserFile uploadedFiles)
+    {
+        // if (uploadedFiles.ValidateImage(Type.Width, Type.Height))
+        _model.Images.Add(await uploadedFiles.AddFile(WebHostEnvironment, "Hotel"));
+        // else
+        // Snackbar.Error($"سایز تصویر مورد نظر باید {Type.Width} در {Type.Height}باشد");
+    }
+
+
+}

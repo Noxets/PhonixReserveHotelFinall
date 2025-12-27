@@ -79,7 +79,7 @@
 
 </MudHidden>
 
-@foreach (var item in Basket.OrderItems.GetAllActive(x => x.Count > 0))
+@foreach (var item in Basket.OrderItems)
 {
     <HamkareOrderItemCard OrderItem="item" User="CurrentUser" OnOrderItemChanged="() => {OnOrderItemChanged.InvokeAsync(); StateHasChanged(); }"/>
 }

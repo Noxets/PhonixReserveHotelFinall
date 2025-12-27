@@ -59,7 +59,7 @@ public class OrderService(
     {
         var order = await GetBasket(user, cancellationToken: cancellationToken);
         return order.OrderItems != null && order.OrderItems.GetAnyActive()
-            ? order.OrderItems.GetAllActive().Sum(x => x.Count)
+            ? order.OrderItems.GetAllActive().Count
             : 0;
     }
     

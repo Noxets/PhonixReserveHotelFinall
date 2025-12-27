@@ -98,14 +98,6 @@
                 </MudStack>
             </MudNavLink>
 
-            <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.PersonAdd" Href="/AdminPanel/PersonLegal" Class="rounded-lg">
-                <MudStack Row="true" AlignItems="AlignItems.Center">
-                    <MudText>
-                        @EntitiesResources.PersonLegal
-                    </MudText>
-                </MudStack>
-            </MudNavLink>
-
             <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.AccountCircle" Href="/AdminPanel/User" Class="rounded-lg">
                 <MudStack Row="true" AlignItems="AlignItems.Center">
                     <MudText>
@@ -113,7 +105,7 @@
                     </MudText>
                 </MudStack>
             </MudNavLink>
-            @* Todo: Hamid Icon *@
+  
             <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.ViewQuilt"
                         Href="/AdminPanel/UserGroup" Class="rounded-lg">
                 <MudStack Row="true" AlignItems="AlignItems.Center">
@@ -133,7 +125,21 @@
         </MudNavGroup>
     </AuthorizeView>
     
-<AuthorizeView Roles="Administrator, System">
+    <MudNavGroup Title="Hotel" Expanded="false"
+                 ExpandIcon="@Icons.Material.Rounded.KeyboardArrowDown" Icon="@Icons.Material.Outlined.Settings">
+
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.BuildCircle"
+                    Href="/AdminPanel/Hotel" Class="rounded-lg">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>
+                    Hotel
+                </MudText>
+            </MudStack>
+        </MudNavLink>
+        
+    </MudNavGroup>
+    
+    <AuthorizeView Roles="Administrator, System">
 
     <MudNavGroup Title="@EntitiesResources.Settings" Expanded="false"
                  ExpandIcon="@Icons.Material.Rounded.KeyboardArrowDown" Icon="@Icons.Material.Outlined.Settings">
@@ -147,66 +153,6 @@
             </MudStack>
         </MudNavLink>
 
-        <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.FeaturedPlayList"
-                    Href="/AdminPanel/Feature"
-                    Class="rounded-lg">
-            <MudStack Row="true" AlignItems="AlignItems.Center">
-                <MudText>
-                    @EntitiesResources.Features
-                </MudText>
-            </MudStack>
-        </MudNavLink>
-
-        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Mail" Href="/AdminPanel/EmailSettings"
-                    Class="rounded-lg">
-            <MudStack Row="true" AlignItems="AlignItems.Center">
-                <MudText>
-                    @GlobalResources.Email
-                </MudText>
-            </MudStack>
-        </MudNavLink>
-
-        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Sms" Href="/AdminPanel/SmsSettings"
-                    Class="rounded-lg">
-            <MudStack Row="true" AlignItems="AlignItems.Center">
-                <MudText>
-                    SMS
-                </MudText>
-            </MudStack>
-        </MudNavLink>
-
-        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Computer" Href="/AdminPanel/Display"
-                    Class="rounded-lg">
-            <MudStack Row="true" AlignItems="AlignItems.Center">
-                <MudText>
-                    @ViewResources.Pages
-                </MudText>
-            </MudStack>
-        </MudNavLink>
-
-        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Discount" Href="/AdminPanel/Tag"
-                    Class="rounded-lg">
-            <MudStack Row="true" AlignItems="AlignItems.Center">
-                <MudText>
-                    @EntitiesResources.Tags
-                </MudText>
-            </MudStack>
-        </MudNavLink>
-
-    </MudNavGroup>
-
-    <MudNavGroup Title="@GlobalResources.Seo" Expanded="false"
-                 ExpandIcon="@Icons.Material.Rounded.KeyboardArrowDown" Icon="@Icons.Material.Outlined.Info">
-
-        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Info" Href="/AdminPanel/Redirect"
-                    Class="rounded-lg">
-            <MudStack Row="true" AlignItems="AlignItems.Center">
-                <MudText>
-                    @EntitiesResources.Redirect
-                </MudText>
-            </MudStack>
-        </MudNavLink>
-        
     </MudNavGroup>
 
 </AuthorizeView>

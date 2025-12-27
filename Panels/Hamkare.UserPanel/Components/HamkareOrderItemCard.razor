@@ -5,8 +5,6 @@
 @using Hamkare.Service.Services.Orders
 @using Hamkare.Utility.Settings.CoreSettings
 @inject OrderItemService OrderItemService
-@inject OrderService OrderService
-@inject UserService UserService
 
 <MudCard Elevation="1" Outlined="true" Class="rounded-lg p-3 mt-3">
 
@@ -16,12 +14,12 @@
 
             <MudStack Row="true">
 
-                <MudImage Class="rounded-lg" Width="100" Height="100" Src="@OrderItem.Iamges" ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center"/>
+                <MudImage Class="rounded-lg" Width="100" Height="100" Src="@OrderItem.HotelRoom.Images.FirstOrDefault()" ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center"/>
 
                 <MudStack>
 
                     <MudText Typo="Typo.h6">
-                        <b>@OrderItem.Name</b>
+                        <b>@OrderItem.HotelRoom.Hotel.Name @OrderItem.HotelRoom.RoomNumber</b>
                     </MudText>
 
                     <MudStack Row="true" Spacing="3" Class="flex-wrap mt-auto">
@@ -61,19 +59,8 @@
                 </MudStack>
 
                 <MudStack Row="true" Class="mt-auto">
-                    <HamkareButtonIcon Icon="@Icons.Material.Outlined.Add" Color="Color.Primary"
-                                       Variant="Variant.Outlined" Class="Rounded-lg" OnClick="() => Increase()"/>
-                    <MudText Color="Color.Primary"
-                             Class="d-flex justify-content-center align-items-center">
-                        @OrderItem.Count
-                    </MudText>
-                    <HamkareButtonIcon Icon="@Icons.Material.Outlined.Remove" Color="Color.Surface"
-                                       Variant="Variant.Outlined" Class="Rounded-lg" OnClick="() => Decrease()"/>
-                    <HamkareButtonIconToggle Class="Rounded-lg" Toggled="@GetFavorite()"
-                                             Icon="@Icons.Material.Outlined.FavoriteBorder" Color="@Color.Error"
-                                             ToggledIcon="@Icons.Material.Outlined.Favorite" ToggledColor="@Color.Error"
-                                             ToggledChanged="() => FavoriteToggle()"
-                                             Variant="Variant.Outlined"/>
+                   
+                    <HamkareDatePicker OnRender="false" Label="Date" @bind-Date="OrderItem.DateTime"/>
                 </MudStack>
 
             </MudStack>

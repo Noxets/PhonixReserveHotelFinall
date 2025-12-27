@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq.Expressions;
+using Hamkare.Common.Entities;
 using Hamkare.Common.Entities.Generics;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -35,6 +36,12 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, long>
     public virtual DbSet<NewsComment> NewsComments { get; set; }
 
     public virtual DbSet<NewsCategory> NewsGroups { get; set; }
+    
+    public virtual DbSet<Hotel> Hotels { get; set; }
+    
+    public virtual DbSet<HotelRoom> HotelRooms { get; set; }
+    
+    public virtual DbSet<HotelComment> HotelComments { get; set; }
 
     public virtual DbSet<Person> Persons { get; set; }
     
