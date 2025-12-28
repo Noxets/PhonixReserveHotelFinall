@@ -52,7 +52,7 @@
     private IEnumerable<HotelRoom> _elements = new List<HotelRoom>();
     private string SearchString { get; set; }
     [Parameter]
-    private long HotelId { get; set; }
+    public long HotelId { get; set; }
     private bool OnRender { get; set; } = true;
     private Func<HotelRoom, bool> QuickFilter => x => {
         try

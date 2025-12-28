@@ -21,7 +21,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Core\Hamkare.Common\Hamkare.Common.csproj"/>
-        <ProjectReference Include="..\..\Core\Hamkare.Component\Hamkare.Component.csproj"/>
         <ProjectReference Include="..\..\Core\Hamkare.Service\Hamkare.Service.csproj"/>
         <ProjectReference Include="..\..\Core\Hamkare.Utility\Hamkare.Utility.csproj"/>
         <ProjectReference Include="..\Hamkare.Component\Hamkare.Component.csproj" />
