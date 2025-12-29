@@ -1,4 +1,11 @@
-﻿@model Hamkare.Common.Entities.Hotel
+﻿@using Hamkare.Common.Entities.Identity
+@using Microsoft.AspNetCore.Identity
+@model Hamkare.Common.Entities.Hotel
+@inject UserManager<User> UserManager
+
+@{
+  var user = await UserManager.GetUserAsync(User);
+}
 
 <!DOCTYPE HTML>
 <html lang="fa">
@@ -60,7 +67,15 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a href="account.html"> <i class="fa fa-user-o"></i> حساب کاربری  </a>
+                    @if (user == null)
+                    {
+                      <a href="/login"> <i class="fa fa-user-o"></i> حساب کاربری </a>
+                    }
+                    else
+                    {
+                      <a href="/UserPanel"> <i class="fa fa-user-o"></i>@user.Name </a>
+                    }
+     
                   </li>
                 </ul>
               </li>
