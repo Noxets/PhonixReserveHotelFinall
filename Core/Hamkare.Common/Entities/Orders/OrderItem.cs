@@ -17,14 +17,10 @@ public class OrderItem : RootEntity
 
     public long HotelRoomId { get; set; }
 
-    public DateTime? DateTime { get; set; }
+    public DateTime? StartDateTime { get; set; }
+    public DateTime? EndDateTime { get; set; }
 
     public long OrderId { get; set; }
-
-    [Column(TypeName = "datetime")]
-    [Display(Name = nameof(GlobalResources.StartDate), ResourceType = typeof(GlobalResources))]
-    [DateNotLessThen]
-    public DateTime? StartDate { get; set; }
 
     [Display(Name = nameof(GlobalResources.Time), ResourceType = typeof(GlobalResources))]
     public long? Time { get; set; }

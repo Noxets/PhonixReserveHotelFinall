@@ -60,7 +60,8 @@
 
                 <MudStack Row="true" Class="mt-auto">
                    
-                    <HamkareDatePicker OnRender="false" Label="Date" @bind-Date="OrderItem.DateTime"/>
+                    <HamkareDatePicker OnRender="false" Label="Date" @bind-Date="OrderItem.StartDateTime"/>
+                    <HamkareDatePicker OnRender="false" Label="Date" @bind-Date="OrderItem.EndDateTime"/>
                 </MudStack>
 
             </MudStack>
