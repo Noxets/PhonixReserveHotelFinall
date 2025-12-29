@@ -1,0 +1,575 @@
+﻿@model dynamic
+
+<!DOCTYPE HTML>
+<html lang="fa">
+<head>
+    <title>safar online</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/lineicons.css"/>
+    <link rel="stylesheet" href="css/weather-icons.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/persian-datepicker.css"/>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-theme" id="main-nav">
+      <div class="container">
+        <div class="navbar-inner nav">
+          <div class="navbar-header">
+            <button class="navbar-toggle collapsed" data-target="#navbar-main" data-toggle="collapse" type="button" area-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">
+              <img src="img/img/logo.png" alt="Image Alternative text" title="Image Title"/>
+            </a>
+          </div>
+          <div class="collapse navbar-collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a class="dropdown-toggle" href="index.html" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">هتل</a>
+                <div class="dropdown-menu">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <ul class="dropdown-meganav-list-items">
+                        <li>
+                          <a href="hotel-results.html">لیست همه هتل ها</a>
+                        </li>
+                        <li>
+                          <a href="hotel-page.html">صفحه هتل</a>
+                        </li>
+                        <li>
+                          <a href="hotel-payment.html">رزرو هتل</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="navbar-nav-item-user dropdown">
+                <a class="dropdown-toggle" href="account.html" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-user-circle-o navbar-nav-item-user-icon"></i>حساب کاربری
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="account.html"> <i class="fa fa-user-o"></i> حساب کاربری  </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="theme-hero-area">
+      <div class="theme-hero-area-bg-wrap">
+        <div class="theme-hero-area-bg-pattern theme-hero-area-bg-pattern-ultra-light" style="background-image:url(img/img/patterns/travel/4.png);"></div>
+        <div class="theme-hero-area-grad-mask"></div>
+      </div>
+      <div class="theme-hero-area-body">
+        <div class="container">
+          <div class="theme-item-page-header _pb-50 theme-item-page-header-white">
+            <div class="theme-item-page-header-body">
+              <ul class="theme-item-page-header-stars">
+                <li>
+                  <i class="fa fa-star"></i>
+                </li>
+                <li>
+                  <i class="fa fa-star"></i>
+                </li>
+                <li>
+                  <i class="fa fa-star"></i>
+                </li>
+                <li>
+                  <i class="fa fa-star"></i>
+                </li>
+                <li>
+                  <i class="fa fa-star"></i>
+                </li>
+              </ul>
+              <h2 class="theme-item-page-header-title">هتل الماس</h2>
+              <div class="theme-item-page-header-price">
+                <div class="theme-item-page-header-price-body">
+                  <p class="_fs-sm">شروع قیمت برای یک شب</p>
+                  <p class="_fs-xl">2,820,000 ریال</p>
+                </div>
+           
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-page-section theme-page-section-gray">
+      <div class="container">
+        <div class="row row-col-static" id="sticky-parent">
+          <div class="col-md-9 ">
+            <div class="fotorama _mb-30" data-nav="thumbs" data-minwidth="100%" data-arrows="always" data-allowfullscreen="native">
+              <img src="img/img/hotel-page/slider/2.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/3.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/4.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/5.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/6.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/7.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/8.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/9.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/10.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/11.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/12.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/13.jpg" alt="Image Alternative text" title="Image Title"/>
+              <img src="img/img/hotel-page/slider/14.jpg" alt="Image Alternative text" title="Image Title"/>
+            </div>
+            <div class="theme-item-page-tabs _mb-30">
+              <div class="tabbable">
+                <ul class="nav nav-tabs nav-default nav-no-br nav-sqr nav-mob-inline" role="tablist">
+                  <li class="active" role="presentation">
+                    <a class="_ph-30" aria-controls="HotelPageTabs-1" role="tab" data-toggle="tab" href="#HotelPageTabs-1">درباره هتل</a>
+                  </li>
+                  <li role="presentation">
+                    <a class="_ph-30" aria-controls="HotelPageTabs-3" role="tab" data-toggle="tab" href="#HotelPageTabs-2">نظرات کاربران</a>
+                  </li>
+                  <li role="presentation">
+                    <a class="_ph-30" aria-controls="HotelPageTabs-4" role="tab" data-toggle="tab" href="#HotelPageTabs-3">امکانات</a>
+                  </li>
+                </ul>
+                <div class="tab-content _p-30 _bg-w">
+                  <div class="tab-pane active" id="HotelPageTabs-1" role="tab-panel">
+                    <div class="theme-item-page-desc">
+                      <p>هتل الماس 2 مشهد، هتلی 5 ستاره و بسیار لوکس است که می‌تواند اقامت خاطره‌انگیزی برای شما در پایتخت معنوی ایران رقم بزند. در هتل الماس 2، همه‌ی امکانات در بالاترین سطح فراهم آمده تا میهمانان لذت یک سفر واقعی و آسوده را تجربه کنند. مثلاً اتاق‌ها علاوه بر اینکه با تخت‌های راحت و تمیز مجهز شده‌اند، دکوراسیون بسیار زیبا و آرام‌بخشی نیز دارند تا هر بار که به مشهد مقدس سفر می‌کنید، انتخابی جز این هتل نداشته باشید. ضمناً رستوران‌های هتل نیز فوق‌العاده‌اند، رستوران گردان پانوراما با دید 360 درجه‌ای از شهر، رستوران فیروزه و کافه رستوران روف گاردن نیز، خیال‌تان را از بابت خورد و خوراک در سفر راحت می‌کنند. هر گاه نیز خسته یا بی‌حوصله شدید، کافی است به مجموعه‌ی آبی هتل بروید و تنی به آب بزنید، سالن اسپا و ماساژ هم می‌تواند کوفتگی‌های ناشی از سفر را از تن‌تان به در کند. به همه‌ی اینها یک بازارچه‌ی جمع و جور و شیک را نیز اضافه کنید که با ارائه کالاهای لوکس، شما را از چرخیدن در بازارها بی‌نیاز می‌کند. </p>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="HotelPageTabs-2" role="tab-panel">
+                    <div class="theme-reviews">
+                      <div class="theme-reviews-score theme-reviews-score-hor">
+                        <div class="row">
+                          <div class="col-md-3 ">
+                            <div class="theme-reviews-score-header">
+                              <p class="theme-reviews-score-subtitle">میانگین رضایت‌مندی</p>
+                            </div>
+                            <div class="theme-reviews-score-total">
+                              <p>7.1</p>
+                            </div>
+                          </div>
+                          <div class="col-md-9 ">
+                            <div class="theme-reviews-score-list">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="theme-reviews-score-item">
+                                    <div class="theme-reviews-score-item-header">
+                                      <p class="theme-reviews-score-item-title">تمیزی و پاکیزگی</p>
+                                      <p class="theme-reviews-score-item-num">6.5</p>
+                                    </div>
+                                    <div class="theme-reviews-score-item-bar">
+                                      <div style="width:65%;"></div>
+                                    </div>
+                                  </div>
+                                  <div class="theme-reviews-score-item">
+                                    <div class="theme-reviews-score-item-header">
+                                      <p class="theme-reviews-score-item-title">خدمات و سرویس دهی</p>
+                                      <p class="theme-reviews-score-item-num">6.2</p>
+                                    </div>
+                                    <div class="theme-reviews-score-item-bar">
+                                      <div style="width:62%;"></div>
+                                    </div>
+                                  </div>
+                                  <div class="theme-reviews-score-item">
+                                    <div class="theme-reviews-score-item-header">
+                                      <p class="theme-reviews-score-item-title">موقعیت مکانی</p>
+                                      <p class="theme-reviews-score-item-num">7.6</p>
+                                    </div>
+                                    <div class="theme-reviews-score-item-bar">
+                                      <div style="width:76%;"></div>
+                                    </div>
+                                  </div>
+                                  <div class="theme-reviews-score-item">
+                                    <div class="theme-reviews-score-item-header">
+                                      <p class="theme-reviews-score-item-title">برخورد کارکنان</p>
+                                      <p class="theme-reviews-score-item-num">5.3</p>
+                                    </div>
+                                    <div class="theme-reviews-score-item-bar">
+                                      <div style="width:53%;"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="theme-reviews-list">
+                        <article class="theme-reviews-item">
+                          <div class="row" data-gutter="10">
+                            <div class="col-md-12">
+                              <div class="theme-reviews-rating">
+                                <div class="theme-reviews-rating-header">
+                                  <span class="theme-reviews-rating-num">علیرضا یوسفی</span>
+                                  <span class="theme-reviews-rating-title">1398/02/02</span>
+                                </div>
+                                <div class="theme-reviews-rating-bar">
+                                  <div style="width:99%;"></div>
+                                </div>
+                              </div>
+                              <div class="theme-reviews-item-body">
+                                <p class="theme-reviews-item-text"> هتل خیلی خوب بود شیک و تمیز و نوساز بود و همه ی امکاناتی او که باید داشته باشه او داشت استقبال گرمی از ما شد در این هتل</p>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                        <div class="row">
+                          <div class="col-md-6 col-md-offset-5">
+                            <a class="theme-reviews-more"> مشاهده بیشتر <i class="fa fa-chevron-down"></i> </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="HotelPageTabs-3" role="tab-panel">
+                    <div class="theme-item-page-facilities">
+                      <div class="row">
+                        <div class="col-md-3 ">
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-shower theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">حمام</h5>
+                          </div>
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-taxi theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">تاکسی سرویس</h5>
+                          </div>
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-glass theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">نوشیدنی</h5>
+                          </div>
+                        </div>
+                        <div class="col-md-3 ">
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-shopping-bag theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">فروشگاه</h5>
+                          </div>
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-car theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">پارکینگ</h5>
+                          </div>
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-bath theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">حمام</h5>
+                          </div>
+                        </div>
+                        <div class="col-md-3 ">
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-tint theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">خدمات نظافت</h5>
+                          </div>
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-fire theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">اعلام حریق</h5>
+                          </div>
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-desktop theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">LED</h5>
+                          </div>
+                        </div>
+                        <div class="col-md-3 ">
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-coffee theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">کافی شاپ</h5>
+                          </div>
+                          <div class="theme-item-page-facilities-item">
+                            <i class="fa fa-globe theme-item-page-facilities-item-icon"></i>
+                            <h5 class="theme-item-page-facilities-item-title">مترجم</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="booking-scroll">
+              <div class="theme-search-area _p-30 _bg-p _mb-30 _br-3">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="theme-search-area-form">
+                      <div class="row" data-gutter="10">
+                            <div class="col-md-3 ">
+                              <div class="theme-search-area-section theme-search-area-section-sm theme-search-area-section-no-border theme-search-area-section-fade-white theme-search-area-section-curved">
+                                <div class="theme-search-area-section-inner">
+                                  <i class="theme-search-area-section-icon lin lin-calendar"></i>
+                                  <input class="theme-search-area-section-input datePickerStart _mob-h" id="datepicker-check-in"   type="text" placeholder="تاریخ ورود"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-3 ">
+                              <div class="theme-search-area-section theme-search-area-section-sm theme-search-area-section-no-border theme-search-area-section-fade-white theme-search-area-section-curved">
+                                <div class="theme-search-area-section-inner">
+                                  <i class="theme-search-area-section-icon lin lin-calendar"></i>
+                                  <input class="theme-search-area-section-input datePickerEnd _mob-h" id="datepicker-check-out" type="text" placeholder="تاریخ خروج"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-2 ">
+                              <div class="theme-search-area-section theme-search-area-section-sm theme-search-area-section-no-border theme-search-area-section-fade-white theme-search-area-section-curved quantity-selector" data-increment="اتاق">
+                                <div class="theme-search-area-section-inner">
+                                  <i class="theme-search-area-section-icon lin lin-tag"></i>
+                                  <input class="theme-search-area-section-input" value="1 اتاق" type="text"/>
+                                  <div class="quantity-selector-box" id="HotelSearchRooms">
+                                    <div class="quantity-selector-inner">
+                                      <p class="quantity-selector-title">اتاق</p>
+                                      <ul class="quantity-selector-controls">
+                                        <li class="quantity-selector-decrement">
+                                          <a href="#">&#45;</a>
+                                        </li>
+                                        <li class="quantity-selector-current">1</li>
+                                        <li class="quantity-selector-increment">
+                                          <a href="#">&#43;</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-2 ">
+                          <button class="theme-search-area-submit _mt-0 theme-search-area-submit-sm theme-search-area-submit-no-border theme-search-area-submit-curved">جستجو
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="theme-item-page-rooms-table _p-10 _bg-w _mb-mob-30">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>نوع اتاق</th>
+                    <th>ظرفیت اتاق</th>
+                    <th>خدمات اتاق</th>
+                    <th>قیمت برای هر شب</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="theme-item-page-rooms-table-type">
+                      <h5 class="theme-item-page-rooms-table-type-title">سوییت یک تخته</h5>
+                      <img class="theme-item-page-rooms-table-type-img" src="img/img/hotel-page/rooms/1.jpg" alt="Image Alternative text" title="Image Title"/>
+                    </td>
+                    <td>
+                      <ul class="theme-item-page-rooms-table-guests-count">
+                        <li>
+                          <i class="fa fa-male"></i>
+                        </li>
+                        <li>
+                          <i class="fa fa-male"></i>
+                        </li>
+                      </ul>
+                    </td>
+                    <td>
+                      <ul class="theme-item-page-rooms-table-type-feature-list">
+                        <li> <i class="fa fa-cutlery theme-item-page-rooms-table-type-feature-list-icon"></i>صبحانه </li>
+                        <li>
+                          <i class="fa fa-shower theme-item-page-rooms-table-type-feature-list-icon"></i>حمام
+                        </li>
+                        <li>
+                          <i class="fa fa-wifi theme-item-page-rooms-table-type-feature-list-icon"></i>اینترنت رایگان
+                        </li>
+                      </ul>
+                    </td>
+                    <td class="theme-item-page-rooms-table-price">
+                      <div>
+                        <div class="theme-item-page-rooms-table-price-night">
+                         <strike>2,920,000</strike>
+                         <p class="text-bold-600 _fs-b">2,820,000   <small> ریال </small> </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a class="btn btn-primary-inverse btn-block">  رزرو کنید <i class="fa fa-arrow-left"></i> </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-md-3 ">
+            <div class="sticky-col">
+              <div class="theme-sidebar-section _mb-10 _mob-h">
+                <a class="btn _tt-uc btn-primary-inverse" data-scroll href="#booking-scroll">رزرو</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-footer" id="mainFooter">
+      <div class="container _ph-mob-0">
+        <div class="row row-eq-height row-mob-full" data-gutter="60">
+          <div class="col-md-3">
+            <div class="theme-footer-section theme-footer-">
+              <a class="theme-footer-brand _mb-mob-30" href="#">
+                <img src="img/img/logo.png" alt="Image Alternative text" title="Image Title"/>
+              </a>
+              <div class="theme-footer-brand-text">
+                <p>سفرآنلاین با ارائه بهترین و با کیفیت ترین خدمات گردشگری به صورت آنلاین می کوشد تا به عنوان معتبرترین شرکت گردشگری در ایران، تجربه ی لذت بخش یک رزرو اینترنتی را برایتان تداعی کند. شما در هر کجای دنیا که باشید، در هر ساعت از شبانه روز می توانید از طریق سایت الی گشت بلیط هواپیما، بلیط چارتر، رزرو هتل ارزان قیمت، تورهای مسافرتی و تور لحظه آخری را با پایین ترین نرخ ها انتخاب کنید.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="theme-footer-section theme-footer-">
+                  <h5 class="theme-footer-section-title">سفرآنلاین</h5>
+                  <ul class="theme-footer-section-list">
+                    <li>
+                      <a href="#">درباره ما</a>
+                    </li>
+                    <li>
+                      <a href="#">تماس با ما</a>
+                    </li>
+                    <li>
+                      <a href="#">قوانین و مقررات</a>
+                    </li>
+                    <li>
+                      <a href="#">راهنمای خرید</a>
+                    </li>
+                    <li>
+                      <a href="#">پرسش و پاسخ</a>
+                    </li>
+                    <li>
+                      <a href="#">فرصت‌های شغلی</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="theme-footer-section theme-footer-">
+                  <h5 class="theme-footer-section-title">اطلاعات تکمیلی</h5>
+                  <ul class="theme-footer-section-list">
+                    <li>
+                      <a href="#">چارتر</a>
+                    </li>
+                    <li>
+                      <a href="#">رزرو بلیط هواپیما</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط قطار</a>
+                    </li>
+                    <li>
+                      <a href="#">خرید اینترنتی بلیط هواپیما</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط ارزان هواپیما</a>
+                    </li>
+                    <li>
+                      <a href="#">راهنمای استرداد بلیط</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="theme-footer-section theme-footer-">
+                  <h5 class="theme-footer-section-title">مسیرهای پروازی</h5>
+                  <ul class="theme-footer-section-list">
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به مشهد</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به کیش</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به شیراز</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به تبریز</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به اصفهان</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به قشم</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="theme-footer-section theme-footer-">
+              <h5 class="theme-footer-section-title">کمک میخواهید؟</h5>
+              <ul class="theme-footer-section-list">
+                <li>
+                  <a href="#">  تهران- تجریش</a>
+                </li>
+                <li>
+                  <a href="#">تلفن: 021123456</a>
+                </li>
+                <li>
+                  <a href="#">پست الکترونیکی :info@gmail.com  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-copyright">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="theme-copyright-text">کلیه حقوق این سایت محفوظ و متعلق به آژانس هواپیمایی و جهانگردی سفرآنلاین می‌باشد.</p>
+          </div>
+          <div class="col-md-6">
+            <ul class="theme-copyright-social">
+              <li>
+                <a class="fa fa-facebook" href="#"></a>
+              </li>
+              <li>
+                <a class="fa fa-google" href="#"></a>
+              </li>
+              <li>
+                <a class="fa fa-twitter" href="#"></a>
+              </li>
+              <li>
+                <a class="fa fa-youtube-play" href="#"></a>
+              </li>
+              <li>
+                <a class="fa fa-instagram" href="#"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYeBBmgAkyAN_QKjAVOiP_kWZ_eQdadeI&amp;callback=initMap&amp;libraries=places"></script>
+    <script src="js/owl-carousel.js"></script>
+    <script src="js/blur-area.js"></script>
+    <script src="js/icheck.js"></script>
+    <script src="js/gmap.js"></script>
+    <script src="js/magnific-popup.js"></script>
+    <script src="js/ion-range-slider.js"></script>
+    <script src="js/sticky-kit.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script src="js/fotorama.js"></script>
+    <script src="js/persian-datepicker.js"></script>
+    <script src="js/typeahead.js"></script>
+    <script src="js/quantity-selector.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/window-scroll-action.js"></script>
+    <script src="js/fitvid.js"></script>
+    <script src="js/youtube-bg.js"></script>
+    <script src="js/custom.js"></script>
+  </body>
+</html>
+

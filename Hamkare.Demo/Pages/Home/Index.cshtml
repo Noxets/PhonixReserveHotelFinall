@@ -1,0 +1,509 @@
+﻿@model dynamic
+
+
+<!DOCTYPE HTML>
+<html lang="fa">
+<head>
+  <title>safar online</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/font-awesome.css"/>
+  <link rel="stylesheet" href="css/lineicons.css"/>
+  <link rel="stylesheet" href="css/weather-icons.css"/>
+  <link rel="stylesheet" href="css/bootstrap.css"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="css/persian-datepicker.css"/>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-inverse navbar-theme navbar-theme-abs navbar-theme-transparent navbar-theme-border" id="main-nav">
+      <div class="container">
+        <div class="navbar-inner nav">
+          <div class="navbar-header">
+            <button class="navbar-toggle collapsed" data-target="#navbar-main" data-toggle="collapse" type="button" area-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">
+              <img src="img/img/logo.png" alt="Image Alternative text" title="Image Title"/>
+            </a>
+          </div>
+          <div class="collapse navbar-collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a class="dropdown-toggle" href="index.html" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> صفحات</a>
+                <div class="dropdown-menu">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <ul class="dropdown-meganav-list-items">
+                        <li>
+                          <a href="about-us.html">درباره ما</a>
+                        </li>
+                        <li>
+                          <a href="contact.html">تماس باما</a>
+                        </li>
+                        <li>
+                          <a href="payment-success.html"> تاییدیه رزرواسیون</a>
+                        </li>
+                        <li>
+                          <a href="login.html"> ورود به سایت</a>
+                        </li>
+                        <li>
+                          <a href="register.html"> ثبت نام</a>
+                        </li>
+                        <li>
+                          <a href="404.html"> صقحه خطای 404</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" href="index.html" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">هتل</a>
+                <div class="dropdown-menu">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <ul class="dropdown-meganav-list-items">
+                        <li>
+                          <a href="hotel-results.html">لیست همه هتل ها</a>
+                        </li>
+                        <li>
+                          <a href="hotel-page.html">صفحه هتل</a>
+                        </li>
+                        <li>
+                          <a href="hotel-payment.html">رزرو هتل</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="navbar-nav-item-user dropdown">
+                <a class="dropdown-toggle" href="account.html" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-user-circle-o navbar-nav-item-user-icon"></i>حساب کاربری
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="account.html"> <i class="fa fa-user-o"></i> حساب کاربری  </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="theme-hero-area theme-hero-area-primary">
+      <div class="theme-hero-area-bg-wrap">
+        <div class="theme-hero-area-bg ws-action" style="background-image:url(img/img/flight.jpg);" data-parallax="true"></div>
+        <div class="theme-hero-area-mask theme-hero-area-mask-half"></div>
+        <div class="theme-hero-area-inner-shadow theme-hero-area-inner-shadow-light"></div>
+      </div>
+      <div class="theme-hero-area-body">
+        <div class="_pt-150 _pb-100 _pv-mob-50">
+          <div class="container">
+            <div class="row" data-gutter="60">
+              <div class="col-md-6 ">
+                <div style="font-size: 48px; color: white;" class="  _ph-45 _pv-50 _pv-mob-30 _h-mob-a _mt-mob-30">
+                  جستجوی هتل با ما
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-page-section theme-page-section-xxl">
+      <div class="container">
+        <div class="row row-col-mob-gap" data-gutter="60">
+          <div class="col-md-3 ">
+            <div class="feature">
+              <i class="feature-icon feature-icon-gray feature-icon-box feature-icon-round fa fa-globe"></i>
+              <div class="feature-caption _op-07">
+                <h5 class="feature-title">500+ مقصد و مکان دنیا</h5>
+                <p class="feature-subtitle">دیدنی ترین و شگفت انگیزترین مکان ها</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 ">
+            <div class="feature">
+              <i class="feature-icon feature-icon-gray feature-icon-box feature-icon-round fa fa-money"></i>
+              <div class="feature-caption _op-07">
+                <h5 class="feature-title">بهترین گارانتی قیمت</h5>
+                <p class="feature-subtitle"> کمترین قیمت و با کیفیت ترین خدمات</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 ">
+            <div class="feature">
+              <i class="feature-icon feature-icon-gray feature-icon-box feature-icon-round fa fa-credit-card"></i>
+              <div class="feature-caption _op-07">
+                <h5 class="feature-title">دسترسی آسان </h5>
+                <p class="feature-subtitle">
+                  ساده‌ترین و سریع‌ترین راه
+                  برای جستجو، خرید و استرداد بلیط</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 ">
+            <div class="feature">
+              <i class="feature-icon feature-icon-gray feature-icon-box feature-icon-round fa fa-comments-o"></i>
+              <div class="feature-caption _op-07">
+                <h5 class="feature-title">پشتییبانی 24 ساعته</h5>
+                <p class="feature-subtitle">با پشتیبانی 24 ساعته سفر، سفری ایده آل را تجربه کنید.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-page-section _pt-50 theme-page-section-lg">
+      <div class="container">
+        <div class="theme-page-section-header _ta-l">
+          <h5 class="theme-page-section-title">بیشترین بازدید</h5>
+          <a class="theme-page-section-header-link theme-page-section-header-link-rb" href="#">+ موارد بیشتر</a>
+        </div>
+        <div class="theme-inline-slider row ltr" data-gutter="10">
+          <div class="owl-carousel" data-items="5" data-loop="true" data-nav="true">
+            <div class="theme-inline-slider-item">
+              <div class="banner _br-4 banner-sqr banner-animate banner-animate-mask-in">
+                <div class="banner-bg" style="background-image:url(img/img/Dubai.jpg);"></div>
+                <div class="banner-mask"></div>
+                <a class="banner-link" href="#"></a>
+                <div class="banner-caption _pt-40 _ph-25 _pb-20 banner-caption-bottom banner-caption-grad">
+                  <h5 class="banner-title _fs">دبی</h5>
+                </div>
+              </div>
+            </div>
+            <div class="theme-inline-slider-item">
+              <div class="banner _br-4 banner-sqr banner-animate banner-animate-mask-in">
+                <div class="banner-bg" style="background-image:url(img/img/venice.jpg);"></div>
+                <div class="banner-mask"></div>
+                <a class="banner-link" href="#"></a>
+                <div class="banner-caption _pt-40 _ph-25 _pb-20 banner-caption-bottom banner-caption-grad">
+                  <h5 class="banner-title _fs">ونیز</h5>
+                </div>
+              </div>
+            </div>
+            <div class="theme-inline-slider-item">
+              <div class="banner _br-4 banner-sqr banner-animate banner-animate-mask-in">
+                <div class="banner-bg" style="background-image:url(img/img/paris.jpg);"></div>
+                <div class="banner-mask"></div>
+                <a class="banner-link" href="#"></a>
+                <div class="banner-caption _pt-40 _ph-25 _pb-20 banner-caption-bottom banner-caption-grad">
+                  <h5 class="banner-title _fs">پاریس</h5>
+                </div>
+              </div>
+            </div>
+            <div class="theme-inline-slider-item">
+              <div class="banner _br-4 banner-sqr banner-animate banner-animate-mask-in">
+                <div class="banner-bg" style="background-image:url(img/img/ancient.jpg);"></div>
+                <div class="banner-mask"></div>
+                <a class="banner-link" href="#"></a>
+                <div class="banner-caption _pt-40 _ph-25 _pb-20 banner-caption-bottom banner-caption-grad">
+                  <h5 class="banner-title _fs">چین</h5>
+                </div>
+              </div>
+            </div>
+            <div class="theme-inline-slider-item">
+              <div class="banner _br-4 banner-sqr banner-animate banner-animate-mask-in">
+                <div class="banner-bg" style="background-image:url(img/img/london.jpg);"></div>
+                <div class="banner-mask"></div>
+                <a class="banner-link" href="#"></a>
+                <div class="banner-caption _pt-40 _ph-25 _pb-20 banner-caption-bottom banner-caption-grad">
+                  <h5 class="banner-title _fs">لندن</h5>
+                </div>
+              </div>
+            </div>
+            <div class="theme-inline-slider-item">
+              <div class="banner _br-4 banner-sqr banner-animate banner-animate-mask-in">
+                <div class="banner-bg" style="background-image:url(img/img/taj-mahal-india.jpg);"></div>
+                <div class="banner-mask"></div>
+                <a class="banner-link" href="#"></a>
+                <div class="banner-caption _pt-40 _ph-25 _pb-20 banner-caption-bottom banner-caption-grad">
+                  <h5 class="banner-title _fs">هند</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-page-section theme-page-section-xxl">
+      <div class="container">
+        <div class="theme-page-section-header">
+          <h6 class="theme-page-section-title">توریست شوید!</h6>
+          <p class="theme-page-section-subtitle">تورهای سفرآنلاین ,به یادماندنی وجذاب</p>
+        </div>
+        <div class="row row-col-gap" data-gutter="10">
+          <div class="col-md-3 ">
+            <div class="banner _h-33vh _br-3 banner-animate banner-animate-mask-in banner-animate-very-slow banner-animate-zoom-in">
+              <div class="banner-bg" style="background-image:url(img/img/Dubai.jpg);"></div>
+              <div class="banner-mask"></div>
+              <a class="banner-link" href="#"></a>
+              <div class="banner-caption _pt-100 banner-caption-bottom banner-caption-grad">
+                <h5 class="banner-title"> دبی</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 ">
+            <div class="banner _h-33vh _br-3 banner-animate banner-animate-mask-in banner-animate-very-slow banner-animate-zoom-in">
+              <div class="banner-bg" style="background-image:url(img/img/logs-at-moraine-lake.jpg);"></div>
+              <div class="banner-mask"></div>
+              <a class="banner-link" href="#"></a>
+              <div class="banner-caption _pt-100 banner-caption-bottom banner-caption-grad">
+                <h5 class="banner-title">کانادا</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 ">
+            <div class="banner _h-33vh _br-3 banner-animate banner-animate-mask-in banner-animate-very-slow banner-animate-zoom-in">
+              <div class="banner-bg" style="background-image:url(img/img/beach-coast-daylight-landscape-461969_400x360.jpg);"></div>
+              <div class="banner-mask"></div>
+              <a class="banner-link" href="#"></a>
+              <div class="banner-caption _pt-100 banner-caption-bottom banner-caption-grad">
+                <h5 class="banner-title">پرتغال</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 ">
+            <div class="banner _h-33vh _br-3 banner-animate banner-animate-mask-in banner-animate-very-slow banner-animate-zoom-in">
+              <div class="banner-bg" style="background-image:url(img/img/batumalesia.jpg);"></div>
+              <div class="banner-mask"></div>
+              <a class="banner-link" href="#"></a>
+              <div class="banner-caption _pt-100 banner-caption-bottom banner-caption-grad">
+                <h5 class="banner-title">مالزی</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-hero-area">
+      <div class="theme-hero-area-bg-wrap">
+        <div class="theme-hero-area-bg-pattern theme-hero-area-bg-pattern-ultra-light" style="background-image:url(img/img/patterns/travel/4.png);"></div>
+        <div class="theme-hero-area-grad-mask"></div>
+        <div class="theme-hero-area-inner-shadow theme-hero-area-inner-shadow-light"></div>
+      </div>
+      <div class="theme-hero-area-body">
+        <div class="container">
+          <div class="theme-page-section _p-0">
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+                <div class="theme-mobile-app">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="theme-mobile-app-section">
+                        <div class="theme-mobile-app-body">
+                          <div class="theme-mobile-app-header">
+                            <h2 class="theme-mobile-app-title">دریافت اپلیکیشن سفرآنلاین</h2>
+                            <p class="theme-mobile-app-subtitle">با اپلیکیشن سفرآنلاین سفر پیش روی شماست</p>
+                          </div>
+                          <ul class="theme-mobile-app-btn-list">
+                            <li>
+                              <a class="btn btn-dark theme-mobile-app-btn" href="#">
+                                <i class="theme-mobile-app-logo">
+                                  <img src="img/img/brands/apple.png" alt="Image Alternative text" title="Image Title"/>
+                                </i>
+                                <span>Download on
+                                  <br/>
+                                  <span>App Store</span>
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="btn btn-dark theme-mobile-app-btn" href="#">
+                                <i class="theme-mobile-app-logo">
+                                  <img src="img/img/brands/play-market.png" alt="Image Alternative text" title="Image Title"/>
+                                </i>
+                                <span>Download on
+                                  <br/>
+                                  <span>Play Market</span>
+                                </span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="theme-mobile-app-section">
+                        <img class="theme-mobile-app-img" src="img/img/mockups/phone-2.png" alt="Image Alternative text" title="Image Title"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-footer" id="mainFooter">
+      <div class="container _ph-mob-0">
+        <div class="row row-eq-height row-mob-full" data-gutter="60">
+          <div class="col-md-3">
+            <div class="theme-footer-section theme-footer-">
+              <a class="theme-footer-brand _mb-mob-30" href="#">
+                <img src="img/img/logo.png" alt="Image Alternative text" title="Image Title"/>
+              </a>
+              <div class="theme-footer-brand-text">
+                <p>سفرآنلاین با ارائه بهترین و با کیفیت ترین خدمات گردشگری به صورت آنلاین می کوشد تا به عنوان معتبرترین شرکت گردشگری در ایران، تجربه ی لذت بخش یک رزرو اینترنتی را برایتان تداعی کند. شما در هر کجای دنیا که باشید، در هر ساعت از شبانه روز می توانید از طریق سایت الی گشت بلیط هواپیما، بلیط چارتر، رزرو هتل ارزان قیمت، تورهای مسافرتی و تور لحظه آخری را با پایین ترین نرخ ها انتخاب کنید.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="theme-footer-section theme-footer-">
+                  <h5 class="theme-footer-section-title">سفرآنلاین</h5>
+                  <ul class="theme-footer-section-list">
+                    <li>
+                      <a href="#">درباره ما</a>
+                    </li>
+                    <li>
+                      <a href="#">تماس با ما</a>
+                    </li>
+                    <li>
+                      <a href="#">قوانین و مقررات</a>
+                    </li>
+                    <li>
+                      <a href="#">راهنمای خرید</a>
+                    </li>
+                    <li>
+                      <a href="#">پرسش و پاسخ</a>
+                    </li>
+                    <li>
+                      <a href="#">فرصت‌های شغلی</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="theme-footer-section theme-footer-">
+                  <h5 class="theme-footer-section-title">اطلاعات تکمیلی</h5>
+                  <ul class="theme-footer-section-list">
+                    <li>
+                      <a href="#">چارتر</a>
+                    </li>
+                    <li>
+                      <a href="#">رزرو بلیط هواپیما</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط قطار</a>
+                    </li>
+                    <li>
+                      <a href="#">خرید اینترنتی بلیط هواپیما</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط ارزان هواپیما</a>
+                    </li>
+                    <li>
+                      <a href="#">راهنمای استرداد بلیط</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="theme-footer-section theme-footer-">
+                  <h5 class="theme-footer-section-title">مسیرهای پروازی</h5>
+                  <ul class="theme-footer-section-list">
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به مشهد</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به کیش</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به شیراز</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به تبریز</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به اصفهان</a>
+                    </li>
+                    <li>
+                      <a href="#">بلیط هواپیما تهران به قشم</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="theme-footer-section theme-footer-">
+              <h5 class="theme-footer-section-title">کمک میخواهید؟</h5>
+              <ul class="theme-footer-section-list">
+                <li>
+                  <a href="#">  تهران- تجریش</a>
+                </li>
+                <li>
+                  <a href="#">تلفن: 021123456</a>
+                </li>
+                <li>
+                  <a href="#">پست الکترونیکی :info@gmail.com  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-copyright">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="theme-copyright-text">کلیه حقوق این سایت محفوظ و متعلق به آژانس هواپیمایی و جهانگردی سفرآنلاین می‌باشد.</p>
+          </div>
+          <div class="col-md-6">
+            <ul class="theme-copyright-social">
+              <li>
+                <a class="fa fa-facebook" href="#"></a>
+              </li>
+              <li>
+                <a class="fa fa-google" href="#"></a>
+              </li>
+              <li>
+                <a class="fa fa-twitter" href="#"></a>
+              </li>
+              <li>
+                <a class="fa fa-youtube-play" href="#"></a>
+              </li>
+              <li>
+                <a class="fa fa-instagram" href="#"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYeBBmgAkyAN_QKjAVOiP_kWZ_eQdadeI&amp;callback=initMap&amp;libraries=places"></script>
+    <script src="js/owl-carousel.js"></script>
+    <script src="js/blur-area.js"></script>
+    <script src="js/icheck.js"></script>
+    <script src="js/gmap.js"></script>
+    <script src="js/magnific-popup.js"></script>
+    <script src="js/ion-range-slider.js"></script>
+    <script src="js/sticky-kit.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script src="js/fotorama.js"></script>
+    <script src="js/persian-datepicker.js"></script>
+    <script src="js/typeahead.js"></script>
+    <script src="js/quantity-selector.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/window-scroll-action.js"></script>
+    <script src="js/fitvid.js"></script>
+    <script src="js/youtube-bg.js"></script>
+    <script src="js/custom.js"></script>
+  </body>
+</html>
