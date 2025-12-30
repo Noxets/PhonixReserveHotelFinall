@@ -37,6 +37,13 @@
     
     <MudItem xs="12" md="6" lg="3">
 
+        <HamkareNumericField OnRender="OnRender" @bind-Value="_model.Star" For="@(() => _model.Star)"
+                             Label="Star"/>
+
+    </MudItem>
+    
+    <MudItem xs="12" md="6" lg="3">
+
         <HamkareNumericField OnRender="OnRender" @bind-Value="_model.Rate" For="@(() => _model.Rate)"
                              Label="Rate"/>
 

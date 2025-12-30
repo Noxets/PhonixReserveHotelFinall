@@ -9,4 +9,8 @@ public class Hotel : MainEntity
     public decimal Rate { get; set; }
     
     public string Address { get; set; }
+    
+    public int Star { get; set; }
+
+    public virtual ICollection<HotelRoom> HotelRooms { get; set; }
 }

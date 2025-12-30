@@ -1,4 +1,5 @@
-﻿@using Hamkare.Common.Entities.Identity
+﻿@using System.Globalization
+@using Hamkare.Common.Entities.Identity
 @using Microsoft.AspNetCore.Identity
 @model Hamkare.Common.Entities.Hotel
 @inject UserManager<User> UserManager
@@ -33,14 +34,14 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
               <img src="img/img/logo.png" alt="Image Alternative text" title="Image Title"/>
             </a>
           </div>
           <div class="collapse navbar-collapse" id="navbar-main">
             <ul class="nav navbar-nav">
               <li class="dropdown">
-                <a class="dropdown-toggle" href="index.html" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">هتل</a>
+                <a class="dropdown-toggle" href="/" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">هتل</a>
                 <div class="dropdown-menu">
                   <div class="row">
                     <div class="col-md-12">
@@ -62,7 +63,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="navbar-nav-item-user dropdown">
-                <a class="dropdown-toggle" href="account.html" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a class="dropdown-toggle" href="/userpanel" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="fa fa-user-circle-o navbar-nav-item-user-icon"></i>حساب کاربری
                 </a>
                 <ul class="dropdown-menu">
@@ -94,27 +95,18 @@
           <div class="theme-item-page-header _pb-50 theme-item-page-header-white">
             <div class="theme-item-page-header-body">
               <ul class="theme-item-page-header-stars">
-                <li>
-                  <i class="fa fa-star"></i>
-                </li>
-                <li>
-                  <i class="fa fa-star"></i>
-                </li>
-                <li>
-                  <i class="fa fa-star"></i>
-                </li>
-                <li>
-                  <i class="fa fa-star"></i>
-                </li>
-                <li>
-                  <i class="fa fa-star"></i>
-                </li>
+                @for (int i = 0; i < Model.Star; i++)
+                {
+                  <li>
+                    <i class="fa fa-star"></i>
+                  </li>
+                }
               </ul>
-              <h2 class="theme-item-page-header-title">هتل الماس</h2>
+              <h2 class="theme-item-page-header-title">@Model.Name</h2>
               <div class="theme-item-page-header-price">
                 <div class="theme-item-page-header-price-body">
                   <p class="_fs-sm">شروع قیمت برای یک شب</p>
-                  <p class="_fs-xl">2,820,000 ریال</p>
+                  <p class="_fs-xl">@Model.HotelRooms.MinBy(x => x.Price).Price</p>
                 </div>
            
               </div>
@@ -128,19 +120,11 @@
         <div class="row row-col-static" id="sticky-parent">
           <div class="col-md-9 ">
             <div class="fotorama _mb-30" data-nav="thumbs" data-minwidth="100%" data-arrows="always" data-allowfullscreen="native">
-              <img src="img/img/hotel-page/slider/2.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/3.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/4.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/5.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/6.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/7.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/8.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/9.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/10.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/11.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/12.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/13.jpg" alt="Image Alternative text" title="Image Title"/>
-              <img src="img/img/hotel-page/slider/14.jpg" alt="Image Alternative text" title="Image Title"/>
+              @foreach (var item in Model.Images)
+              {
+                <img src="/Upload/Hotel/@item" />
+              }
+            
             </div>
             <div class="theme-item-page-tabs _mb-30">
               <div class="tabbable">
@@ -149,16 +133,13 @@
                     <a class="_ph-30" aria-controls="HotelPageTabs-1" role="tab" data-toggle="tab" href="#HotelPageTabs-1">درباره هتل</a>
                   </li>
                   <li role="presentation">
-                    <a class="_ph-30" aria-controls="HotelPageTabs-3" role="tab" data-toggle="tab" href="#HotelPageTabs-2">نظرات کاربران</a>
-                  </li>
-                  <li role="presentation">
                     <a class="_ph-30" aria-controls="HotelPageTabs-4" role="tab" data-toggle="tab" href="#HotelPageTabs-3">امکانات</a>
                   </li>
                 </ul>
                 <div class="tab-content _p-30 _bg-w">
                   <div class="tab-pane active" id="HotelPageTabs-1" role="tab-panel">
                     <div class="theme-item-page-desc">
-                      <p>هتل الماس 2 مشهد، هتلی 5 ستاره و بسیار لوکس است که می‌تواند اقامت خاطره‌انگیزی برای شما در پایتخت معنوی ایران رقم بزند. در هتل الماس 2، همه‌ی امکانات در بالاترین سطح فراهم آمده تا میهمانان لذت یک سفر واقعی و آسوده را تجربه کنند. مثلاً اتاق‌ها علاوه بر اینکه با تخت‌های راحت و تمیز مجهز شده‌اند، دکوراسیون بسیار زیبا و آرام‌بخشی نیز دارند تا هر بار که به مشهد مقدس سفر می‌کنید، انتخابی جز این هتل نداشته باشید. ضمناً رستوران‌های هتل نیز فوق‌العاده‌اند، رستوران گردان پانوراما با دید 360 درجه‌ای از شهر، رستوران فیروزه و کافه رستوران روف گاردن نیز، خیال‌تان را از بابت خورد و خوراک در سفر راحت می‌کنند. هر گاه نیز خسته یا بی‌حوصله شدید، کافی است به مجموعه‌ی آبی هتل بروید و تنی به آب بزنید، سالن اسپا و ماساژ هم می‌تواند کوفتگی‌های ناشی از سفر را از تن‌تان به در کند. به همه‌ی اینها یک بازارچه‌ی جمع و جور و شیک را نیز اضافه کنید که با ارائه کالاهای لوکس، شما را از چرخیدن در بازارها بی‌نیاز می‌کند. </p>
+                      <p>@Model.Description</p>
                     </div>
                   </div>
                   <div class="tab-pane" id="HotelPageTabs-2" role="tab-panel">
@@ -170,7 +151,17 @@
                               <p class="theme-reviews-score-subtitle">میانگین رضایت‌مندی</p>
                             </div>
                             <div class="theme-reviews-score-total">
-                              <p>7.1</p>
+                            
+                                @{
+                                  var random = new Random();
+
+                                  double value = Math.Round(
+                                    3 + random.NextDouble() * 2,
+                                    1
+                                  );
+                                  
+                                  <p> @value.ToString(CultureInfo.InvariantCulture) </p>
+                                }
                             </div>
                           </div>
                           <div class="col-md-9 ">
@@ -180,7 +171,15 @@
                                   <div class="theme-reviews-score-item">
                                     <div class="theme-reviews-score-item-header">
                                       <p class="theme-reviews-score-item-title">تمیزی و پاکیزگی</p>
-                                      <p class="theme-reviews-score-item-num">6.5</p>
+                                      @{
+                                        double value2 = Math.Round(
+                                          3 + random.NextDouble() * 2,
+                                          1
+                                        );
+                                  
+                                        <p class="theme-reviews-score-item-num">@value2.ToString(CultureInfo.InvariantCulture)</p>
+                                      }
+                                     
                                     </div>
                                     <div class="theme-reviews-score-item-bar">
                                       <div style="width:65%;"></div>
@@ -189,7 +188,14 @@
                                   <div class="theme-reviews-score-item">
                                     <div class="theme-reviews-score-item-header">
                                       <p class="theme-reviews-score-item-title">خدمات و سرویس دهی</p>
-                                      <p class="theme-reviews-score-item-num">6.2</p>
+                                      @{
+                                        double value3 = Math.Round(
+                                          3 + random.NextDouble() * 2,
+                                          1
+                                        );
+                                  
+                                        <p class="theme-reviews-score-item-num">@value3.ToString(CultureInfo.InvariantCulture)</p>
+                                      }
                                     </div>
                                     <div class="theme-reviews-score-item-bar">
                                       <div style="width:62%;"></div>
@@ -198,7 +204,14 @@
                                   <div class="theme-reviews-score-item">
                                     <div class="theme-reviews-score-item-header">
                                       <p class="theme-reviews-score-item-title">موقعیت مکانی</p>
-                                      <p class="theme-reviews-score-item-num">7.6</p>
+                                      @{
+                                        double value4 = Math.Round(
+                                          3 + random.NextDouble() * 2,
+                                          1
+                                        );
+                                  
+                                        <p class="theme-reviews-score-item-num">@value4.ToString(CultureInfo.InvariantCulture)</p>
+                                      }
                                     </div>
                                     <div class="theme-reviews-score-item-bar">
                                       <div style="width:76%;"></div>
@@ -207,7 +220,14 @@
                                   <div class="theme-reviews-score-item">
                                     <div class="theme-reviews-score-item-header">
                                       <p class="theme-reviews-score-item-title">برخورد کارکنان</p>
-                                      <p class="theme-reviews-score-item-num">5.3</p>
+                                      @{
+                                        double value5 = Math.Round(
+                                          3 + random.NextDouble() * 2,
+                                          1
+                                        );
+                                  
+                                        <p class="theme-reviews-score-item-num">@value5.ToString(CultureInfo.InvariantCulture)</p>
+                                      }
                                     </div>
                                     <div class="theme-reviews-score-item-bar">
                                       <div style="width:53%;"></div>
@@ -226,7 +246,7 @@
                               <div class="theme-reviews-rating">
                                 <div class="theme-reviews-rating-header">
                                   <span class="theme-reviews-rating-num">علیرضا یوسفی</span>
-                                  <span class="theme-reviews-rating-title">1398/02/02</span>
+                                  <span class="theme-reviews-rating-title">1404/09/02</span>
                                 </div>
                                 <div class="theme-reviews-rating-bar">
                                   <div style="width:99%;"></div>
@@ -307,7 +327,7 @@
                 </div>
               </div>
             </div>
-            <div id="booking-scroll">
+            <form id="booking-scroll">
               <div class="theme-search-area _p-30 _bg-p _mb-30 _br-3">
                 <div class="row">
                   <div class="col-md-12">
@@ -352,7 +372,7 @@
                               </div>
                             </div>
                             <div class="col-md-2 ">
-                          <button class="theme-search-area-submit _mt-0 theme-search-area-submit-sm theme-search-area-submit-no-border theme-search-area-submit-curved">جستجو
+                          <button type="submit" class="theme-search-area-submit _mt-0 theme-search-area-submit-sm theme-search-area-submit-no-border theme-search-area-submit-curved">جستجو
                           </button>
                         </div>
                       </div>
@@ -360,12 +380,12 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </form>
             <div class="theme-item-page-rooms-table _p-10 _bg-w _mb-mob-30">
               <table class="table">
                 <thead>
                   <tr>
-                    <th>نوع اتاق</th>
+                    <th>نام اتاق</th>
                     <th>ظرفیت اتاق</th>
                     <th>خدمات اتاق</th>
                     <th>قیمت برای هر شب</th>
@@ -373,19 +393,24 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                <tr>
+                  
+                  @foreach (var item in Model.HotelRooms)
+                  {
                     <td class="theme-item-page-rooms-table-type">
-                      <h5 class="theme-item-page-rooms-table-type-title">سوییت یک تخته</h5>
-                      <img class="theme-item-page-rooms-table-type-img" src="img/img/hotel-page/rooms/1.jpg" alt="Image Alternative text" title="Image Title"/>
+                      <h5 class="theme-item-page-rooms-table-type-title">@item.RoomNumber</h5>
+                      <img class="theme-item-page-rooms-table-type-img" src="/upload/HotelRoom/@item.Images.FirstOrDefault()" alt="Image Alternative text" title="Image Title"/>
                     </td>
                     <td>
                       <ul class="theme-item-page-rooms-table-guests-count">
-                        <li>
-                          <i class="fa fa-male"></i>
-                        </li>
-                        <li>
-                          <i class="fa fa-male"></i>
-                        </li>
+                        @{
+                          for (int i = 0; i < item.Bed; i++)
+                          {
+                            <li>
+                              <i class="fa fa-male"></i>
+                            </li>    
+                          }
+                        }
                       </ul>
                     </td>
                     <td>
@@ -402,15 +427,16 @@
                     <td class="theme-item-page-rooms-table-price">
                       <div>
                         <div class="theme-item-page-rooms-table-price-night">
-                         <strike>2,920,000</strike>
-                         <p class="text-bold-600 _fs-b">2,820,000   <small> ریال </small> </p>
+                          <strike>@item.Price</strike>
+                          <p class="text-bold-600 _fs-b">2,820,000 <small> ریال </small> </p>
                         </div>
                       </div>
                     </td>
                     <td>
-                      <a class="btn btn-primary-inverse btn-block">  رزرو کنید <i class="fa fa-arrow-left"></i> </a>
+                      <a class="btn btn-primary-inverse btn-block"> رزرو کنید <i class="fa fa-arrow-left"></i> </a>
                     </td>
-                  </tr>
+                  }
+                </tr>
                 </tbody>
               </table>
             </div>
@@ -418,7 +444,7 @@
           <div class="col-md-3 ">
             <div class="sticky-col">
               <div class="theme-sidebar-section _mb-10 _mob-h">
-                <a class="btn _tt-uc btn-primary-inverse" data-scroll href="#booking-scroll">رزرو</a>
+                <a class="btn _tt-uc btn-primary-inverse" data-scroll href="/Hotels">همه هتل‌ها</a>
               </div>
             </div>
           </div>
