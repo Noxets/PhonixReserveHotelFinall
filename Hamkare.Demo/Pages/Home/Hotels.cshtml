@@ -133,32 +133,6 @@
         </div>
       </div>
     </div>
-    <div class="theme-page-section _pt-50 theme-page-section-lg">
-      <div class="container">
-        <div class="theme-page-section-header _ta-l">
-          <h5 class="theme-page-section-title">بیشترین بازدید</h5>
-          <a class="theme-page-section-header-link theme-page-section-header-link-rb" href="#">+ موارد بیشتر</a>
-        </div>
-
-        <div class="theme-inline-slider row ltr" data-gutter="10">
-          <div class="owl-carousel" data-items="5" data-loop="true" data-nav="true">
-            @foreach (var item in Model.Take(5))
-            {
-              <div class="theme-inline-slider-item">
-                <div class="banner _br-4 banner-sqr banner-animate banner-animate-mask-in">
-                  <div class="banner-bg" style="background-image:url(@($"/Upload/Hotel/{item.Images.FirstOrDefault()}"));"></div>
-                  <div class="banner-mask"></div>
-                  <a class="banner-link" href="/Hotel/@item.Id"></a>
-                  <div class="banner-caption _pt-40 _ph-25 _pb-20 banner-caption-bottom banner-caption-grad">
-                    <h5 class="banner-title _fs">@item.Name</h5>
-                  </div>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="theme-page-section theme-page-section-xxl">
       <div class="container">
         <div class="theme-page-section-header">
@@ -166,7 +140,7 @@
           <p class="theme-page-section-subtitle">تورهای سفرآنلاین ,به یادماندنی وجذاب</p>
         </div>
         <div class="row row-col-gap" data-gutter="10">
-          @foreach (var item in Model.Skip(5))
+          @foreach (var item in Model)
           {
             <div class="col-md-3 ">
               <div class="banner _h-33vh _br-3 banner-animate banner-animate-mask-in banner-animate-very-slow banner-animate-zoom-in">

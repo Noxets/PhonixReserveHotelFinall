@@ -10,12 +10,21 @@ public class HomeController(RootService<Hotel,ApplicationDbContext> HotelService
     [HttpGet("/")]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        return View();
+        var hotels = await HotelService.GetAllAsync(cancellationToken);
+
+        return View(hotels);
     }
     
     [HttpGet("/Hotel/[id]")]
     public async Task<IActionResult> Hotel(long id, CancellationToken cancellationToken)
     {
         return View();
+    }
+    
+    [HttpGet("/Hotels")]
+    public async Task<IActionResult> Hotels(CancellationToken cancellationToken)
+    {
+        var hotels = await HotelService.GetAllAsync(cancellationToken);
+        return View(hotels);
     }
 }
