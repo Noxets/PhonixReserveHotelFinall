@@ -1,7 +1,7 @@
 ﻿@using System.Globalization
 @using Hamkare.Common.Entities.Identity
 @using Microsoft.AspNetCore.Identity
-@model Hamkare.Common.Entities.Hotel
+@model Hamkare.Demo.ViewModels.HotelBookingViewModel
 @inject UserManager<User> UserManager
 
 @{
@@ -95,18 +95,18 @@
           <div class="theme-item-page-header _pb-50 theme-item-page-header-white">
             <div class="theme-item-page-header-body">
               <ul class="theme-item-page-header-stars">
-                @for (int i = 0; i < Model.Star; i++)
+                @for (int i = 0; i < Model.Hotel.Star; i++)
                 {
                   <li>
                     <i class="fa fa-star"></i>
                   </li>
                 }
               </ul>
-              <h2 class="theme-item-page-header-title">@Model.Name</h2>
+              <h2 class="theme-item-page-header-title">@Model.Hotel.Name</h2>
               <div class="theme-item-page-header-price">
                 <div class="theme-item-page-header-price-body">
                   <p class="_fs-sm">شروع قیمت برای یک شب</p>
-                  <p class="_fs-xl">@Model.HotelRooms.MinBy(x => x.Price).Price</p>
+                  <p class="_fs-xl">@Model.Hotel.HotelRooms.MinBy(x => x.Price).Price</p>
                 </div>
            
               </div>
@@ -120,7 +120,7 @@
         <div class="row row-col-static" id="sticky-parent">
           <div class="col-md-9 ">
             <div class="fotorama _mb-30" data-nav="thumbs" data-minwidth="100%" data-arrows="always" data-allowfullscreen="native">
-              @foreach (var item in Model.Images)
+              @foreach (var item in Model.Hotel.Images)
               {
                 <img src="/Upload/Hotel/@item" />
               }
@@ -139,7 +139,7 @@
                 <div class="tab-content _p-30 _bg-w">
                   <div class="tab-pane active" id="HotelPageTabs-1" role="tab-panel">
                     <div class="theme-item-page-desc">
-                      <p>@Model.Description</p>
+                      <p>@Model.Hotel.Description</p>
                     </div>
                   </div>
                   <div class="tab-pane" id="HotelPageTabs-2" role="tab-panel">
@@ -327,60 +327,51 @@
                 </div>
               </div>
             </div>
-            <form id="booking-scroll">
+            <form asp-action="Book" asp-controller="Hotel" method="post" id="booking-scroll">
+              <input type="hidden" asp-for="HotelId" />
+
               <div class="theme-search-area _p-30 _bg-p _mb-30 _br-3">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="theme-search-area-form">
-                      <div class="row" data-gutter="10">
-                            <div class="col-md-3 ">
-                              <div class="theme-search-area-section theme-search-area-section-sm theme-search-area-section-no-border theme-search-area-section-fade-white theme-search-area-section-curved">
-                                <div class="theme-search-area-section-inner">
-                                  <i class="theme-search-area-section-icon lin lin-calendar"></i>
-                                  <input class="theme-search-area-section-input datePickerStart _mob-h" id="datepicker-check-in"   type="text" placeholder="تاریخ ورود"/>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-3 ">
-                              <div class="theme-search-area-section theme-search-area-section-sm theme-search-area-section-no-border theme-search-area-section-fade-white theme-search-area-section-curved">
-                                <div class="theme-search-area-section-inner">
-                                  <i class="theme-search-area-section-icon lin lin-calendar"></i>
-                                  <input class="theme-search-area-section-input datePickerEnd _mob-h" id="datepicker-check-out" type="text" placeholder="تاریخ خروج"/>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-2 ">
-                              <div class="theme-search-area-section theme-search-area-section-sm theme-search-area-section-no-border theme-search-area-section-fade-white theme-search-area-section-curved quantity-selector" data-increment="اتاق">
-                                <div class="theme-search-area-section-inner">
-                                  <i class="theme-search-area-section-icon lin lin-tag"></i>
-                                  <input class="theme-search-area-section-input" value="1 اتاق" type="text"/>
-                                  <div class="quantity-selector-box" id="HotelSearchRooms">
-                                    <div class="quantity-selector-inner">
-                                      <p class="quantity-selector-title">اتاق</p>
-                                      <ul class="quantity-selector-controls">
-                                        <li class="quantity-selector-decrement">
-                                          <a href="#">&#45;</a>
-                                        </li>
-                                        <li class="quantity-selector-current">1</li>
-                                        <li class="quantity-selector-increment">
-                                          <a href="#">&#43;</a>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-2 ">
-                          <button type="submit" class="theme-search-area-submit _mt-0 theme-search-area-submit-sm theme-search-area-submit-no-border theme-search-area-submit-curved">جستجو
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                <div class="row" data-gutter="10">
+
+                  <!-- تاریخ ورود -->
+                  <div class="col-md-3">
+                    <input asp-for="CheckInDate" value="@Model.CheckInDate"
+                           class="theme-search-area-section-input datePickerStart"
+                           placeholder="تاریخ ورود" />
                   </div>
+
+                  <!-- تاریخ خروج -->
+                  <div class="col-md-3">
+                    <input asp-for="CheckOutDate" value="@Model.CheckOutDate"
+                           class="theme-search-area-section-input datePickerEnd"
+                           placeholder="تاریخ خروج" />
+                  </div>
+
+                  <!-- انتخاب اتاق -->
+                  <div class="col-md-3">
+                    <select asp-for="RoomId"
+                            asp-items="@Model.Hotel.HotelRooms.Select(x => new SelectListItem
+                                       {
+                                         Text = x.RoomNumber.ToString(),
+                                         Value = x.Id.ToString()
+                                       })"
+                            class="form-control">
+                      <option value="">انتخاب اتاق</option>
+                    </select>
+                  </div>
+
+                  <!-- دکمه -->
+                  <div class="col-md-3">
+                    <button type="submit"
+                            class="theme-search-area-submit btn btn-primary">
+                      رزرو
+                    </button>
+                  </div>
+
                 </div>
               </div>
             </form>
+
             <div class="theme-item-page-rooms-table _p-10 _bg-w _mb-mob-30">
               <table class="table">
                 <thead>
@@ -395,7 +386,7 @@
                 <tbody>
                 <tr>
                   
-                  @foreach (var item in Model.HotelRooms)
+                  @foreach (var item in Model.Hotel.HotelRooms)
                   {
                     <td class="theme-item-page-rooms-table-type">
                       <h5 class="theme-item-page-rooms-table-type-title">@item.RoomNumber</h5>

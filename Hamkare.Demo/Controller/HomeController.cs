@@ -1,4 +1,5 @@
 ﻿using Hamkare.Common.Entities;
+using Hamkare.Demo.ViewModels;
 using Hamkare.Infrastructure;
 using Hamkare.Service.Services.Generic;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,14 @@ public class HomeController(RootService<Hotel,ApplicationDbContext> HotelService
     [HttpGet("/Hotel/[id]")]
     public async Task<IActionResult> Hotel(long id, CancellationToken cancellationToken)
     {
-        return View();
+        var hotels = await HotelService.GetActiveAsync(x => x.Id ==  id,cancellationToken);
+        return View(new HotelBookingViewModel
+        {
+            Hotel = hotels,
+            RoomId = null,
+            CheckInDate = DateTime.Today.AddDays(1),
+            CheckOutDate = DateTime.Today.AddDays(2)
+        });
     }
     
     [HttpGet("/Hotels")]
@@ -26,5 +34,19 @@ public class HomeController(RootService<Hotel,ApplicationDbContext> HotelService
     {
         var hotels = await HotelService.GetAllAsync(cancellationToken);
         return View(hotels);
+    }
+    
+    [HttpPost]
+    public IActionResult Book(HotelBookingViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return RedirectToAction("Details", new { id = model.RoomId });
+
+        // اینجا منطق رزرو
+        // model.RoomId
+        // model.CheckInDate
+        // model.CheckOutDate
+
+        return RedirectToAction("Confirm");
     }
 }
