@@ -16,7 +16,7 @@ public class HomeController(RootService<Hotel,ApplicationDbContext> HotelService
         return View(hotels);
     }
     
-    [HttpGet("/Hotel/[id]")]
+    [HttpGet("/Hotel/{id}")]
     public async Task<IActionResult> Hotel(long id, CancellationToken cancellationToken)
     {
         var hotels = await HotelService.GetActiveAsync(x => x.Id ==  id,cancellationToken);
